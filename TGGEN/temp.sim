@@ -1,0 +1,10 @@
+#states 1
+#trans  1
+#clocks  1
+H1 
+
+state: 0	/* tg state: 0 */
+prop: P
+invar: TRUE
+trans:
+5<=H1 => A ; RESET{ H1 } ; goto 0

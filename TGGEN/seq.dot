@@ -1,0 +1,17 @@
+digraph Net {
+rankdir=LR
+node [shape = circle]
+"2"; "1";
+
+node [shape = box]
+T2 [label = "k?pressure.y"]
+T1 [label = "[AdjustValve:45,50]^C1"]
+
+node [shape = circle, style = filled, color = pink2, label=""]
+"0";
+
+"2" -> T2 [style = solid];
+T2 -> "1" [style = solid];
+"1" -> T1 [style = solid];
+T1 -> "0" [style = solid];
+}

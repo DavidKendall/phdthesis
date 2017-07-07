@@ -1,0 +1,1156 @@
+%	$Id: becs.sty,v 1.2 1997/09/02 10:39:33 davek Exp davek $	
+% BECS - Broadcasting Embedded Control Systems 
+% LaTeX Commands
+% 28/4/97
+%  
+\usepackage{zed-csp,ifthen,calc}
+
+\newcommand{\candle}{\mbox{\sl CANDLE\/}}
+\newcommand{\bcandle}{\mbox{\sl bCANDLE}}
+\newcommand{\sdml}{\mbox{\sl SDML}}
+\newcommand{\opencaesar}{\mbox{OPEN/C{\AE}SAR}}
+\newcommand{\openkronos}{\mbox{OPEN/KRONOS}}
+\newcommand{\candleopen}{\mbox{\candle-OPEN}}
+\newcommand{\esterel}{\mbox{ESTEREL}}
+\newcommand{\aorta}{\mbox{AORTA}}
+\newcommand{\caesar}{\mbox{C{\AE}SAR}}
+\newcommand{\minim}{\mbox{\sf minim}}
+\newsavebox{\becstectlexists}
+\newsavebox{\becstempbox}
+\sbox{\becstempbox}{{\scriptsize $\exists$}}
+\sbox{\becstectlexists}{$\stackrel{*}{\usebox{\becstempbox}}$}
+%\newcommand{\etctl}{{TECTL\raisebox{-.5ex}{\usebox{\becstectlexists}}}}
+\newcommand{\etctl}{\mbox{TECTL\raisebox{-.5ex}{$\stackrel{*}{\mbox{\scriptsize $\exists$}}$}}}
+
+% zed-csp fix: lambda is redefined in zed-csp and although usually OK,
+% it sometimes falls apart in captions. \xlambda is zed-csp's name for the
+% old \lambda. So we use that instead.
+\newcommand{\becslambda}{\xlambda}
+%
+\newcommand{\modulus}[1]{{\left|#1\right|}}
+\newcommand{\card}[1]{\modulus{#1}}
+\newcommand{\such}{{\;.\;}}
+\newcommand{\vbar}{|}
+\newcommand{\genop}{\bowtie}
+\newcommand{\bcomp}{\circ}
+\newcommand{\brel}{\prec}
+\newcommand{\bls}{<}
+\newcommand{\ble}{\leq}
+\newcommand{\src}{{\mathop{\sf src}}}
+\newcommand{\lbl}[1]{\mathop{{\sf label}_{#1}}}
+\newcommand{\valuation}{{\text{\it Valuation\/}}}
+\newcommand{\operation}{{\text{\it Operation\/}}}
+\newcommand{\predicate}{{\text{\it Predicate\/}}}
+\newcommand{\Ops}{\text{\it Ops\/}}
+%\newcommand{\Preds}{\text{\it Preds\/}}
+%\newcommand{\Vals}{\text{\it Vals\/}}
+\newcommand{\type}{\mathop{\sf type}}
+\newcommand{\interpop}{\mathop{\sf operation}}
+\newcommand{\interppred}{\mathop{\sf predicate}}
+\newcommand{\val}{{\mathop{\sf val}}}
+%\newcommand{\ite}[3]{{{#2}\mathrel{\lhd\!\!#1\!\!\rhd}{#3}}}
+\newcommand{\ite}[3]{\IF #1 \THEN #2 \ELSE #3}
+\newcommand{\undefined}{\bot}
+\newcommand{\syneq}{\equiv}
+\newcommand{\nsyneq}{\equiv\hspace{-.5em}|\hspace{.5em}}
+%
+\newcommand{\idle}{\mathrm{idle}}
+\newcommand{\donothing}{\mathrm{null}}
+\newcommand{\rec}{\mathrm{rec\,}}
+\newcommand{\seqcomp}{\mathbin{\mathrm{;}\!}}
+\newcommand{\sq}{\seqcomp}
+\renewcommand{\parallel}{\mathbin{\mathrm{|}}}
+\newcommand{\choice}{\mathbin{\mathrm{+}}}
+\renewcommand{\interrupt}{\mathbin{\mathrm{[>}}}
+\newcommand{\guard}{\rightarrow}
+\newcommand{\gu}[1]{{\langle #1\rangle}}
+\newcommand{\basic}{\beta}
+%
+%
+%\newcommand{\phichannel}{\Phi Channel}
+%\newcommand{\phinetwork}{\Phi Network}
+%\newcommand{\phinetworkpre}{\Phi Network0}
+%\newcommand{\phinetworkpost}{\Phi Network1}
+%
+\newcommand{\tg}{\mathrel{{\sf tg}}}
+\newcommand{\tc}[1]{\mathop{{\sf tc}}(#1)}
+\newcommand{\ProcO}[1]{\text{\it Proc\/}^{+}_{#1}}
+\newcommand{\Proc}[1]{\text{\it Proc\/}_{#1}}
+\newcommand{\Sys}[1]{{\text{\it bCAN\/}_{#1}}}
+\newcommand{\CSys}[1]{{\widehat{\Sys{#1}}}}
+\newcommand{\sys}{\B}
+\newcommand{\csys}{{\widehat{\sys}}}
+\newcommand{\cbasic}{{\widehat{\basic}}}
+\newcommand{\Equ}{\mathit{E}}
+\newcommand{\fv}{\mathop{{\sf fv}}}
+\newcommand{\bv}{\mathop{{\sf bv}}}
+\newcommand{\ci}{\mathop{{\sf ci}}}
+\newcommand{\mi}{\mathop{{\sf mi}}}
+\newcommand{\dv}{\mathop{{\sf dv}}}
+\newcommand{\opn}{\mathop{{\sf opn}}}
+\newcommand{\prn}{\mathop{{\sf prn}}}
+\newcommand{\snd}{\mathop{{\sf snd}}}
+\newcommand{\rcv}{\mathop{{\sf rcv}}}
+\newcommand{\Labels}{L}
+\newcommand{\ProgLabels}{{\Actions_{\sf p}}}
+\newcommand{\NetLabels}{{\Actions_{\sf n}}}
+\newcommand{\Tr}{{\cal T}}
+\newcommand{\States}{\Sigma}
+\newcommand{\state}{\sigma}
+\newcommand{\sstate}{\widehat{\state}}
+\newcommand{\Init}{\state^{\cal I}}
+\newcommand{\stateid}{{\sf id}}
+\newcommand{\path}{{\mathbf{p}}}
+\newcommand{\TRel}{\goes{}}
+\newcommand{\otherwise}{\text{\rmfamily otherwise}}
+\newcommand{\actl}{{\forall\text{\rmfamily CTL}}}
+%\renewcommand{\empty}{\{\}}
+\newcommand{\emptyseq}{\langle\rangle}
+\newenvironment{nocheck}{}{}
+\newcommand{\LL}{{\tt LL}}
+\newcommand{\HL}{{\tt HL}}
+\newcommand{\until}{\mbox{${\cal U}$}}
+%
+\newcommand{\net}{{\nu}}
+\newcommand{\intl}{{\tau}}
+\renewcommand{\time}{{\ti}}
+\newcommand{\prog}{{\becslambda_{\sf p}}}
+\newcommand{\netw}{{\becslambda_{\sf n}}}
+\newcommand{\nort}{{\becslambda_{\sf nt}}}
+\newcommand{\any}{{\becslambda}}
+\newcommand{\progeps}{{\becslambda_{{\sf p}_\eps}}}
+\newcommand{\anyeps}{{\becslambda_\eps}}
+\newcommand{\clkcond}{{\psi}}
+\newcommand{\vexcond}{{\zeta}}
+\newcommand{\atomcond}{{\chi}}
+%\newcommand{\resets}{{\rho}}
+\newcommand{\resets}{\someclks}
+\newcommand{\nreset}{\mathop{\overline{\sf H}}}
+%
+\newcommand{\lgoes}[2]{{\mathrel{{\stackrel{#2}{\longrightarrow_{\mathrm{#1}}}}}}}
+\newcommand{\lgoesnot}[2]{\mathrel{\: \: \stackrel{#2}{\not \! \!%
+                                            \longrightarrow_{\mathrm{#1}}}}}
+%
+\newcommand{\nngoes}[2]{\mathrel{\longrightarrow_\mathrm{#1}^\mathrm{#2}}}
+%
+\newcommand{\goes}[1]{\lgoes{{}}{#1}}
+\newcommand{\goesn}[1]{\lgoes{{\sf n}}{#1}}
+\newcommand{\goest}[1]{\lgoes{{\sf t}}{#1}}
+\newcommand{\goesr}[1]{\lgoes{\RR}{#1}}
+\newcommand{\goesnot}[1]{\lgoesnot{{}}{#1}}
+\newcommand{\goesnnot}[1]{\lgoesnot{\N}{#1}}
+\newcommand{\goestnot}[1]{\lgoesnot{\T}{#1}}
+\newcommand{\goesrnot}[1]{\lgoesnot{\RR}{#1}}
+\newcommand{\goesdata}[1]{\lgoes{{\sf d}}{#1}}
+%\newcommand{\goesdata}[1]{\mathrel{\stackrel{#1}{\Longrightarrow}}}
+%
+\newcommand{\ngoes}[1]{\nngoes{{}}{#1}}
+\newcommand{\ngoesSG}[1]{\nngoes{\sg}{#1}}
+%
+\newcommand{\goesepss}{\Longrightarrow}
+%
+% Rewrite relation
+\newcommand{\goesrw}{\lgoes{\sf rw}{}}
+%
+\renewcommand{\AA}{{\cal A}}
+\renewcommand{\aa}{{a}}
+\renewcommand{\L}{{L}}
+\newcommand{\B}{{B}}
+\newcommand{\bb}{{b}}
+\newcommand{\BB}{{\cal B}}
+\newcommand{\E}{E}
+\newcommand{\F}{F}
+\newcommand{\FF}{{\cal F}}
+\newcommand{\mm}{{m}}
+\newcommand{\M}{{M}}
+\newcommand{\UU}{\mathbf{U}}
+\newcommand{\MM}{{\cal M}}
+\newcommand{\ii}{{i}}
+\newcommand{\I}{I}
+\newcommand{\II}{{\cal I}}
+\newcommand{\jj}{{j}}
+\newcommand{\vv}{{v}}
+\newcommand{\V}{V}
+\newcommand{\VV}{{\cal V}}
+\newcommand{\cc}{{c}}
+%\newcommand{\C}{{C}}
+\newcommand{\CC}{{\cal C}}
+\newcommand{\kk}{{k}}
+\newcommand{\K}{{K}}
+\newcommand{\KK}{{\cal K}}
+\newcommand{\qq}{{q}}
+\let\Gs=\ss
+\renewcommand{\ss}{{s}}
+\let\Sec=\S
+\renewcommand{\S}{{S}}
+\renewcommand{\SS}{{\cal S}}
+\renewcommand{\P}{{P}}
+\newcommand{\bigO}{\mathop{O}}
+\newcommand{\PP}{{\widehat{P}}}
+\newcommand{\pp}{p}
+\newcommand{\Q}{{Q}}
+\newcommand{\QQ}{{\widehat{Q}}}
+\newcommand{\Qq}{{\widetilde{Q}}}
+\newcommand{\nn}{{n}}
+\newcommand{\N}{{N}}
+\newcommand{\NN}{{\widehat{N}}}
+\newcommand{\gd}{{g}}
+\newcommand{\rr}{{r}}
+\newcommand{\lab}{{l}}
+\newcommand{\R}{{R}}
+\newcommand{\RR}{{\cal R}}
+\newcommand{\T}{\Theta}
+\newcommand{\W}{W}
+\newcommand{\WI}{\W^{\!\I}}
+\newcommand{\WV}{\W^{\!\V}}
+\newcommand{\WT}{\W^{\!T}}
+\newcommand{\WTick}{{\W^{\!\tick}}}
+\newcommand{\WW}{{\cal W}}
+\newcommand{\ww}{{w}}
+\newcommand{\X}{X}
+\newcommand{\XX}{{\cal X}}
+\newcommand{\z}{z}
+\newcommand{\Z}{Z}
+\newcommand{\ZZ}{{\cal Z}}
+%
+\newcommand{\latency}{\delta}
+\newcommand{\pleq}{\preceq}
+\newcommand{\pless}{\prec}
+%
+\newcommand{\lb}{{{\sf lb}}}
+\newcommand{\ub}{{{\sf ub}}}
+\newcommand{\lB}{{{\sf lB}}}
+\newcommand{\uB}{{{\sf uB}}}
+%
+\newcommand{\dlb}{{\latency^\lb}}
+\newcommand{\dub}{{\latency^\ub}}
+\newcommand{\dlB}{{\latency^\lB}}
+\newcommand{\duB}{{\latency^\uB}}
+%
+\newcommand{\channel}{\eta}
+\newcommand{\channell}{{(\M,\pleq,\latency,\ss,\mq)}}
+\newcommand{\ids}{{\sf ids}}
+\newcommand{\values}{{\sf values}}
+\newcommand{\channels}{{\sf channels}}
+%
+\newcommand{\mq}{u}
+\newcommand{\iq}{\mathrel{\looparrowleft}}
+\newcommand{\cq}{{:}}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand{\emq}{{\la\ra}}
+%
+\newcommand{\free}{{\negthinspace\mathop{\downarrow}}}
+\newcommand{\preact}[2]{{\mathrel{\stackrel{#1}{\leadsto}}\negthinspace#2}}
+\newcommand{\offers}[1]{{\mathrel{\uparrow}\negthinspace#1}}
+\newcommand{\offersnot}[1]{{\mathrel{\not \uparrow}\negthinspace#1}}
+\newcommand{\postact}[2]{{#2\mathrel{\stackrel{#1}{\leadsto}}}}
+\newcommand{\upn}{{\oplus}}
+\newcommand{\FREE}{{\sf FREE}}
+\newcommand{\PRE}{{\sf PRE}}
+\newcommand{\ACCEPT}{{\sf ACCEPT}}
+\newcommand{\POST}{{\sf POST}}
+\newcommand{\PreAcceptance}[1]{{PreAcceptance_{#1}}}
+\newcommand{\PostAcceptance}[1]{{PostAcceptance_{#1}}}
+\newcommand{\Status}[1]{{Status_{#1}}}
+\newcommand{\Queue}[1]{{Queue_{#1}}}
+\newcommand{\Channel}[1]{{Channel_{#1}}}
+\newcommand{\Network}[1]{{Network_{#1}}}
+\newcommand{\NNetwork}[1]{\ensuremath{\widehat{Network_{#1}}}}
+\newcommand{\StatesNN}{\States_{\NNetwork{},\clocks}}
+%
+\newcommand{\sch}[4]{{\overset{#2}{#1_#3}#4}}
+%
+\newcommand{\DataEnv}[1]{{DataEnv_{#1}}}
+\newcommand{\D}{{D}}
+\newcommand{\DD}{\widehat{D}}
+\newcommand{\dvalue}[2]{#1.#2}
+\newcommand{\becomes}{\mathrel{:=}}
+\newcommand{\assign}[3]{#1[#2\becomes#3]}
+\newcommand{\op}{\omega}
+\newcommand{\Op}{\Omega}
+\newcommand{\opp}{\widehat{\op}}
+\newcommand{\OpS}{\Op_{S}}
+\newcommand{\OpI}{\Op_{I}}
+\newcommand{\ID}{{\text{\it ID\/}}}
+\newcommand{\FAIL}{{\text{\it FAIL\/}}}
+\newcommand{\g}{\gamma}
+\newcommand{\G}{\Gamma}
+\newcommand{\True}{{true}}
+\newcommand{\False}{{false}}
+\newcommand{\cctrue}{\text{\sf t\!t}}
+\newcommand{\ccfalse}{\text{\sf f\!f}}
+\newcommand{\cczero}{\text{\sf zero}}
+\newcommand{\Var}{{\text{\it Var\/}}}
+\newcommand{\Message}{\text{\it Message\/}}
+\newcommand{\MessageSet}[1]{{\text{\it MessageSet\/}_{(#1)}}}
+\newcommand{\xx}{x}
+\newcommand{\yy}{y}
+\newcommand{\zz}{z}
+\newcommand{\Actions}{A}
+\newcommand{\enable}{\mathop{{\sf enable}}}
+%
+\newcommand{\sbl}{{\lbrack\!\lbrack}}
+\newcommand{\sbr}{{\rbrack\!\rbrack}}
+\newcommand{\chset}[1]{\sbl#1\sbr}
+\newcommand{\eval}[1]{\sbl#1\sbr}
+\newcommand{\req}{\simeq}
+\newcommand{\integ}[1]{\lfloor #1 \rfloor}
+\newcommand{\fr}[1]{\langle #1 \rangle}
+\newcommand{\region}[1]{[#1]}
+\newcommand{\RG}{\mathop{\sf RG}}
+\newcommand{\SG}{\mathop{\sf SG}}
+\newcommand{\AG}{\mathop{\sf AG}}
+\newcommand{\reg}{\rho}
+\newcommand{\goesRG}[1]{{\lgoes{\!{\sf rg}}{#1}}}
+\newcommand{\bigplus}{{\mathop{\text{\Large +}}}}
+\newcommand{\suc}[2]{\mathop{{\sf suc}_{#1}^{#2}}}
+\renewcommand{\min}{\mathop{{\sf min}}}
+\renewcommand{\max}{\mathop{{\sf max}}}
+\newcommand{\locations}{\mathop{\sf locations}}
+\newcommand{\unite}{\mathop{\sf unite}}
+\newcommand{\age}{\mathop{\sf age}}
+\newcommand{\canon}{\mathop{\sf cf}}
+\newcommand{\mkcanon}{\mathop{\sf mk\_canonical}}
+\newcommand{\weight}{\mathop{\sf weight}}
+\newcommand{\squplus}{\mathrel{{\sqcup^{+}}}}
+%
+\newcommand{\HskipH}{{\text{\bfseries{\ skip\ }}}}
+\newcommand{\HidleH}{{\text{\bfseries{\ idle\ }}}}
+\newcommand{\HsndH}{{\text{\bfseries{\ snd\ }}}}
+\newcommand{\HrcvH}{{\text{\bfseries{\ rcv\ }}}}
+\newcommand{\HelapseH}{{\text{\bfseries{\ elapse\ }}}}
+\newcommand{\HexitH}{{\text{\bfseries{\ exit\ }}}}
+\newcommand{\HsH}{{\text{\bfseries{\ ;\ }}}}
+\newcommand{\HselectH}{{\text{\bfseries{\ select\ }}}}
+\newcommand{\HorH}{{\text{\bfseries{\ or\ }}}}
+\newcommand{\HendselectH}{{\text{\bfseries{\ end\_select\ }}}}
+\newcommand{\HwhenH}{{\text{\bfseries{\ when\ }}}}
+\newcommand{\HdoH}{{\text{\bfseries{\ do\ }}}}
+\newcommand{\HcaseH}{{\text{\bfseries{\ case\ }}}}
+\newcommand{\HotherwiseH}{{\text{\bfseries{\ otherwise\ }}}}
+\newcommand{\HendcaseH}{{\text{\bfseries{\ end\_case\ }}}}
+\newcommand{\HifH}{{\text{\bfseries{\ if\ }}}}
+\newcommand{\HthenH}{{\text{\bfseries{\ then\ }}}}
+\newcommand{\HelseH}{{\text{\bfseries{\ else\ }}}}
+\newcommand{\HendifH}{{\text{\bfseries{\ end\_if\ }}}}
+\newcommand{\HloopH}{{\text{\bfseries{\ loop\ }}}}
+\newcommand{\HendloopH}{{\text{\bfseries{\ end\_loop\ }}}}
+\newcommand{\HinterruptH}{{\text{\bfseries{\ interrupt\ }}}}
+\newcommand{\HbyH}{{\text{\bfseries{\ by\ }}}}
+\newcommand{\HendinterruptH}{{\text{\bfseries{\ end\_interrupt\ }}}}
+\newcommand{\HeveryH}{{\text{\bfseries{\ every\ }}}}
+\newcommand{\HendeveryH}{{\text{\bfseries{\ end\_every\ }}}}
+\newcommand{\HlabelH}{{\text{\bfseries{\ LABEL\ }}}}
+\newcommand{\unitval}{{uvalue}}
+\newcommand{\bcuv}{\mathbf{1}} % unit value in \bcandle
+% Time
+\newcommand{\infinity}{\infty}
+\newcommand{\Time}{\real} %{\real^{+}}
+\newcommand{\TimeNZ}{\real^{>0}}
+\newcommand{\TimeInf}{\Time_\infinity}
+\newcommand{\TimeNZInf}{\TimeNZ_\infinity}
+\newcommand{\TimeDomain}{{\cal D}}
+%\newcommand{\nmin}{\mathrel{\Dot{\smash[t]{-}}}}
+%\newcommand{\nmin}{\mathrel{{-\!\!\!\raisebox{2pt}{\ensuremath{\cdot}}\,\,\,}}}
+%\newcommand{\nmin}{{
+%  \setbox0=\hbox{$-$}\setbox1=\hbox{$\cdot$}
+%  \ensuremath{-}
+%  \hspace{-.5\wd0}\hspace{-.5\wd1}
+%  \raisebox{.5\ht1}{\ensuremath{\cdot}}
+%  \hspace{.5\wd0}\hspace{-.5\wd1}
+%}}
+\newcommand{\nmin}{
+  \mathbin{{-}\kern-.45em\raise.75ex\hbox{.}\kern.3em}
+}
+%\newcommand{\nmin}{-}
+\newcommand{\ti}{{t}}
+\newcommand{\bounds}{{[l,u]}}
+\newcommand{\boundszero}{{[0,\_]}}
+\newcommand{\boundsr}{{[l\nmin t,u\nmin t]}}
+\newcommand{\Ninf}{\nat_{\infinity}}
+\newcommand{\Zinf}{\num_{\infinity}}
+\newcommand{\compl}[1]{\overline{#1}}
+% Clocks
+\newcommand{\clock}{h}
+\newcommand{\uclock}{\clock_{u}}
+\newcommand{\clocks}{{\cal H}}
+\newcommand{\someclks}{{\sf H}}
+\newcommand{\clkvl}{\mathbf{v}}
+\newcommand{\zclkvl}{\mathbf{0}}
+\newcommand{\iclkvl}{\zclkvl}
+\newcommand{\clkvls}{\Time^{\clocks}}
+%\newcommand{\clkvlsym}{\mathrm{Z}}
+\newcommand{\clkconds}{\Psi}
+\newcommand{\ClockConstraints}{\clkconds_{\clocks}}
+\newcommand{\ClockZones}{\ZZ_{\clocks}}
+% Models and languages
+\newcommand{\Lang}{{\cal L}}
+\newcommand{\AbsTime}{{{\cal T}}}
+\newcommand{\AbsComp}{{\cal C}}
+\newcommand{\Lmodel}{{{\cal L}_{M}}}
+\newcommand{\Lspec}{{{\cal L}_{S}}}
+%
+% Simulation Graph
+\newcommand{\close}[2]{{\mathop{{\sf close}_{#1}}(#2)}}
+\newcommand{\forwardproj}{\mathop{\nearrow}}
+\newcommand{\hull}{\sqcup}
+\newcommand{\sg}{{\sf sg}}
+\newcommand{\sgstates}{\ZZ}
+\newcommand{\sginit}{\z^{\cal I}}
+\newcommand{\goesSG}[1]{{\lgoes{\!{\sf sg}}{#1}}}
+\newcommand{\cmax}{\mathop{c_{max}}}
+% Theorem-like definitions
+%\newcommand{\qed}{{\strut\nobreak\hfill\ensuremath{\Box}}}
+
+
+% Environments
+\newenvironment{para}[1]{
+  {\it #1\/}\quad
+}{}
+%\newenvironment{proof}{{\it Proof\/}\quad}{\qed}
+
+% Nets
+\newcommand{\preset}[1]{{{}^\spot #1}}
+\newcommand{\vset}[1]{{{}^\circ #1}}
+\newcommand{\postset}[1]{{#1^\spot}}
+\newcommand{\attr}[1]{{\alpha#1}}
+\newcommand{\tattrib}{\alpha}
+\newcommand{\TAttrib}{{\text{\it Attribute\/}}}
+\newcommand{\mknet}[1]{{\mathcal{N}[\![#1]\!]}}
+\newcommand{\tickpl}{{\sf tick}}
+\newcommand{\tr}{\theta}
+% Timed Graphs
+\newcommand{\tglocs}{Q}
+\newcommand{\tgloc}{q}
+\newcommand{\tgiloc}{\tgloc^{\cal I}}
+\newcommand{\tglbls}{\Actions}
+\newcommand{\tgclks}{\clocks}
+\newcommand{\tgedges}{E}
+\newcommand{\tgedge}{e}
+\newcommand{\tginv}{I}
+\newcommand{\tgguard}{\vexcond}
+\newcommand{\tgedgesin}{\mathop{{\sf in}}}
+\newcommand{\tgedgesout}{\mathop{{\sf out}}}
+\newcommand{\Buchi}{B{\"u}chi}
+\newcommand{\tba}{\BB}
+\newcommand{\final}{F}
+\newcommand{\eps}{{\ensuremath{\epsilon}}}
+\newcommand{\CProc}[1]{\widehat{\Proc{#1}}}
+\newcommand{\CProcO}[1]{\widehat{\ProcO{#1}}}
+\newcommand{\addclks}{{\mathop{\sf addclks}}}
+\newcommand{\clk}{{\mathop{\sf clk}}}
+\newcommand{\iclk}{{\mathop{\mathrm{i}{\sf clk}}}}
+\newcommand{\tclk}{{\mathop{\mathrm{t}{\sf clk}}}}
+\newcommand{\gclk}{{\mathop{\mathrm{g}{\sf clk}}}}
+\newcommand{\oclk}{{\mathop{\mathrm{o}{\sf clk}}}}
+\newcommand{\gtclk}{{\mathop{\mathrm{gt}{\sf clk}}}}
+\newcommand{\otclk}{{\mathop{\mathrm{ot}{\sf clk}}}}
+\newcommand{\unclk}{{\mathop{{\sf unclk}}}}
+\newcommand{\act}{{\mathop{\sf act}}}
+\newcommand{\clkrestrict}[2]{#1\rfloor_{#2}}
+\newcommand{\nclks}{{\mathop{\sf nclks}}}
+\newcommand{\Gr}{\mathop{{\cal G}}}
+\newcommand{\GrPlus}{\mathop{{\cal G}^+}}
+\newcommand{\GrImpl}{\mathop{{\cal G}'}}
+\newcommand{\Inv}{\tginv}
+\newcommand{\tcp}{{\mathop{\sf tcp}}}
+\newcommand{\reset}{{\mathop{\sf reset}}}
+\newcommand{\fire}{{\mathop{\sf fire}}}
+\newcommand{\awaited}{{\mathop{\sf awaited}}}
+\newcommand{\sreach}{{\mathop{\sf sreach}}}
+\newcommand{\odd}{{\mathop{\sf odd}}}
+\newcommand{\timeat}{{\mathop{\Delta}}}
+\newcommand{\esource}{\mathop{\sf src}}
+\newcommand{\eguard}{\mathop{\sf guard}}
+\newcommand{\elabel}{\mathop{\sf label}}
+\newcommand{\ereset}{\mathop{\sf reset}}
+\newcommand{\etarget}{\mathop{\sf tgt}}
+\newcommand{\Epath}{\text{$E$-path}}
+\newcommand{\epath}{{\bf e}}
+\newcommand{\length}[1]{{\left|#1\right|}}
+%Minimized Automata
+\newcommand{\MA}{{\cal A}}
+\newcommand{\MAT}{\mathrm{T}}
+\newcommand{\MAF}{\mathrm{F}}
+\newcommand{\MAalphabet}{A}
+\newcommand{\MAsymb}{a}
+\newcommand{\MAstring}{{\bf a}}
+\newcommand{\MAstates}{Q}
+\newcommand{\MAstate}{q}
+\newcommand{\MAinit}{q_0}
+\newcommand{\MAtr}{E}
+
+% Semantic Relations
+\newcommand{\nequiv}{\ensuremath{\approx_{N}}}
+\newcommand{\ndequiv}{\ensuremath{\approx_{ND}}}
+\newcommand{\generalbisim}[2]{\mathrel{\underline{\leftrightarrow}^{#1}_{#2}}}
+\newcommand{\bisim}{\generalbisim{}{}}
+\newcommand{\bisimb}{\generalbisim{}{b}}
+\newcommand{\bisimd}{\generalbisim{}{d}}
+\newcommand{\bisimw}{\generalbisim{}{w}}
+\newcommand{\eqbisim}{\generalbisim{\approx}{}}
+\newcommand{\eqbisimb}{\generalbisim{\approx}{b}}
+\newcommand{\eqbisimd}{\generalbisim{\approx}{d}}
+\newcommand{\eqbisimw}{\generalbisim{\approx}{w}}
+\newcommand{\ndbisim}{\generalbisim{\ndequiv}{}}
+\newcommand{\ndbisimb}{\generalbisim{\ndequiv}{b}}
+\newcommand{\ndbisimd}{\generalbisim{\ndequiv}{d}}
+\newcommand{\ndbisimw}{\generalbisim{\ndequiv}{w}}
+\newcommand{\birel}{{\sf R}}
+\newcommand{\birell}{R}
+\newcommand{\uptobisim}{\mathrel{\bisim R \bisim}}
+
+\newcommand{\TSys}[1]{\mathop{{\cal T}}\sbl#1\sbr}
+\newcommand{\TSyseps}[1]{\mathop{{\cal T}}\sbl#1\sbr_\eps}
+\newcommand{\Id}{{\sf Id}}
+% Logic
+\newcommand{\mkp}{\ensuremath{{\mu\!K_P}}}
+\newcommand{\aalways}[1]{\mathop{{\forall\!\Box}_{#1}}}
+\newcommand{\ealways}[1]{\mathop{{\exists\!\Box}_{#1}}}
+\newcommand{\aeventually}[1]{\mathop{{\forall\!\Diamond}_{#1}}}
+\newcommand{\eeventually}[1]{\mathop{{\exists\!\Diamond}_{#1}}}
+\newcommand{\sfmla}{p} % state formula
+\newcommand{\smodels}{\mathrel{|\!\models}}
+\newcommand{\fmla}{\phi} % formula
+\newcommand{\euntil}[1]{\mathrel{\exists{\cal U}_{#1}}}
+\newcommand{\auntil}[1]{\mathrel{\forall{\cal U}_{#1}}}
+\newcommand{\exec}{\xi}
+\newcommand{\Exec}{\Xi}
+\newcommand{\Execdiv}{\Exec^\infinity}
+\newcommand{\infoften}{\mathop{{\sf inf}}}
+\newcommand{\delay}[1]{\mathop{\delta_{#1}}}
+\newcommand{\Delay}[1]{\mathop{\Delta_{#1}}}
+\newcommand{\Props}{\mathit{Props}}
+\newcommand{\props}{\mathop{\sf props}}
+\newcommand{\pos}{\pi}
+\newcommand{\Pos}{\Pi}
+% Semantic Rules
+\newcommand{\trule}[3]
+  {\mbox{$\frac{\strut\ensuremath{\displaystyle#1}}{\strut\ensuremath{\displaystyle#3}}\ #2$}}
+\newlength{\rulelabellength}
+\newcommand{\truleUD}[4]
+  {\setbox0=\hbox{E\_Comp.3\quad}\setlength{\rulelabellength}{\wd0}\mbox{\parbox{\rulelabellength}{\bf\hfill #1\;}$\frac{\strut\ensuremath{\displaystyle#2}}{\strut\ensuremath{\displaystyle#4}}\ #3$}}
+\newcommand{\truleI}[4]
+  {\mbox{{\bf #1}\quad$\ensuremath{#2}\;\shows\; \ensuremath{#4}$
+    \ifthenelse{\equal{#3}{}}{}{$\quad \text{if }#3$}}}
+\newcommand{\truleIL}[4]
+  {\mbox{{\bf #1}\quad$\ensuremath{#2}\;\shows$} \\ 
+   \mbox{\qquad\qquad\qquad$\ensuremath{#4}$
+      \ifthenelse{\equal{#3}{}}{}{$\quad \text{if }#3$}}}
+%
+% Timed Automata Semantics
+\newcommand{\tadiscrete}%
+{\truleUD{TA.1}%
+  {(\tgloc,\tgguard,a,\someclks,\tgloc') \in \tgedges \land \clkvl \models \tgguard \land \clkvl[\someclks:=0] \models \tginv(\tgloc')}%
+  {}%
+  {(\tgloc,\clkvl) \goes{a} (\tgloc',\clkvl[\someclks:=0])}
+}
+
+\newcommand{\tatime}%
+{\truleUD{TA.2}%
+  {t \in \Time \land \forall t' \in \Time | t' \leq t \such \clkvl+t' \models \tginv(\tgloc)}%
+  {}%
+  {(\tgloc,\clkvl) \goes{t} (\tgloc,\clkvl+t)}
+}
+
+%  Task Transition Rules
+%
+\newcommand{\rpre}%
+{\truleUD{N.1}%
+  {\N_\kk = (\free,\mm:\mq)}%
+  {}%
+  {\N \goesn{\kk\preact{}{\mm}} \assign{\N}{\kk}{(\preact{\lb,\ub}{\mm},\mq)}}
+}
+
+\newcommand{\raccpt}%
+{\truleUD{N.2}%
+  {\N_\kk = (\preact{0,\_}{\mm},\mq)}%
+  {}%
+  {\N \goesn{\kk\offers{\mm}} \assign{\N}{\kk}{(\offers{\mm},\mq)}}
+}
+
+\newcommand{\rpost}%
+{\truleUD{N.3}%
+  {\N_\kk = (\offers{\mm},\mq)}%
+  {}%
+  {\N \goesn{\postact{}{\mm}\kk} \assign{\N}{\kk}{(\postact{\lB,\uB}{\mm},\mq)}}
+}
+
+\newcommand{\rfree}%
+{\truleUD{N.4}%
+  {\N_\kk = (\postact{0,\_}{\_},\mq)}%
+  {}%
+  {\N \goesn{\kk\free} \assign{\N}{\kk}{(\free,\mq)}}
+}
+
+\newcommand{\rtime}%
+{\truleUD{N.5}%
+  {0 \leq \time \leq \tcp(\N)}%
+  {}%
+  {\N \goesn{\time} \N+\time}
+}
+
+
+\newcommand{\rsnda}%
+{\truleUD{Snd.1}%
+  {\N_\kk=(\ss,\mq) \land \vv = \dvalue{\D}{\xx}}%
+  {}%
+  {(\kk!\ii.\xx,\N,\D) \goes{\kk!\ii.\vv} 
+   (\tick,\assign{\N}{\kk}{(\ss,\mq\iq\ii.\vv)},\D)}
+}
+
+\newcommand{\rsndb}%
+{\truleUD{Snd.2}
+  {\N \goesn{\netw} \N'}%
+  {}%
+  {(\kk!\ii.\xx,\N,\D) \goes{\netw} (\kk!\ii.\xx,\N',\D)}
+}
+
+\newcommand{\rsndc}%
+{\truleUD{Snd.3}
+  {}%
+  {}%
+  {(\kk!\ii.\xx,\N,\D) \goes{0} (\kk!\ii.\xx,\N,\D)}
+}
+
+\newcommand{\rrcva}%
+{\truleUD{Rcv.1}%
+  {\N_\kk=(\offers{\ii.\vv},\_)}%
+  {}%
+  {(\kk?\ii.\xx,\N,\D) \goes{\kk?\ii.\vv} (\tick,\N,\assign{\D}{\xx}{\vv})}
+}
+
+\newcommand{\rrcvb}%
+{\truleUD{Rcv.2}%
+  {\N \goesn{\netw} \N'\land (\N_\kk \neq (\offers{\ii.\_},\_) \lor 
+                            \N_\kk = \N'_\kk)}%
+  {}%
+  {(\kk?\ii.\xx,\N,\D) \goes{\netw} (\kk?\ii.\xx,\N',\D)}
+}
+
+\newcommand{\rrcvc}%
+{\truleUD{Rcv.3}%
+  {\N \goesn{\time} \N'}%
+  {}%
+  {(\kk?\ii.\xx,\N,\D) \goes{\time} (\kk?\ii.\xx,\N',\D)}
+}
+
+\newcommand{\rcompa}%
+{\truleUD{Comp.1}%
+  {\D \goesdata{\op} \D'}%
+  {}%
+  {([\op:0, \_],\N,\D) \goes{\op} (\tick,\N,\D')}
+}
+
+\newcommand{\rcompb}%
+{\truleUD{Comp.2}%
+  {\N \goesn{\netw} \N'}%
+  {}%
+  {([\op:t_1,t_2],\N,\D) \goes{\netw} ([\op:t_1,t_2],\N',\D)}
+}
+
+\newcommand{\rcompc}%
+{\truleUD{Comp.3}%
+  {\N \goesn{\time} \N'\land t \leq t_2}%
+  {}%
+  {([\op:t_1,t_2],\N,\D) \goes{\time} ([\op:t_1 \nmin t, t_2 \nmin t],\N',\D)}
+}
+
+\newcommand{\rgua}%
+{\truleUD{Gu.1}%
+  {\D \models \g}%
+  {}%
+  {(\g \guard \P,\N,\D) \goes{\g} (\P,\N,\D)}
+}
+
+\newcommand{\rgub}%
+{\truleUD{Gu.2}%
+  {\N \goesn{\netw} \N'}%
+  {}%
+  {(\g \guard \P,\N,\D) \goes{\netw} (\g \guard \P,\N',\D)}
+}
+
+\newcommand{\rguc}%
+{\truleUD{Gu.3}%
+  {\N \goesn{\ti} \N' \land (\D \not\models \g \lor \ti = 0)}%
+  {}%
+  {(\g \guard \P,\N,\D) \goes{\ti} (\g \guard \P,\N',\D)}
+}
+\newcommand{\rseqa}%
+{\truleUD{Seq.1}%
+{(\P,\N,\D) \goes{\any} (\P',\N',\D')\land \P' \nsyneq \tick}%
+{}%
+{(\P \sq \Q,\N,\D) \goes{\any} (\P' \sq \Q,\N',\D')}}
+
+\newcommand{\rseqb}%
+{\truleUD{Seq.2}%
+{(\P,\N,\D) \goes{\prog} (\tick,\N',\D')}%
+{}%
+{(\P \sq \Q,\N,\D) \goes{\prog} (\Q,\N',\D')}}
+
+\newcommand{\rcha}%
+{\truleUD{Ch.1}%
+{(\P,\N,\D) \goes{\prog} (\P',\N',\D')}%
+{}%
+{(\P \choice \Q,\N,\D) \goes{\prog} (\P',\N',\D')}}
+
+\newcommand{\rchb}%
+{\truleUD{Ch.2}%
+{(\Q,\N,\D) \goes{\prog} (\Q',\N',\D')}%
+{}%
+{(\P \choice \Q,\N,\D) \goes{\prog} (\Q',\N',\D')}}
+
+\newcommand{\rchc}%
+{\truleUD{Ch.3}%
+{(\P,\N,\D) \goes{\nort} (\P',\N',\D) \land (\Q,\N,\D) \goes{\nort} (\Q',\N',\D)}%
+{}%
+{(\P \choice \Q,\N,\D) \goes{\nort} (\P' \choice \Q',\N',\D)}}
+
+\newcommand{\rinta}%
+{\truleUD{Int.1}%
+{(\P,\N,\D) \goes{\prog} (\P',\N',\D')\land \P' \nsyneq \tick}%
+{}%
+{(\P \interrupt \Q,\N,\D) \goes{\prog} (\P' \interrupt \Q,\N',\D')}}
+
+\newcommand{\rintb}%
+{\truleUD{Int.2}%
+{(\P,\N,\D) \goes{\prog} (\tick,\N',\D')}%
+{}%
+{(\P \interrupt \Q,\N,\D) \goes{\prog} (\tick,\N',\D')}}
+
+\newcommand{\rintc}%  
+{\truleUD{Int.3}%
+{(\Q,\N,\D) \goes{\prog} (\Q',\N',\D')}%
+{}%
+{(\P \interrupt \Q,\N,\D) \goes{\prog} (\Q',\N',\D')}}
+
+\newcommand{\rintd}%
+{\truleUD{Int.4}%
+{(\P,\N,\D) \goes{\nort} (\P',\N',\D) \land (\Q,\N,\D) \goes{\nort} (\Q',\N',\D)}%
+{}%
+{(\P \interrupt \Q,\N,\D) \goes{\nort} (\P' \interrupt \Q',\N',\D)}}
+
+\newcommand{\rpara}%
+{\truleUD{Par.1}%
+{(\P,\N,\D) \goes{\prog} (\P',\N',\D')\land \P' \nsyneq \tick}%
+{}%
+{(\P \parallel \Q,\N,\D) \goes{\prog} (\P' \parallel \Q,\N',\D')}}
+
+\newcommand{\rparb}%
+{\truleUD{Par.2}%
+{(\P,\N,\D) \goes{\prog} (\tick,\N',\D')}%
+{}%
+{(\P \parallel \Q,\N,\D) \goes{\prog} (\Q,\N',\D')}}
+
+\newcommand{\rparc}%  
+{\truleUD{Par.3}%
+{(\Q,\N,\D) \goes{\prog} (\Q',\N',\D')\land \Q' \nsyneq \tick}%
+{}%
+{(\P \parallel \Q,\N,\D) \goes{\prog} (\P \parallel \Q',\N',\D')}}
+
+\newcommand{\rpard}%  
+{\truleUD{Par.4}%
+{(\Q,\N,\D) \goes{\prog} (\tick,\N',\D')}%
+{}%
+{(\P \parallel \Q,\N,\D) \goes{\prog} (\P,\N',\D')}}
+
+\newcommand{\rpare}%
+{\truleUD{Par.5}%
+{(\P,\N,\D) \goes{\nort} (\P',\N',\D) \land (\Q,\N,\D) \goes{\nort} (\Q',\N',\D)}%
+{}%
+{(\P \parallel \Q,\N,\D) \goes{\nort} (\P' \parallel \Q',\N',\D)}}
+
+\newcommand{\rnt}%
+{\truleUD{}%
+{(\P,\N,\D) \goes{\nort} (\P',\N',\D) \land (\Q,\N,\D) \goes{\nort} (\Q',\N',\D)}%
+{}%
+{(\P \spot \Q,\N,\D) \goes{\nort} (\P' \spot \Q',\N',\D)}}
+
+\newcommand{\rrec}%
+{\truleUD{Rec}%
+{(\P[\rec X.\P/X],\N,\D) \goes{\any} (\P',\N',\D')}%
+{}%
+{(\rec X.\P,\N,\D) \goes{\any} (\P',\N',\D')}}
+
+\newcommand{\rdef}%
+{\truleUD{Def}%
+{(\P,\N,\D) \goes{\any} (\P',\N',\D')\land X \defs \P}%
+{}%
+{(X,\N,\D) \goes{\any} (\P',\N',\D')}}
+
+
+
+% Rules for timed graph edges
+\newcommand{\gpre}%
+{\truleUD{E\_N.1}%
+  {\NN_\kk = (\free,\mm:\mq)^\clock}%
+  {}%
+  {\NN \goesn{\cctrue, \kk\preact{}{\mm}, \{\uclock,\clock\}} \assign{\NN}{\kk}{(\preact{\lb,\ub}{\mm},\mq)^\clock}}
+}
+
+\newcommand{\gaccpt}%
+{\truleUD{E\_N.2}%
+  {\NN_\kk = (\preact{t_1,t_2}{\mm},\mq)^\clock  \land t_1 \in \nat}%
+  {}%
+  {\NN \goesn{\clock \geq t_1,\kk\offers{\mm},\{\uclock\}} \assign{\NN}{\kk}{(\offers{\mm},\mq)^\clock}}
+}
+
+\newcommand{\gpost}%
+{\truleUD{E\_N.3}%
+  {\NN_\kk = (\offers{\mm},\mq)^\clock}%
+  {}%
+  {\NN \goesn{\cctrue, \postact{}{\mm}\kk, \{\uclock,\clock\}} \assign{\NN}{\kk}{(\postact{\lB,\uB}{\mm},\mq)^\clock}}
+}
+
+\newcommand{\gfree}%
+{\truleUD{E\_N.4}%
+  {\NN_\kk = (\postact{t_1,t_2}{\_},\mq)^\clock \land t_1 \in \nat}% 
+  {}%
+  {\NN \goesn{\clock \geq t_1, \kk\free, \{\uclock\}} \assign{\NN}{\kk}{(\free,\mq)^\clock}}
+}
+
+
+\newcommand{\gsnda}%
+{\truleUD{E\_Snd.1}%
+{
+\NN_\kk = (s,\mq) \land \vv = \dvalue{\D}{\xx} 
+}%
+{}%
+{
+ (\kk!\ii.\xx,\NN,\D) \goes{\cctrue,\kk!\ii.\vv,\{\uclock\}} 
+ (\tick, \assign{\NN}{\kk}{(s,\mq\iq\ii.\vv)},\D)}
+}
+
+\newcommand{\gsndb}%
+{\truleUD{E\_Snd.2}%
+{\NN \goesn{\clkcond,\netw,\resets} \NN'}%
+{}%
+{(\kk!\ii.\xx,\NN,\D) \goes{\clkcond,\netw,\resets}
+ (\kk!\ii.\xx,\NN',\D)}
+}
+
+\newcommand{\grcva}%
+{\truleUD{E\_Rcv.1}%
+{\NN_\kk = (\offers\ii.\vv,\_)}%
+{}%
+{({\kk?\ii.\xx},\NN,\D) \goes{\cctrue,\kk?\ii.\vv,\{\uclock\}}
+ (\tick,\NN,\assign{\D}{\xx}{\vv})}
+}
+
+\newcommand{\grcvb}%
+{\truleUD{E\_Rcv.2}%
+{\NN \goesn{\clkcond,\netw,\resets} \NN' \land (\NN_\kk \neq (\offers\ii.\_,\_) \lor \NN_\kk = \NN'_\kk)}%
+{}%
+{({\kk?\ii.\xx},\NN,\D) \goes{\clkcond,\netw,\resets}
+ ({\kk?\ii.\xx},\NN',\D)}
+}
+
+\newcommand{\gcompa}%
+{\truleUD{E\_Comp.1}%
+  {\D \goesdata{\op} \D' \land t_1 \in \nat}%
+  {}%
+  {([\op:t_1,t_2]^\clock,\NN,\D) \goes{\clock\geq t_1,\op,\{\uclock\}} (\tick,\NN,\D')}
+}
+
+\newcommand{\gcompb}%
+{\truleUD{E\_Comp.2}%
+  {\NN \goesn{\clkcond,\netw,\resets} \NN'}%
+  {}%
+  {([\op:t_1,t_2]^\clock,\NN,\D) \goes{\clkcond,\netw,\resets} ([\op:t_1,t_2]^\clock,\NN',\D)}
+}
+
+\newcommand{\ggua}%
+{\truleUD{E\_Gu.1}%
+  {\D \models \g}%
+  {}%
+  {(\g \guard \PP,\NN,\D) \goes{\cctrue,\g,\{\uclock\}\cup\iclk(\PP)} (\PP,\NN,\D)}
+}
+
+\newcommand{\ggub}%
+{\truleUD{E\_Gu.2}%
+  {\NN \goesn{\clkcond,\netw,\resets} \NN'}%
+  {}%
+  {(\g \guard \PP,\NN,\D) \goes{\clkcond,\netw,\resets} (\g \guard \PP,\NN',\D)}
+}
+
+\newcommand{\gseqa}%
+{\truleUD{E\_Seq.1}%
+{(\PP,\NN,\D) \goes{\clkcond,\any,\resets} (\PP',\NN',\D') \land \PP' \nsyneq \tick}%
+{}%
+{(\PP \sq \QQ,\NN,\D) \goes{\clkcond,\any,\resets} (\PP' \sq \QQ,\NN',\D')}}
+
+\newcommand{\gseqb}%
+{\truleUD{E\_Seq.2}%
+{(\PP,\NN,\D) \goes{\clkcond,\prog,\resets} (\tick,\NN',\D')}%
+{}%
+{(\PP \sq \QQ,\NN,\D) \goes{\clkcond,\prog,\resets \cup \iclk(\QQ)} (\QQ,\NN',\D')}}
+
+\newcommand{\gcha}%
+{\truleUD{E\_Ch.1}%
+{(\PP,\NN,\D) \goes{\clkcond,\prog,\resets} (\PP',\NN',\D')}%
+{}%
+{(\PP \choice \QQ,\NN,\D) \goes{\clkcond,\prog,\resets} (\PP',\NN',\D')}}
+
+\newcommand{\gchb}%
+{\truleUD{E\_Ch.2}%
+{(\QQ,\NN,\D) \goes{\clkcond,\prog,\resets} (\QQ',\NN',\D')}%
+{}%
+{(\PP \choice \QQ,\NN,\D) \goes{\clkcond,\prog,\resets} (\QQ',\NN',\D')}}
+
+\newcommand{\gchc}%
+{\truleUD{E\_Ch.3}%
+{(\PP,\NN,\D) \goes{\clkcond,\netw,\resets} (\PP,\NN',\D) \land (\QQ,\NN,\D) \goes{\clkcond,\netw,\resets} (\QQ,\NN',\D)}%
+{}%
+{(\PP \choice \QQ,\NN,\D) \goes{\clkcond,\netw,\resets} (\PP \choice \QQ,\NN',\D)}}
+
+\newcommand{\gchd}%
+{\truleUD{E\_Ch.4}%
+{(\PP,\NN,\D) \goes{\clkcond,\eps,\resets} (\PP',\NN,\D)}%
+{}%
+{(\PP \choice \QQ,\NN,\D) \goes{\clkcond,\eps,\resets} (\PP'\choice \QQ,\NN,\D)}}
+
+\newcommand{\gche}%
+{\truleUD{E\_Ch.5}%
+{(\QQ,\NN,\D) \goes{\clkcond,\eps,\resets} (\QQ',\NN,\D)}%
+{}%
+{(\PP \choice \QQ,\NN,\D) \goes{\clkcond,\eps,\resets} (\PP\choice\QQ',\NN,\D)}}
+
+\newcommand{\ginta}%
+{\truleUD{E\_Int.1}%
+{(\PP,\NN,\D) \goes{\clkcond,\prog,\resets} (\PP',\NN',\D') \land \PP' \nsyneq \tick}%
+{}%
+{(\PP \interrupt \QQ,\NN,\D) \goes{\clkcond,\prog,\resets} (\PP' \interrupt \QQ,\NN',\D')}}
+
+\newcommand{\gintb}%
+{\truleUD{E\_Int.2}%
+{(\PP,\NN,\D) \goes{\clkcond,\prog,\resets} (\tick,\NN',\D')}%
+{}%
+{(\PP \interrupt \QQ,\NN,\D) \goes{\clkcond,\prog,\resets} (\tick,\NN',\D')}}
+
+\newcommand{\gintc}%  
+{\truleUD{E\_Int.3}%
+{(\QQ,\NN,\D) \goes{\clkcond,\prog,\resets} (\QQ',\NN',\D')}%
+{}%
+{(\PP \interrupt \QQ,\NN,\D) \goes{\clkcond,\prog,\resets} (\QQ',\NN',\D')}}
+
+\newcommand{\gintd}%
+{\truleUD{E\_Int.4}%
+{(\PP,\NN,\D) \goes{\clkcond,\netw,\resets} (\PP,\NN',\D) \land (\QQ,\NN,\D) \goes{\clkcond,\netw,\resets} (\QQ,\NN',\D)}%
+{}%
+{(\PP \interrupt \QQ,\NN,\D) \goes{\clkcond,\netw,\resets} (\PP \interrupt \QQ,\NN',\D)}}
+
+\newcommand{\ginte}%  
+{\truleUD{E\_Int.5}%
+{(\QQ,\NN,\D) \goes{\clkcond,\eps,\resets} (\QQ',\NN,\D)}%
+{}%
+{(\PP \interrupt \QQ,\NN,\D) \goes{\clkcond,\eps,\resets} (\PP\interrupt\QQ',\NN,\D)}}
+
+\newcommand{\gpara}%
+{\truleUD{E\_Par.1}%
+{(\PP,\NN,\D) \goes{\clkcond,\prog,\resets} (\PP',\NN',\D') \land \PP' \nsyneq \tick}%
+{}%
+{(\PP \parallel \QQ,\NN,\D) \goes{\clkcond,\prog,\resets} (\PP' \parallel \QQ,\NN',\D')}}
+
+\newcommand{\gparb}%
+{\truleUD{E\_Par.2}%
+{(\PP,\NN,\D) \goes{\clkcond,\prog,\resets} (\tick,\NN',\D')}%
+{}%
+{(\PP \parallel \QQ,\NN,\D) \goes{\clkcond,\prog,\resets} (\QQ,\NN',\D')}}
+
+\newcommand{\gparc}%  
+{\truleUD{E\_Par.3}%
+{(\QQ,\NN,\D) \goes{\clkcond,\prog,\resets} (\QQ',\NN',\D') \land \QQ' \nsyneq \tick}%
+{}%
+{(\PP \parallel \QQ,\NN,\D) \goes{\clkcond,\prog,\resets} (\PP \parallel \QQ',\NN',\D')}}
+
+\newcommand{\gpard}%  
+{\truleUD{E\_Par.4}%
+{(\QQ,\NN,\D) \goes{\clkcond,\prog,\resets} (\tick,\NN',\D')}%
+{}%
+{(\PP \parallel \QQ,\NN,\D) \goes{\clkcond,\prog,\resets} (\PP,\NN',\D')}}
+
+\newcommand{\gpare}%
+{\truleUD{E\_Par.5}%
+{(\PP,\NN,\D) \goes{\clkcond,\netw,\resets} (\PP,\NN',\D) \land (\QQ,\NN,\D) \goes{\clkcond,\netw,\resets} (\QQ,\NN',\D)}%
+{}%
+{(\PP \parallel \QQ,\NN,\D) \goes{\clkcond,\netw,\resets} (\PP \parallel \QQ,\NN',\D)}}
+
+\newcommand{\grec}%
+{\truleUD{E\_Rec}%
+{(\PP[\rec X.\PP/X],\NN,\D) \goes{\clkcond,\any,\resets} (\PP',\NN',\D')}%
+{}%
+{(\rec X.\PP,\NN,\D) \goes{\clkcond,\any,\resets} (\PP',\NN',\D')}}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\fsnda}%
+{\truleUD{F\_Snd}%
+{\NN_\kk = (s,\mq) \land \vv = \dvalue{\D}{\xx} 
+}%
+{}%
+{\fire(\kk!\ii.\xx,\NN,\D,\cctrue,\kk!\ii.\vv,\{\uclock\}, 
+ \assign{\NN}{\kk}{(s,\mq\iq\ii.\vv)},\D)}}
+
+\newcommand{\frcva}%
+{\truleUD{F\_Rcv}%
+{\NN_\kk = (\offers\ii.\vv,\_)}%
+{}%
+{\fire(\kk?\ii.\xx,\NN,\D,\cctrue,\kk?\ii.\vv,\{\uclock\},\NN,\assign{\D}{\xx}{\vv})}
+}
+
+\newcommand{\fcompa}%
+{\truleUD{F\_Comp}%
+  {\D \goesdata{\op} \D' \land t_1 \in \nat}%
+  {}%
+  {\fire([\op:t_1,t_2]^\clock,\NN,\D,\clock\geq t_1,\op,\{\uclock\},\NN,\D')}
+}
+
+\newcommand{\fgua}%
+{\truleUD{F\_Gu}%
+  {\D \models \g}%
+  {}%
+  {\fire(\gu{\g},\NN,\D,\cctrue,\g,\{\uclock\},\NN,\D)}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\rfirea}%
+{\truleUD{\RR.1}%
+{
+  \begin{array}{l} 
+    \ww \in \W_1 \land (\ww,\WV,\tattrib,\WT) \in \T \land
+      \fire(\tattrib,\NN,\D,\clkcond,\any,\resets',\NN',\D') \land \\
+      \W_2 = \W_1 \setminus (\{\ww\}\cup \WV) \cup \WT \land  
+      \resets = \resets' \cup \clk(\WT) 
+  \end{array}
+}%
+{}%
+{(\W_1,\NN,\D) \goesr{\clkcond,\any,\resets} (\W_2,\NN',\D')}}
+
+\newcommand{\rfireb}%
+{\truleUD{\RR.2}%
+{
+  \begin{array}{c} 
+    \NN \goesn{\clkcond,\netw,\resets} \NN' \land \\
+    \forall\kk\in\K,\ii\in\I\such(\lnot\awaited(\W,\kk,\ii) \lor \NN_\kk \neq (\offers{\ii.\_},\_) \lor \NN_\kk = \NN'_\kk) \\
+  \end{array}
+}%
+{}%
+{(\W,\NN,\D) \goesr{\clkcond,\netw,\resets} (\W,\NN',\D)}}
+
+%%%%%%%%%%%%
+% Transition rules for timed graphs
+%%%%%%%%%%%%
+\newcommand{\tgtime}%
+{\truleUD{}%
+  {\D \models \g}%
+  {}%
+  {\fire(\gu{\g}^\clock,\NN,\D,\clock \geq 0,\emptyset,\eps,\NN,\D)}
+}
+
+\newcommand{\tgdiscrete}%
+{\truleUD{F\_Gu}%
+  {\D \models \g}%
+  {}%
+  {\fire(\gu{\g}^\clock,\NN,\D,\clock \geq 0,\emptyset,\eps,\NN,\D)}
+}
+
+%%%%%%%%%%%%%%%%% Transition rules for eps semantics %%%%%%%%%%%%%%%%
+\newcommand{\egua}%
+{\truleUD{Gu-$\eps$.1}%
+  {\D \models \g}%
+  {}%
+  {(\g \guard \P,\N,\D) \goes{\eps} (\P,\N,\D)}
+}
+
+\newcommand{\eguc}%
+{\truleUD{Gu-$\eps$.3}%
+  {\D \models \g}%
+  {}%
+  {(\g \guard \P,\N,\D) \goes{0} (\g \guard \P,\N,\D)}
+}
+
+\newcommand{\echd}%
+{\truleUD{Ch-$\eps$.4}%
+  {(\P,\N,\D) \goes{\eps} (\P',\N,\D)}%
+  {}%
+  {(\P\choice\Q,\N,\D) \goes{\eps} (\P'\choice\Q,\N,\D)}
+}
+
+\newcommand{\eche}%
+{\truleUD{Ch-$\eps$.5}%
+  {(\Q,\N,\D) \goes{\eps} (\Q',\N,\D)}%
+  {}%
+  {(\P\choice\Q,\N,\D) \goes{\eps} (\P\choice\Q',\N,\D)}
+}
+
+\newcommand{\einta}%
+{\truleUD{Int-$\eps$.1}%
+  {(\P,\N,\D) \goes{\progeps} (\P',\N',\D') \land \P' \nsyneq \tick}%
+  {}%
+  {(\P\interrupt\Q,\N,\D) \goes{\progeps} (\P'\interrupt\Q,\N',\D')}
+}
+
+\newcommand{\einte}%
+{\truleUD{Int-$\eps$.5}%
+  {(\Q,\N,\D) \goes{\eps} (\Q',\N,\D)}%
+  {}%
+  {(\P\interrupt\Q,\N,\D) \goes{\eps} (\P\interrupt\Q',\N,\D)}
+}
+
+\newcommand{\epara}%
+{\truleUD{Par-$\eps$.1}%
+  {(\P,\N,\D) \goes{\progeps} (\P',\N',\D') \land \P' \nsyneq \tick}%
+  {}%
+  {(\P\parallel\Q,\N,\D) \goes{\progeps} (\P'\parallel\Q,\N',\D')}
+}
+
+\newcommand{\eparc}%
+{\truleUD{Par-$\eps$.3}%
+  {(\Q,\N,\D) \goes{\progeps} (\Q',\N',\D') \land \Q' \nsyneq \tick}%
+  {}%
+  {(\P\parallel\Q,\N,\D) \goes{\progeps} (\P\parallel\Q',\N',\D')}
+}
+
+\newcommand{\etick}%
+{\truleUD{P-$\tick$}%
+  {}%
+  {}%
+  {(\tick,\N,\D) \goes{0} (\tick,\N,\D)}
+}
+
+
+% Syntax notation
+\newcommand{\bgrm}{\begin{flushleft} \it}
+\newcommand{\egrm}{\end{flushleft}}
+\newcommand{\Derive}{$::=$ \\ \quad}
+\newcommand{\opt}[1]{$[$#1$]$}
+\newcommand{\zom}[1]{$\{$#1$\}^*$}
+\newcommand{\oom}[1]{$\{$#1$\}^+$}
+\newcommand{\trm}[1]{\mbox{\tt #1}}
+\newcommand{\alt}{\\ \quad}
+\newcommand{\identifier}[1]{\mbox{\rm #1}Identifier}
+\newcommand{\numb}{number}
+\newcommand{\canMsgId}{\trm{id}}
+% CAN Semantics Notation
+\newcommand{\evalCanExprFN}{{\cal E}}
+\newcommand{\evalCanSmntFN}{{\cal S}}
+\newcommand{\evalCanExpr}[1]{\mathop{\evalCanExprFN}{\sbl #1 \sbr}}
+\newcommand{\evalCanSmnt}[1]{\mathop{\evalCanSmntFN}{\sbl #1 \sbr}}
+\newcommand{\tlb}{t^\lb}
+\newcommand{\tub}{t^\ub}
+\newcommand{\store}{{sto}}
+\newcommand{\env}{{env}}
+\newcommand{\aenv}{{aenv}}
+\newcommand{\Store}{{Store}}
+\newcommand{\Env}{{Environment}}
+\newcommand{\Aenv}{{AuxiliaryEnvironment}}
+\newcommand{\Location}{{Location}}
+\newcommand{\canExpr}{{Expression}}
+\newcommand{\canSmnt}{{Statement}}
+
+
+

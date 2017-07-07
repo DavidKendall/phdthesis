@@ -1,0 +1,17 @@
+Flow | Valve
+
+where
+
+Flow = [ReadSensor:85,90] ; k!flow.x ; idle 
+           [> [PERIOD:10000,10250] ; Flow
+
+Valve = k?flow.y ; [AdjustValve:200,300]; Valve
+
+network
+/*        pri dlb dub dlB duB   */
+k = (flow : 1, 43, 53, 10, 12)
+
+data
+x = 0
+y = 0
+z = 0

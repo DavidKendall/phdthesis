@@ -1,0 +1,49 @@
+#states 9
+#trans  9
+#clocks  4
+X_1 X_2 X_3 X_4 
+
+state: 0	/* tg state: 0 */
+invar: X_1<=90 and X_1=X_2 and X_1=X_3 and X_1=X_4
+trans:
+85<=X_1 and X_1<=90 => OP_READSENSOR ; RESET{ X_1 X_3 X_4 }, X_2:=X_1 ; goto 1
+
+state: 1	/* tg state: 1 */
+invar: X_1=0 and X_3<=X_1 and X_2<=X_3+90 and X_3+85<=X_2 and X_3=X_4
+trans:
+X_1=0 and X_2<=10250 => SND_0_0_0 ; RESET{ X_1 X_3 X_4 } ; goto 2
+
+state: 2	/* tg state: 2 */
+invar: X_1=0 and X_3<=X_1 and X_2<=X_3+90 and X_3+85<=X_2 and X_3=X_4
+trans:
+X_1=0 and X_2<=10250 => FP_0_0_0 ; RESET{ X_1 X_3 X_4 } ; goto 3
+
+state: 3	/* tg state: 4 */
+invar: X_1<=53 and X_1+85<=X_2 and X_2<=X_1+90 and X_1=X_3 and X_1=X_4
+trans:
+43<=X_1 and X_1<=53 and X_2<=10250 => PA_0_0_0 ; RESET{ X_1 X_3 X_4 } ; goto 4
+
+state: 4	/* tg state: 7 */
+invar: X_1=0 and X_3<=X_1 and X_2<=X_3+143 and X_3+128<=X_2 and X_3=X_4
+trans:
+X_1=0 and X_2<=10250 => RCV_0_0_0 ; RESET{ X_2 X_4 }, X_3:=X_2 ; goto 5
+
+state: 5	/* tg state: 10 */
+invar: X_1=0 and X_2<=X_1 and X_2+128<=X_3 and X_3<=X_2+143 and X_2=X_4
+trans:
+X_1=0 and X_2<=300 and X_3<=10250 => AP_0 ; RESET{ X_1 X_4 } ; goto 6
+
+state: 6	/* tg state: 14 */
+invar: X_1<=12 and X_1=X_2 and X_1+128<=X_3 and X_3<=X_1+143 and X_1=X_4
+trans:
+10<=X_1 and X_1<=12 and X_2<=300 and X_3<=10250 => PF_0 ; RESET{ X_3 X_4 }, X_1:=X_2 X_2:=X_3 ; goto 7
+
+state: 7	/* tg state: 20 */
+invar: X_1<=300 and X_1+128<=X_2 and X_2<=X_1+143 and X_1<=X_3+12 and X_3+10<=X_1 and X_3=X_4
+trans:
+200<=X_1 and X_1<=300 and X_2<=10250 => OP_ADJUSTVALVE ; RESET{ X_2 X_3 X_4 }, X_1:=X_2 ; goto 8
+
+state: 8	/* tg state: 27 */
+invar: X_1<=10250 and X_1<=X_2+443 and X_2+328<=X_1 and X_2=X_3 and X_2=X_4
+trans:
+10000<=X_1 and X_1<=10250 => OP_PERIOD ; RESET{ X_1 X_2 X_3 X_4 } ; goto 0

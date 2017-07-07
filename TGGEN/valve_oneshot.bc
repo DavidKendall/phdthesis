@@ -1,0 +1,15 @@
+Pressure | Valve
+
+where
+
+Pressure = [ReadSensor:5,10] ; k!pressure.x ; idle
+
+Valve = k?pressure.y ; [AdjustValve:20,30]; idle
+
+network
+  k = (pressure : 1, 43, 53, 10, 12)
+
+data
+  x = 0
+  y = 0
+  z = 0

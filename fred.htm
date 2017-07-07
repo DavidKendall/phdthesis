@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<TITLE>	CANDLE.</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff">
+<H1><IMG SRC="http://www.inrialpes.fr/vasy/share/vasy.gif" ALIGN=MIDDLE>
+<B><FONT SIZE=+3>Application database</FONT></B></H1>
+
+<P>
+<HR></P>
+
+<H2>
+        CANDLE.
+
+</H2>
+	
+	<TABLE>
+	<TR>
+	<TH ALIGN=left VALIGN=top>Organisation:</TH>
+	
+	<TD>
+        Northumbria University (UNITED KINGDOM)
+
+<BR><BR></TD>
+	</TR>
+	
+	<TR>
+	<TH ALIGN=left VALIGN=top>Functionality:</TH>
+	
+	<TD>
+        High-level language and development environment for CAN control
+        systems.
+
+<BR><BR></TD>
+	</TR>
+	
+	<TR>
+	<TH ALIGN=left VALIGN=top>Tools used:</TH>
+	
+	<TD>
+        OPEN/CAESAR
+
+<BR><BR></TD>
+	</TR>
+	
+	<TR>
+	<TH ALIGN=left VALIGN=top>Period:</TH>
+	
+	<TD>
+        2001
+
+<BR><BR></TD>
+	</TR>
+	
+	<TR>
+	<TH ALIGN=left VALIGN=top>Description:</TH>
+	
+	<TD>
+        CANDLE is a high-level programming language and development environment
+        for control systems implemented using the Controller Area Network (CAN)
+        communication protocol. It is designed to integrate the production of
+        a CAN system implementation and its formal model. CAN provides
+        multi-master, priority-based bus access based on a CSMA/CR protocol
+        whose deterministic collision resolution policy makes it suitable for
+        use in hard real-time systems. Use of CAN is widespread in the
+        automotive industry and in other sectors where the requirement for
+        high assurance systems provides a strong incentive for the application
+        of formal development methods.
+        <BR> <BR>
+
+        A CANDLE program consists of a high-level description of the behaviour
+        of system processes and the structure of the network via which they
+        communicate. The control of a system model is represented as a timed
+        Petri net, derived automatically by translation from the CANDLE
+        program, which has the advantage of giving a compact representation of
+        the control aspects of the system.
+        <BR> <BR>
+
+        In previous approaches, this Petri net was translated into a
+        timed automaton and analysed using existing model checkers (e.g.,
+        KRONOS). However, these approaches suffer from a number of
+        disadvantages, the most serious being that they allow the
+        generation of redundant locations and edges and can produce
+        extremely large timed automata. In the current approach, the
+        Petri net is translated into a simulation graph, in which time
+        information is represented using clock zones.  <BR> <BR>
+
+        The simulation graph is represented by a C program implementing the 
+        OPEN/CAESAR graph API, which is automatically generated from the timed
+        Petri net. This program provides functions for generating the initial
+        simulation graph node and iterating over the simulation graph
+        successors of a node. This program also implements on the fly the
+        well-known clock activity abstraction technique.
+        <BR> <BR>
+
+        The simulation graphs of a number of examples have been generated. In
+        each case, the simulation graph with clock activity reduction is
+        several orders of magnitude smaller that the corresponding timed
+        automaton. In one case, it was not even possible to generate the
+        timed automaton, whereas the simulation graph with clock activity
+        reduction was easily generated.
+
+<BR><BR></TD>
+	</TR>
+	
+	<TR>
+	<TH ALIGN=left VALIGN=top>Conclusions:</TH>
+	
+	<TD>
+        The general approach of translation from a high-level language through
+        a number of intermediate stages to C source code implementing the
+        OPEN/CAESAR API has proved to lead to an effective decomposition of the
+        translation problem, providing opportunities for optimisation at every
+        stage and resulting in programs which can be connected easily with a
+        variety of analysis tools. This approach clearly outperforms methods in
+        which a timed automaton is constructed explicitly.
+
+<BR><BR></TD>
+	</TR>
+	
+	<TR>
+	<TH ALIGN=left VALIGN=top>Publications:</TH>
+	
+	<TD>
+        [Kendall-01]
+        David Kendall.
+        "CANDLE: A tool for efficient analysis of CAN control systems".
+        <I>Proceedings of the 1st Workshop on Real-Time Tools RT-TOOLS'2001
+        (Aalborg, Denmark)</I>, Technical Report of University of Uppsala 
+        number 2001-014, August 2001.
+        <BR>
+
+        Available on-line at:
+        <a href="http://computing.unn.ac.uk/staff/cgdk2/publications/rttools01.ps.gz">http://computing.unn.ac.uk/staff/cgdk2/publications/rttools01.ps.gz</a>
+        <BR>
+        or from the VASY FTP site in
+        <a href="ftp://ftp.inrialpes.fr/pub/vasy/publications/others/Kendall-01.pdf">PDF</a>
+        or
+        <a href="ftp://ftp.inrialpes.fr/pub/vasy/publications/others/Kendall-01.ps.Z">PostScript</a> <BR> <BR>
+
+        [Kendall-01-a]
+        David Kendall. "Formal Modelling and Analysis of Broadcasting Embedded 
+        Control Systems". <I>PhD thesis, University of Newcastle upon Tyne, 
+        Department of Computing Science</I>, September 2001.
+        <BR>
+
+        Available on-line at:
+        <a href="http://computing.unn.ac.uk/staff/cgdk2/publications/ken01.ps.gz">http://computing.unn.ac.uk/staff/cgdk2/publications/ken01.ps.gz</a>
+        <BR>
+        or from the VASY FTP site in
+        <a href="ftp://ftp.inrialpes.fr/pub/vasy/publications/others/Kendall-01-a.pdf">PDF</a>
+        or
+        <a href="ftp://ftp.inrialpes.fr/pub/vasy/publications/others/Kendall-01-a.ps.Z">PostScript</a> <BR> <BR>
+</TD>
+	</TR>
+	
+	<TR>
+	<TH ALIGN=left VALIGN=top>Contact:</TH>
+	
+	<TD><BR>
+        Dr. David Kendall<BR>
+        Northumbria University<BR>
+        School of Informatics<BR>
+        Pandon Building<BR>
+        Camden Street<BR>
+        Newcastle upon Tyne<BR>
+        NE2 1XE<BR>
+        United Kingdom<BR>
+        Tel: +44 (0)191 243 7619<BR>
+        Fax: +44 (0)191 227 3662<BR>
+        Email: david.kendall@northumbria.ac.uk<BR>
+<BR>
+<BR><BR></TD>
+	</TR>
+	
+	<TR>
+	<TH ALIGN=left VALIGN=top>Further remarks:</TH>
+	
+	<TD>
+        This tool, amongst others, is described on the CADP Web Page:
+        <a href="http://www.inrialpes.fr/vasy/cadp">http://www.inrialpes.fr/vasy/cadp</a>
+
+</TABLE>
+<P>
+<HR><I><FONT SIZE=-1>Last modified : Fri Jul  4 12:57:46 MEST 2003 .</FONT></I>
+</P>
+<HR>
+<A HREF="http://www.inrialpes.fr/vasy/index.html"><IMG SRC="http://www.inrialpes.fr/vasy/share/Icons/left.gif" align=center>Back to the VASY Home page</A>
+</BODY>
+</HTML>

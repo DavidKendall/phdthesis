@@ -1,0 +1,55 @@
+% $Id: main.tex,v 1.3 1997/10/19 23:24:00 davek Exp davek $
+\documentclass[a4paper,11pt,nocenter,bold,notitlepage,noheadline]{thesis}
+%                     PACKAGES
+\usepackage{a4,calc,array,amsmath,tabularx,graphicx,psfrag,becs,dkthesis,program}
+
+%                     SPACING
+%\renewcommand{\baselinestretch}{1.25}
+
+%                     DOCUMENT DETAILS
+\title{Formal Modelling and Analysis of Broadcasting Embedded Control Systems}
+\author{David Kendall}
+\translator{\Large\bf Ph.D. Thesis}
+\institution{University of Newcastle upon Tyne \\ Department of Computing Science}
+\date{September 2001}
+\dedication{In memory of William Kendall (1908 -- 1994)}
+
+%                     INCLUDE ONLY
+%\includeonly{PROOFS/proofs}
+
+%                     DOCUMENT
+\begin{document}
+\frontmatter
+\maketitle
+\include{abstract}
+\include{acknowledgements}
+\include{published}
+\tableofcontents
+\listoffigures
+\listoftables
+\mainmatter
+\include{INTRO/intro}
+\include{METHODS/methods}
+\include{BCANDLE/bcandle}
+\include{TGGEN/tggen}
+\include{SGGEN/sggen}
+\include{PRACTICE/practice}
+\include{CONC/conc}
+\appendix
+\include{TGGEN/flowta}
+\include{PROOFS/proofs}
+\include{PRACTICE/canparse}
+\include{PRACTICE/datparse}
+\include{glossary}
+\bibliographystyle{alpha}
+\bibliography{research}
+\end{document}
+
+
+
+
+
+
+
+
+

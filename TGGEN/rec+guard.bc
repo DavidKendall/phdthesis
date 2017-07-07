@@ -1,0 +1,13 @@
+P
+
+where
+
+P = [xone:1,1] ; P1
+
+P1 = P2 [> isxfive -> [ID:0,0] ; idle
+
+P2 = [incx:1,1] ; P2
+
+network
+
+data

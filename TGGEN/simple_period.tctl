@@ -1,0 +1,4 @@
+/* Check for a period of 8 and jitter of 2 */
+
+init IMPL (AB(enable(ReadSensor) IMPL (AD{<=2}((AB{<8} NOT enable(ReadSensor))
+AND (AD{<=8} enable(ReadSensor))))))

@@ -1,0 +1,32 @@
+Configure | Temperature | Control 
+
+where
+
+Configure = [Configure:1000,1100]; k!start.v1; idle
+
+Temperature = k?start.v1; [TemperaturePostRcv:5,6]; Temperature0
+Temperature0 =
+    ([ReadTemperature:24,30]; k!temperature.v1 + [SensorFailed:30,30]); idle
+    [>
+    [Period:195,205]; Temperature0
+
+Control = k?start.v1; [ControlPostRcv:5,6]; Control0
+Control0 = 
+   (GetValueAndTest
+   + 
+   [Timeout:220,225]; [SensorFailureDetected:0,0] ; idle); 
+   Control0
+
+GetValueAndTest = 
+  k?temperature.v2; [ControlPostRcvAndEvalGuard:9,10]; (TempOk -> [ContinueAfterTempOk:0,0] + TempNok -> [RecoverControl:0,0] ; idle)
+
+network 
+/*                  Pri   dlb  dub  dlB duB   */
+k = (start          : 1,   43,  53,  10, 12;
+     temperature    : 2,   53,  63,  10, 12)
+
+data
+v1 = 0
+v2 = 0
+
+

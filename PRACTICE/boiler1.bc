@@ -1,0 +1,55 @@
+#define null [ID:0,0]
+
+WaterLevel | Pump | Controller 
+
+where
+
+WaterLevel = [InitSensor: 300,350]; WL_Ready; WL_Normal
+WL_Ready = WL_Ready0 [> k?start._
+WL_Ready0 = k!sensor_ready._ ; idle 
+            [> [WL_ReadyPeriod: 1000,1100] ; WL_Ready0
+WL_Normal = (WL_Normal0 [> k?shutdown._ ; idle)
+WL_Normal0 =
+    (([ReadWaterLevel:50,70]; k!level.v1 + [SensorFailed:70,70]) ; idle)
+    [>
+    [WL_NormalPeriod:5000,5250]; WL_Normal0
+
+Pump = [InitPump:250,1500]; P_Ready; P_Normal
+P_Ready = P_Ready0 [> k?start._
+P_Ready0 = k!pump_ready._ ; idle 
+            [> [P_ReadyPeriod: 1000,1100] ; P_Ready0
+P_Normal = (P_Normal0 [> k?shutdown._; [PumpOff:200,300] ; idle)
+P_Normal0 = (k?pumpon._ ; [PumpOn:200,300] + 
+             k?pumpoff._ ; [PumpOff:200,300]); 
+            P_Normal0
+
+Controller = [InitController:300,500]; C_Ready; C_Normal
+C_Ready = (k?sensor_ready._ ; k?pump_ready._ + 
+           k?pump_ready._ ; k?sensor_ready._);
+           k!start._ ; [C_ReadyDelay:100,110]
+C_Normal = k?level.v2; SetPump; C_Normal + SensorFailure
+SetPump =
+   [TestLevel:50,75] ; 
+   (LevelHigh -> k!pumpoff._ + 
+    LevelLow -> k!pumpon._ + 
+    LevelOk -> null);
+    [EndSetPump:2,10]
+
+SensorFailure = [SensorTimedOut: 7000,7500]; k!shutdown._ ; idle
+    
+network 
+/*                  Pri   dlb  dub  dlB duB   */
+k = (shutdown       : 1,   43,  53,  10, 12;
+     pumpoff        : 2,   43,  53,  10, 12;
+     pumpon         : 3,   43,  53,  10, 12;
+     level          : 4,   53,  63,  10, 12;
+     start          : 5,   43,  53,  10, 12;
+     pump_ready     : 6,   43,  53,  10, 12;
+     sensor_ready   : 7,   43,  53,  10, 12
+     )
+data
+v1 = 0
+v2 = 0
+
+
+

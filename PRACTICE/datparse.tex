@@ -1,0 +1,374 @@
+\chapter{The \sdml\ Grammar} \label{chap:datparse}
+%token            CAN_AND
+%token            CAN_ANY
+%token            CAN_ARRAY
+%token            CAN_ASSIGN
+%token            CAN_ASTERISK
+%token            CAN_BEGIN
+%token <bool>     CAN_BOOL 
+%token            CAN_BOUNDS
+%token            CAN_CLOSECURLY
+%token            CAN_CLOSEDSQB
+%token            CAN_CLOSEPAREN
+%token            CAN_CLOSESQB
+%token            CAN_COLON
+%token            CAN_COLONCOLON
+%token            CAN_COMMA
+%token            CAN_CONSTANT
+%token            CAN_DATA
+%token            CAN_DO
+%token            CAN_DOT
+%token            CAN_DOTS
+%token            CAN_END
+%token            CAN_ENUM
+%token            CAN_EOF
+%token            CAN_EQ
+%token            CAN_FI
+%token            CAN_FORWARDSLASH
+%token            CAN_FUNCTION
+%token            CAN_GEQ
+%token            CAN_GTR
+%token            CAN_IF
+%token            CAN_IN
+%token            CAN_INFINITY
+%token            CAN_IS
+%token            CAN_INOUT
+%token <int>      CAN_INTEGER
+%token            CAN_LE
+%token            CAN_LEQ
+%token            CAN_MINUS
+%token            CAN_MOD
+%token            CAN_NEQ
+%token            CAN_NOT
+%token            CAN_OPENCURLY
+%token            CAN_OPENDSQB
+%token            CAN_OPENPAREN
+%token            CAN_OPENSQB
+%token            CAN_OD
+%token            CAN_OF
+%token            CAN_OR
+%token            CAN_OUT
+%token            CAN_PLUS
+%token            CAN_PROCEDURE
+%token            CAN_RECORD
+%token            CAN_RETURN
+%token            CAN_RIGHTARROW
+%token            CAN_SEMICOLON
+%token            CAN_SKIP
+%token <Symbol.t> CAN_SYMBOL
+%token            CAN_TYPE
+%token            CAN_UMINUS
+%token            CAN_UNITVALUE
+%token            CAN_VAR
+
+%left CAN_OR
+%left CAN_AND
+%nonassoc CAN_NOT
+%left CAN_EQ CAN_NEQ CAN_LE CAN_LEQ CAN_GEQ CAN_GTR
+%left CAN_PLUS CAN_MINUS
+%left CAN_ASTERISK CAN_FORWARDSLASH CAN_MOD
+%nonassoc CAN_UMINUS
+%start program
+%type <Datasta.program> program
+%%
+
+\section{Introduction}
+\sdml\ is a simple data modelling language which can be used with
+\candle\ for describing the data objects and operations in CAN-based systems. 
+
+The notation used in giving the grammar of \sdml\ is the same as the notation
+of Appendix~\ref{chap:canparse}, as are the lexical conventions, except for the
+reserved words, which are as follows: \\
+\begin{tabular}{lllllll}
+\trm{and} &
+\trm{any} &
+\trm{array} &
+\trm{begin} &
+\trm{boolean} & 
+\trm{bounds} &
+\trm{const} \\
+\trm{data} &
+\trm{do} &
+\trm{end} &
+\trm{fi} &
+\trm{function} &
+\trm{if} &
+\trm{in} \\
+\trm{is} &
+\trm{inout} &
+\trm{mod} &
+\trm{not} &
+\trm{od} &
+\trm{of} &
+\trm{or} \\
+\trm{out} &
+\trm{procedure} &
+\trm{return} &
+\trm{skip} &
+\trm{type} &
+\trm{uvalue} &
+\trm{var}
+\end{tabular}
+ 
+\section{Data Modules}
+\bgrm
+program \Derive \zom{dataModule}
+\egrm
+
+\bgrm 
+dataModule \Derive
+  \trm{data} \identifier{dataModule} \trm{is} \zom{declSection} \trm{end} \trm{data}
+\egrm
+
+\section{Declarations}
+\bgrm
+declSection \Derive
+     typeDeclSection              
+\alt constantDeclSection       
+\alt functionDeclSection       
+\alt procedureDeclSection      
+\egrm
+
+\subsection{Type Declarations}
+\bgrm
+typeDeclSection \Derive
+  \trm{type} typeDecl \zom{\trm{;} typeDecl}         
+\egrm
+
+\bgrm
+typeDecl \Derive
+  \identifier{type} \trm{is} typeExpr \opt{\trm{size} expression}
+\egrm
+
+\bgrm
+typeExpr \Derive
+     enumerationType  
+\alt subrangeType     
+\alt recordType       
+\alt arrayType        
+\alt \identifier{type}
+\egrm
+
+\bgrm  
+enumerationType \Derive
+  \verb'{' enumElement \zom{\trm{,} enumElement} \verb'}'
+\egrm
+
+\bgrm
+enumElement \Derive
+     \identifier{constant}        
+\alt \numb           
+\egrm
+
+\bgrm
+subrangeType \Derive
+  expression \trm{..} expression
+\egrm
+
+\bgrm   
+recordType \Derive
+  \verb'{|' variableDecl \zom{\trm{;} variableDecl} \verb'|}'
+\egrm
+
+\bgrm
+arrayType \Derive
+  \trm{array} typeExpr \trm{of} typeExpr
+\egrm
+
+\subsection{Constant Declarations}
+\bgrm                       
+constantDeclSection \Derive
+  \trm{const} constantDecl \zom{\trm{;} constantDecl}
+\egrm
+
+\bgrm
+constantDecl \Derive
+  \identifier{constant} \trm{:} \identifier{type} \opt{\trm{is} expression}
+\egrm
+
+\subsection{Function and Procedure Declarations}
+\bgrm
+functionDeclSection \Derive
+  \trm{function} functionDecl \zom{\trm{;} functionDecl}
+\egrm
+
+\bgrm
+functionDecl \Derive
+  \identifier{function} \trm{(} \opt{formalParameter \zom{\trm{;} 
+  formalParameter}} \trm{)} 
+  \trm{:} \identifier{type} 
+  \\ \qquad \trm{is} \opt{bounds} \opt{variableDeclSection} statementPart
+\egrm
+
+\bgrm
+procedureDeclSection \Derive
+  \trm{procedure} procedureDecl \zom{\trm{;} procedureDecl}
+\egrm
+
+\bgrm
+procedureDecl \Derive
+  \identifier{procedure} \trm{(} \opt{formalParameter \zom{\trm{;} 
+  formalParameter}} \trm{)} 
+  \\ \qquad \trm{is} \opt{bounds} \opt{\opt{variableDeclSection} statementPart}
+\egrm
+
+\bgrm
+formalParameter \Derive
+  \opt{parameterMode} \identifier{variable} \trm{:} \identifier{type}
+\egrm
+
+\bgrm
+parameterMode \Derive
+     \trm{in}      
+\alt \trm{out}     
+\alt \trm{inout}   
+\egrm
+
+\bgrm
+bounds \Derive
+  \trm{bounds} bound \trm{;} bound
+\egrm
+
+\bgrm
+bound \Derive
+     expression
+\alt \trm{\~{}}         
+\egrm
+
+\subsection{Variable Declarations}
+\bgrm
+variableDeclSection \Derive
+  \trm{var} variableDecl \zom{\trm{;} variableDecl}
+\egrm
+
+\bgrm
+variableDecl \Derive
+  \identifier{variable} \trm{:} typeExpr 
+\egrm
+
+\section{Expressions}
+\bgrm
+assignableExpression \Derive
+     expression
+\alt \trm{any} \identifier{type}
+\egrm
+
+\bgrm
+expression \Derive
+     designator        
+\alt constantLiteral   
+\alt functionCall                
+\alt \trm{-} expression 
+\alt expression \trm{*} expression
+\alt expression \trm{/} expression
+\alt expression \trm{+} expression
+\alt expression \trm{-} expression 
+\alt expression \trm{mod} expression
+\alt expression \trm{=} expression
+\alt expression \trm{/=} expression
+\alt expression \trm{<} expression
+\alt expression \trm{<=} expression
+\alt expression \trm{>} expression
+\alt expression \trm{>=} expression
+\alt \trm{not} expression
+\alt expression \trm{and} expression
+\alt expression \trm{or} expression
+\alt \trm{(} expression \trm{)}
+\egrm
+
+\bgrm
+designator \Derive
+     \identifier{variable}   
+\alt designator \trm{.} \identifier{field} 
+\alt designator \trm{[} expression \trm{]}
+\egrm
+
+\bgrm
+constantLiteral \Derive
+     \trm{\unitval}            
+\alt \trm{false}
+\alt \trm{true}
+\alt \numb         
+\egrm
+
+\bgrm
+fieldAssignment \Derive
+  identifier \trm{=} expression
+\egrm
+
+\bgrm
+functionCall \Derive
+  \identifier{function} \trm{(} \opt{expression \zom{\trm{,} expression}} \trm{)}
+\egrm
+
+\section{Statements}
+\bgrm
+statementPart \Derive
+  \trm{begin} statement \trm{end}  
+\egrm
+
+\bgrm                               
+statement \Derive
+  atomicStatement \trm{;} statement              
+\alt atomicStatement         
+\egrm
+
+\bgrm
+atomicStatement \Derive
+     \trm{skip}               
+\alt assignmentStatement      
+\alt procedureCall         
+\alt returnStatement       
+\alt ifStatement           
+\alt doStatement           
+\egrm
+
+\subsection{Assignment statement and Procedure Call}
+\bgrm
+assignmentStatement \Derive
+  designator \trm{:=} assignableExpression
+\egrm
+
+\bgrm
+procedureCall \Derive
+  \identifier{procedure} \trm{(} \opt{expression \zom{\trm{,} expression}} \trm{)}
+\egrm
+
+\subsection{Return statement}
+\bgrm
+returnStatement \Derive
+  \trm{return} expression   
+\egrm
+
+\subsection{If statement and Repetition}
+\bgrm
+ifStatement \Derive
+  \trm{if} \oom{guardedCommand} \trm{fi}
+\egrm
+
+\bgrm
+doStatement \Derive
+  \trm{do} \oom{guardedCommand} \trm{od} 
+\egrm
+
+\bgrm
+guardedCommand \Derive
+  \trm{::} expression \trm{=>} statement
+\egrm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

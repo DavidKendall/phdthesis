@@ -1,0 +1,1 @@
+init IMPL AB (enable(OP_ReadSensor) IMPL (AD{<=100} enable(OP_AdjustValve)))

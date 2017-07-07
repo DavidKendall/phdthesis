@@ -1,0 +1,91 @@
+% $Id: concandfurther.tex,v 1.1 1997/10/19 19:37:17 davek Exp $
+\chapter{Conclusions and Further Work}\label{chap:conc}
+\section{Conclusions}
+Formal methods can be useful for gaining confidence in the correct
+behaviour of systems. Expressive languages and automatic analysis
+techniques are needed to promote the acceptance of formal methods in
+industry. For embedded systems, such languages and techniques should
+allow the expression of, and reasoning about, real-time
+properties. For a large class of embedded systems, broadcast
+communication is an implementation primitive and should be accommodated
+comfortably within a formal method intended for application in that
+domain. This dissertation has proposed a formal language which is
+claimed to satisfy these requirements, at least partially. Our
+approach has been to define a language in which process behaviour can
+be described using a few primitive operators, including operators for
+the sending and receiving of broadcast messages. The communication
+semantics is an abstraction of the CAN protocol and models both
+message priority and communication latency. This language has proved
+suitable as a bridge between the high-level expression of embedded
+system models and their low-level representation in a form which is
+appropriate for the application of a wide variety of analysis
+techniques. We have demonstrated how the most efficient of current
+methods can be applied to models expressed in our language. In
+particular, we have given an algorithm for on-the-fly generation of
+the simulation graph, including clock activity reduction. This
+provides a foundation for the application of methods such as
+reachability analysis, model checking, TBA emptiness, minimisation and
+time-abstract bisimulation, as implemented in tools such as KRONOS,
+UPPAAL and CADP. In addition, we have demonstrated the use of
+minimised automata for compact state space representation. Minimised
+automata have been employed in the model checking tool SPIN for the
+analysis of untimed, asynchronous models.  They are applied here, for
+the first time, in the analysis of timed system models and we give
+experimental data to confirm their utility.
+   
+ 
+\section{Further Work}
+The expressiveness of our language is restricted in several ways. For
+example, we do not allow control to
+depend explicitly on the time of event occurrences, nor is it possible for
+an interrupted task to resume
+execution from its point of interruption. Both features are available
+in ET-LOTOS~\cite{her:98}, for example. More seriously, we cannot
+model multi-tasking systems in which the CPU resource is allocated to
+tasks using a more sophisticated scheduling policy than round-robin,
+e.g., a fixed priority preemptive policy. It also remains to consider
+the modelling of the occurrence of faults in broadcast
+message transmission.
+
+It is not difficult to see how some of these additional features could
+be accommodated, e.g. an explicit scheduler could be added to the
+execution model, as could a `daemon' for fault injection. The problem
+is to cope with the extra complexity and its effect on state
+explosion. The addition of such features almost certainly leads to a
+hybrid system model for which many verification problems become either
+undecidable or, at best, even more resource demanding~\cite{hkpv:95}.
+ 
+Even without adding to the complexity of the language, further work is
+needed on state space explosion. Some obvious lines of inquiry are
+suggested at the end of Chapter~\ref{chap:sggen}, where work on
+variable ordering and live variable analysis has the potential to
+bring reductions in the size of the discrete state space. Also of
+interest is investigation of the use of partial order reduction
+and symbolic clock constraint representations.  In particular, research
+is needed to compare the performance of DDD's with that of
+MA's when applied to typical asynchronous broadcast systems,
+especially when considered in combination with reduction techniques
+such as partial order and inclusion/convex hull abstractions, where
+the use of MA's seems to offer a \emph{prima facie} advantage.
+
+One can imagine that more use can be made of the high-level, algebraic
+structure apparent in the models, to transform them into more
+space-efficient, equivalent representations. This should be possible
+at all levels, from the high-level \candle\ model, through the
+\bcandle\ and net representations, to the timed automaton.
+Undoubtedly, compositional techniques will be required in order to extend a
+fully automated approach to industrial-scale systems. 
+
+Finally, further work remains on a number of pragmatic issues
+affecting industrial usage of the technology: at a high-level, the
+issue of requirements capture and their relationship to formal
+specifications; at a low-level, the formal specification and
+implementation of an execution environment which satisfies the
+abstraction assumptions of Chapter~\ref{chap:bcandle}.  
+
+Some progress has been made but much remains to be done before it will
+be possible to realise Pnueli's vision of a \emph{seamless development
+process}~\cite{pnu:99} for broadcasting embedded control systems.
+
+
+ 

@@ -1,0 +1,53 @@
+\subsection{Tested Clocks}
+It is helpful to identify those clock variables of a clocked process term
+or network which are relevant in determining the initial behaviour of a 
+system. Such clocks are said to be \emph{tested}. The following example
+illustrates the difference between tested and untested clocks.
+\begin{exampleb}
+Consider the term $[ReadSensor:5]^{H1} \sq \kk!flow.\xx$.
+It is clear that only the value of the clock variable $H1$ influences
+the initial behaviour: if the value of $H1$ is 5 then a $ReadSensor$
+transition is possible, otherwise it is not.  The value of $H2$ has no
+effect on behaviour until after a $ReadSensor$ transition has
+occurred.
+\qed
+\end{exampleb}
+In order to account properly for those clock variables
+which are associated with a data guard, it is necessary to consider
+the data environment in which the guard is evaluated: if the guard
+evaluates to $\True$, its clock is tested, otherwise it is not tested.
+This leads to the following definition:
+\begin{definition}[Tested Clock Variables: Process Term]
+\label{def:tgtclkproc}
+The tested clock variables of a process term, with
+respect to a given data environment, are identified by
+the function $\tclk : \CProc{} \cross \DataEnv{} \fun 2^\clocks$,
+defined as the least set satisfying:
+\begin{eqnarray*}
+\tclk(\kk?\ii.\xx,\D) & = & \emptyset \\
+\tclk(\kk!\ii.\xx,\D) & = & \tclk([\op:t_1,t_2]^\clock,\D) = \{\clock\} \\
+\tclk(\g\guard\PP_1,\D) & = & \ite{\D\models\g}{\{\clock\}}{\emptyset} \\
+\tclk(\PP_1 \sq \PP_2,\D) & = & \tclk(\PP_1,\D) \\
+\tclk(\PP_1 @ \PP_2,\D) & = & \tclk(\PP_1,\D) \cup \tclk(\PP_2,\D), \quad @\; \in
+\{\choice,\interrupt,\parallel\} \\
+\tclk(\rec X.\PP,\D) & = & \tclk(\PP[\rec X.\PP/X],\D) 
+\end{eqnarray*}
+\qed
+\end{definition}
+\qed
+\end{definition}
+
+The notion of \emph{tested} clock is useful also in the context of 
+networks, where the clock associated with some network channel $\kk$ is
+said to be \emph{tested} if its current
+value is relevant to the immediate evolution of the system containing
+it. We can see that a channel clock is tested \emph{unless} its channel is 
+currently free and has no messages pending transmission.
+\begin{definition}[Tested Clock Variables: Network]
+The tested clocks of a network are given by the function 
+$\tclk : \NNetwork{} \fun 2^\clocks$, where
+$ \tclk(\NN) \defs \clk(\NN) \setminus 
+        \{\clock_\kk | (\free,\emq)_\kk \in \NN\} $
+\qed
+\end{definition}
+  

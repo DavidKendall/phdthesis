@@ -1,0 +1,15 @@
+digraph Net {
+rankdir=LR
+node [shape = circle]
+"1";
+
+node [shape = box]
+T1 [label = "k!pressure.x^C1"]
+
+node [shape = circle, style = filled, label=""]
+"0";
+
+"1" -> T1 [style = solid];
+
+T1 -> "0" [style = solid];
+}

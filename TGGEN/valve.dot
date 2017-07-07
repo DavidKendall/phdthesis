@@ -1,0 +1,35 @@
+digraph tg2dot {
+size="7.5,10"
+rankdir=LR
+node [height=1,width=1,shape=circle,fixedsize=true,color=black,fontsize=14]
+0 [label="0\n\nC4<=90"]
+1 [label="1\n\nC1<=0"]
+2 [label="2\n\nC2<=0"]
+3 [label="3\n\nC2<=53"]
+4 [label="4\n\nC2<=0"]
+5 [label="5\n\nC2<=0 C3<=30"]
+6 [label="6\n\nC2<=0"]
+7 [label="7\n\nC2<=12 C3<=30"]
+8 [label="8\n\nC2<=12"]
+9 [label="9\n\nC3<=30"]
+10 [label="10"]
+
+{rank = same; 0; 1; 2;}
+{rank = same; 3; 4; 5;}
+2 -> 5 [style = invis,weight=10]
+
+0 -> 1 [label = "C4>=85,\l{C1}, ReadSensor"]
+1 -> 2 [label = "{C2}, k!pressure.9"]
+2 -> 3 [label = "C2>=0,\l{C2}, k->pressure.9"]
+3 -> 4 [label = "C2>=43,\l{C2}, k/\\pressure.9"]
+4 -> 5 [label = "{C3}, k?pressure.9"]
+5 -> 6 [label = "C3>=20,\l, AdjustValve"]
+5 -> 7 [label = "C2>=0,\l{C2}, k->"]
+6 -> 8 [label = "C2>=0,\l{C2}, k->"]
+7 -> 8 [label = "C3>=20,\l, AdjustValve"]
+7 -> 9 [label = "C2>=10,\l{C2}, k\\/"]
+8 -> 10 [label = "C2>=10,\l{C2}, k\\/"]
+9 -> 10 [label = "C3>=20,\l, AdjustValve"]
+
+
+}

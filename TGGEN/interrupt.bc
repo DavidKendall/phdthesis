@@ -1,0 +1,11 @@
+P
+
+where
+
+P = k?pressure.y ; [AdjustValve:20,30] [> [ID:45,50] ; idle
+
+network
+
+k = (pressure:1,2,3,4,5)
+
+data

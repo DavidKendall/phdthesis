@@ -1,0 +1,254 @@
+%!PS-Adobe-2.0
+%%Creator: dot version uwin98 (01-26-98)
+%%For: (davek) 
+%%Title: tg2dot
+%%Pages: (atend)
+%%BoundingBox: 36 36 629 155
+%%EndComments
+%%BeginProlog
+save
+/DotDict 200 dict def
+DotDict begin
+
+%%BeginResource: procset
+/coord-font-family /Times-Roman def
+/default-font-family /Times-Roman def
+/coordfont coord-font-family findfont 8 scalefont def
+
+/InvScaleFactor 1.0 def
+/set_scale {
+	dup 1 exch div /InvScaleFactor exch def
+	dup scale
+} bind def
+
+% styles
+/solid { } bind def
+/dashed { [9 InvScaleFactor mul dup ] 0 setdash } bind def
+/dotted { [1 InvScaleFactor mul 6 InvScaleFactor mul] 0 setdash } bind def
+/invis {/fill {newpath} def /stroke {newpath} def /show {pop newpath} def} bind def
+/bold { 2 setlinewidth } bind def
+/filled { } bind def
+/unfilled { } bind def
+/rounded { } bind def
+/diagonals { } bind def
+
+% hooks for setting color 
+/nodecolor { sethsbcolor } bind def
+/edgecolor { sethsbcolor } bind def
+/graphcolor { sethsbcolor } bind def
+/nopcolor {pop pop pop} bind def
+
+/beginpage {	% i j npages
+	/npages exch def
+	/j exch def
+	/i exch def
+	/str 10 string def
+	npages 1 gt {
+		gsave
+			coordfont setfont
+			0 0 moveto
+			(() show i str cvs show (,) show j str cvs show ()) show
+		grestore
+	} if
+} bind def
+
+/set_font {
+	findfont exch
+	scalefont setfont
+} def
+
+% draw aligned label in bounding box aligned to current point
+% alignfactor tells what fraction to place on the left.
+% -.5 is centered.
+/alignedtext {			% text labelwidth fontsz alignfactor
+	/alignfactor exch def
+	/fontsz exch def
+	/width exch def
+	/text exch def
+	gsave
+		% even if node or edge is dashed, don't paint text with dashes
+		[] 0 setdash
+		currentpoint newpath moveto
+		text stringwidth pop
+		alignfactor mul fontsz -.3 mul rmoveto
+		text show
+	grestore
+} def
+
+/boxprim {				% xcorner ycorner xsize ysize
+		4 2 roll
+		moveto
+		2 copy
+		exch 0 rlineto
+		0 exch rlineto
+		pop neg 0 rlineto
+		closepath
+} bind def
+
+/ellipse_path {
+	/ry exch def
+	/rx exch def
+	/y exch def
+	/x exch def
+	matrix currentmatrix
+	newpath
+	x y translate
+	rx ry scale
+	0 0 1 0 360 arc
+	setmatrix
+} bind def
+
+/endpage { showpage } bind def
+
+/layercolorseq
+	[	% layer color sequence - darkest to lightest
+		[0 0 0]
+		[.2 .8 .8]
+		[.4 .8 .8]
+		[.6 .8 .8]
+		[.8 .8 .8]
+	]
+def
+
+/setlayer {/maxlayer exch def /curlayer exch def
+	layercolorseq curlayer get
+	aload pop sethsbcolor
+	/nodecolor {nopcolor} def
+	/edgecolor {nopcolor} def
+	/graphcolor {nopcolor} def
+} bind def
+
+/onlayer { curlayer ne {invis} if } def
+
+/onlayers {
+	/myupper exch def
+	/mylower exch def
+	curlayer mylower lt
+	curlayer myupper gt
+	or
+	{invis} if
+} def
+
+/curlayer 0 def
+
+%%EndResource
+%%EndProlog
+%%BeginSetup
+14 default-font-family set_font
+% /arrowlength 10 def
+% /arrowwidth 5 def
+%%EndSetup
+%%Page: 1 1
+%%PageBoundingBox: 36 36 629 155
+gsave
+35 35 594 120 boxprim clip newpath
+36 36 translate
+0 0 1 beginpage
+0 0 translate 0 rotate
+0.000 0.000 0.000 graphcolor
+14.00 /Times-Roman set_font
+
+%	t0
+gsave 10 dict begin
+36 45 36 36 ellipse_path
+stroke
+gsave 10 dict begin
+36 46 moveto (0) 7 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	t1
+gsave 10 dict begin
+244 82 36 36 ellipse_path
+stroke
+gsave 10 dict begin
+244 99 moveto (1) 7 14.00 -0.50 alignedtext
+244 83 moveto () 0 14.00 -0.50 alignedtext
+244 67 moveto (H1<=5) 39 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	t0 -> t1
+newpath 72 51 moveto
+107 58 162 68 200 75 curveto
+stroke
+newpath 198 72 moveto
+208 76 lineto
+198 77 lineto
+closepath
+gsave 0 setgray stroke grestore fill
+gsave 10 dict begin
+140 81 moveto (approach,{H1}) 85 14.00 -0.50 alignedtext
+end grestore
+
+%	t2
+gsave 10 dict begin
+416 82 36 36 ellipse_path
+stroke
+gsave 10 dict begin
+416 99 moveto (2) 7 14.00 -0.50 alignedtext
+416 83 moveto () 0 14.00 -0.50 alignedtext
+416 67 moveto (H1<=5) 39 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	t1 -> t2
+newpath 280 82 moveto
+306 82 342 82 371 82 curveto
+stroke
+newpath 370 80 moveto
+380 82 lineto
+370 85 lineto
+closepath
+gsave 0 setgray stroke grestore fill
+gsave 10 dict begin
+330 91 moveto (H1>2, in) 49 14.00 -0.50 alignedtext
+end grestore
+
+%	t3
+gsave 10 dict begin
+556 45 36 36 ellipse_path
+stroke
+gsave 10 dict begin
+556 62 moveto (3) 7 14.00 -0.50 alignedtext
+556 46 moveto () 0 14.00 -0.50 alignedtext
+556 30 moveto (H1<=5) 39 14.00 -0.50 alignedtext
+end grestore
+end grestore
+
+%	t2 -> t3
+newpath 451 73 moveto
+469 68 492 62 512 57 curveto
+stroke
+newpath 511 55 moveto
+521 54 lineto
+512 60 lineto
+closepath
+gsave 0 setgray stroke grestore fill
+gsave 10 dict begin
+486 76 moveto (out) 17 14.00 -0.50 alignedtext
+end grestore
+
+%	t3 -> t0
+newpath 80 41 moveto
+119 38 173 35 208 34 curveto
+290 31 371 31 452 34 curveto
+470 35 498 38 520 40 curveto
+stroke
+newpath 82 43 moveto
+72 42 lineto
+82 38 lineto
+closepath
+gsave 0 setgray stroke grestore fill
+gsave 10 dict begin
+330 41 moveto (exit) 21 14.00 -0.50 alignedtext
+end grestore
+endpage
+grestore
+%%PageTrailer
+%%EndPage: 1
+%%Trailer
+%%Pages: 1
+end
+restore
+%%EOF

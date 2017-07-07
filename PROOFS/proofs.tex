@@ -1,0 +1,976 @@
+% $Id: appendixa.tex,v 1.1 1997/10/19 19:24:39 davek Exp davek $
+\chapter{Proofs}\label{app:proofs}
+\section{Correctness of the translation}
+This section is concerned with demonstrating the correctness of the 
+translation of \bcandle\ system models to timed automata. Its
+purpose is to prove the validity of Proposition~\ref{prop:tgcorrect},
+which we state again here.
+\begin{proposition}\label{prop:pftgcorrect}
+Let $\csys \in \CSys{}$ be a clocked \bcandle\ system and
+$\sys \defs \unclk(\csys)$ the corresponding unclocked system.
+Let $\Gr(\csys)$ be the TA given by 
+Definition~\ref{def:tgconstruct}. Then, the transition systems
+of $\Gr(\csys)$ and $\sys$ are strongly equivalent.
+\[
+\TSys{\Gr(\csys)} \bisim \TSys{\sys}
+\]
+\end{proposition}
+
+The proof of the proposition depends upon demonstrating the existence of
+a strong bisimulation relation between $\TSys{\Gr(\csys)}$ and $\TSys{\sys}$. 
+A number of auxiliary definitions and lemmas are required.
+
+Firstly, we define the set of states which can occur in the
+transition system of a clocked \bcandle\ system, where it is required
+that in any such state $(\csys,\clkvl)$, the clock valuation $\clkvl$ satisfies
+the location invariant $\tginv(\csys)$.
+\begin{definition}
+Let $\clocks$ be a set of clock variables and
+$\csys \in \CSys{}$ a clocked \bcandle\ system whose clocks are taken from
+the set $\clocks$, i.e. $\clk(\csys) \subseteq \clocks$. It is assumed that
+$\clocks$ also contains the distinguished urgent clock $\uclock$,
+i.e. $\uclock \in \clocks \setminus \clk(\csys)$. We denote
+by $\States_{\CSys{},\clocks}$ the states of the transition system of the
+TA for $\csys$, i.e. \\
+\hspace*{2cm} $\States_{\CSys{},\clocks} \defs 
+  \{(\csys,\clkvl) | \csys \in \CSys{} \land \clkvl \in \clkvls \land
+                     \clkvl \models \tginv(\csys)\}$
+\qed
+\end{definition}
+
+Now, a clocked \bcandle\ system $\csys$ is related to an equivalent 
+\bcandle\ system $\sys$, by the notion of \emph{aging}:
+\begin{definition}[Aging]\label{def:pfage}
+Let $\clocks$ be a set of clock variables.
+Let $\csys \in \CSys{}$ be a clocked \bcandle\ system
+where $\clk(\csys) \subseteq \clocks$. Then, 
+$\age : \States_{\CSys{},\clocks} \fun \Sys{}$ 
+is a function giving an aged \bcandle\ system, where
+\[\age((\PP,\NN,\D),\clkvl) \defs
+(\age(\PP,\clkvl),\age(\NN,\clkvl),\D).\]
+
+The function $\age : \CProc{} \cross \clkvls \fun \Proc{}$ is defined by
+\begin{eqnarray*}
+\age(\kk!\ii.\xx,\clkvl) & \defs & \kk!\ii.\xx \\
+\age(\kk?\ii.\xx,\clkvl) & \defs & \kk?\ii.\xx \\
+\age([\op:\ti_1,\ti_2]^\clock,\clkvl) & \defs & [\op:\ti_1\nmin\clkvl(\clock),\ti_2\nmin\clkvl(\clock)] \\
+\age(\g\guard\PP,\clkvl) & \defs & \g\guard\unclk(\PP) \\
+\age(\PP\sq\QQ,\clkvl) & \defs & \age(\PP,\clkvl) \sq \unclk(\QQ) \\
+\age(\PP\genop\QQ,\clkvl) & \defs & \age(\PP,\clkvl) \genop \age(\QQ,\clkvl),\qquad \genop\; \in \{\choice,\interrupt,\parallel\} \\
+\age(\rec X.\PP,\clkvl) & \defs & \age(\PP[\rec X.\PP/X],\clkvl)  
+\end{eqnarray*}
+As usual, we rely on the fact that $\PP$ is guarded to ensure that
+$\age(\PP,\clkvl)$ is well-defined.
+
+The function $\age : \NNetwork{\K} \cross \clkvls \fun \Network{\K}$
+is defined by 
+\[\age(\NN,\clkvl) \defs 
+\{\kk \mapsto \age(\NN_\kk,\clkvl) | \kk \in \K\}\] 
+where
+\begin{eqnarray*}
+\age((\free,\mq)^\clock,\clkvl) & \defs & (\free,\mq) \\
+\age((\preact{\ti_1,\ti_2}{\mm},\mq)^\clock,\clkvl) & \defs & (\preact{\ti_1\nmin\clkvl(\clock),\ti_2\nmin\clkvl(\clock)}{\mm},\mq) \\
+\age((\offers{\mm},\mq)^\clock,\clkvl) & \defs & (\offers{\mm},\mq) \\
+\age((\postact{\ti_1,\ti_2}{\mm},\mq)^\clock,\clkvl) & \defs & (\postact{\ti_1\nmin\clkvl(\clock),\ti_2\nmin\clkvl(\clock)}{\mm},\mq) 
+\end{eqnarray*}
+\qed
+\end{definition}
+
+The main proof makes use of the standard technique of demonstrating
+a strong bisimulation \emph{up to} $\bisim$. It is necessary to adapt 
+the usual notion of strong bisimulation up to $\bisim$ to 
+$\approx$-bisimulation.
+\begin{definition}[Strong bisimulation up to $\bisim$]
+Let $\SS = (\States, \Init, \Labels, \TRel)$ be a LTS. Let $\approx$ be an
+equivalence relation on $\States$.  A binary relation $R \subseteq
+\States \cross \States$ is a strong $\approx$-\emph{bisimulation} up to
+$\bisim$ if $\state_1 R \state_2$ implies
+\begin{enumerate}
+\item $\state_1 \approx \state_2$ 
+\item for all $\any \in \Labels$, if $\state_1 \goes{\any} \state_1'$, then
+  $\state_2 \goes{\any} \state_2'$ for some $\state_2'$ such that
+  $\state_1' \bisim R \bisim \state_2'$
+\item for all $\any \in \Labels$, if $\state_2 \goes{\any} \state_2'$, then 
+  $\state_1 \goes{\any} \state_1'$ for some $\state_1'$ such that
+  $\state_1' \bisim R \bisim \state_2'$
+\qed 
+\end{enumerate} 
+\end{definition}
+
+\begin{proposition}
+If $R$ is a strong $\approx$-bisimulation up to $\bisim$, then $\bisim
+R \bisim$ is a strong $\approx$-bisimulation.
+\end{proposition}
+\begin{proof}
+As the proof of Lemma~4.5 in Milner~\cite{mil:89}.
+\end{proof}
+
+In order to apply the notion of strong bisimulation in the context of
+the main proof, it is necessary to extend 
+$\ndequiv$-bisimulation to clocked states and
+to pairs of clocked and unclocked states. This requires
+us to revise our definition of context equivalence.
+\begin{definition}[Context Equivalence]\label{def:pfcontextequiv}
+Let $\state_1, \state_2 \in \Sys{} \cup \States_{\CSys{},\clocks}$ be either 
+clocked or unclocked \bcandle\ system states. We denote by 
+$\state_1 \ndequiv \state_2$
+that $\state_1$ is \emph{context equivalent} to $\state_2$, and
+define $\ndequiv \subseteq \Sys{} \cup \States_{\CSys{},\clocks} \cross 
+\Sys{} \cup \States_{\CSys{},\clocks}$ by requiring that
+$\state_1 \ndequiv \state_2$
+iff one of the following conditions is satisfied:
+\begin{enumerate}
+\item $\state_1 = (\P_1,\N_1,\D_1) \in \Sys{}$,
+      $\state_2 = (\P_2,\N_2,\D_2) \in \Sys{}$, $\N_1 = \N_2$ and $\D_1 = \D_2$
+\item $\state_1 = (\P,\N,\D) \in \Sys{}$, $\state_2 = ((\PP,\NN,\DD),\clkvl)
+  \in \States_{\CSys{},\clocks}$, $\N = \age(\NN,\clkvl)$ and $\D = \DD$
+\item as (2) with the roles of $\state_1$ and $\state_2$ reversed
+\item $\state_1 = ((\PP_1,\NN_1,\DD_1),\clkvl_1) \in 
+  \States_{\CSys{},\clocks}$, $\state_2 = ((\PP_2,\NN_2,\DD_2),\clkvl_2) \in 
+  \States_{\CSys{},\clocks}$,
+  $\age(\NN_1,\clkvl_1) = \age(\NN_2,\clkvl_2)$ and $\DD_1 = \DD_2$.
+\qed
+\end{enumerate} 
+\end{definition}
+
+\begin{proposition}
+$\ndequiv$ is an equivalence relation.
+\end{proposition}
+\begin{proof}
+Immediate from Definition~\ref{def:pfcontextequiv}.
+\end{proof}
+
+Strong equivalence of both clocked and unclocked \bcandle\ states is defined
+simply as $\ndequiv$-bisimilarity, and related definitions are obtained in
+the obvious way.
+\begin{remark}
+Notice that Propositions~\ref{prop:bccongruence} and~\ref{prop:bcsound}
+are valid when extended to clocked systems, i.e. $\bisim$ is 
+a congruence for the operators of $\CProc{}$ and the equational laws
+are sound for $\CSys{}$. 
+\end{remark}
+
+Now, we turn our attention to addressing a technical point concerning
+the use of $\tick$. We wish to obtain a compositional proof and to
+avoid the need to reason about the persistence of systems. In order to
+achieve this, it is convenient to treat $\tick$ as a (distinguished)
+process term and to introduce locations $(\tick,\NN,\DD)$
+corresponding to systems $(\tick,\N,\D)$. We silently extend $\Sys{}$
+and $\CSys{}$ to contain these additional systems. The definition of
+$\age$ is extended by $\age(\tick,\clkvl) \defs \tick$, and the
+invariant function $\tginv$ by $\tginv(\tick,\NN,\DD) \defs
+\uclock \leq 0 \land \tginv(\NN)$. Now, as currently
+defined, a system $(\tick,\N,\D)$ has no transitions. But if a clock 
+valuation $\clkvl$ satisfies $\tginv(\tick,\NN,\DD)$, then
+$((\tick,\NN,\DD),\clkvl)
+\goes{0} ((\tick,\NN,\DD),\clkvl)$. To resolve this
+discrepancy, we assume that the semantics of \bcandle\ is
+extended with a rule
+\[
+\etick
+\]
+Now it is clear that $((\tick,\NN,\DD),\clkvl[\uclock:=0])$ is
+strongly bisimilar to $\age((\tick,\NN,\DD),$ $\clkvl[\uclock:=0])$, each
+state having only a 0-transition to itself.
+
+The following proposition asserts that $\tick$ really is a distinguished
+process term.
+\begin{proposition}\label{prop:pftickdistinguished}
+For any \bcandle\ system $(\P,\N,\D) \in \Sys{}$, 
+\[\text{if } (\P,\N,\D) \bisim (\tick,\N,\D), \text{then } \P \syneq \tick\;.\]
+\end{proposition}
+\begin{proof}
+A standard induction. Intuitively, we can see from the
+semantics that $\tick$ is the only process which does not allow either 
+the immediate execution of some discrete action or the passage of time
+by some strictly positive amount.  
+\end{proof}
+
+We now introduce several lemmas which will be useful in the main proof.
+Each lemma is introduced by a few words of informal explanation.
+
+The first two lemmas simply assert that network behaviour is both
+\emph{independently determined} and \emph{non-intrusive} in both clocked and
+unclocked systems. Network behaviour is independently determined in
+the sense that each new network state is uniquely determined by a
+current network state and a network action, irrespective of the system
+context. It is non-intrusive in that the process and data components
+of a system state are unchanged by network transitions.
+\begin{lemma}\label{lem:pfnetdeterm}
+Let $(\P_1,\N,\D_1), (\P_1',\N',\D_1'), (\P_2,\N,\D_2)$ and 
+$(\P_2',\N'',\D_2')$ be \\ \bcandle\ system 
+states in $\Sys{}$. Let $\any \in \NetLabels \cup \Time$ be a 
+network transition label. Then, if
+\[(\P_1,\N,\D_1) \goes{\any} (\P_1',\N',\D_1') \text{ and } (\P_2,\N,\D_2) \goes{\any} (\P_2',\N'',\D_2')\]
+we have
+\begin{enumerate}
+\item the new network state is uniquely determined, i.e. $\N' = \N''$, and
+\item the data component is unchanged, i.e. $\D_1 = \D_1'$.
+\end{enumerate}
+Additionally, for $\any \in \NetLabels$, we have 
+\begin{enumerate}
+\item[3.] the process component is unchanged, i.e. $\P_1 \syneq \P_1'$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+It is clear from the network rules
+(Definition~\ref{def:bcnetsemantics}) that a new network state is
+uniquely determined by the current state and the network action. When
+included in a system context, the rules for basic systems and
+data-guarded systems show that the new network state is unaffected by
+the process and data components, which are themselves unchanged by the
+network transition in the case of a network action (only the data
+component being unchanged in the case of a strictly positive delay action).
+This property is preserved by all the process operators 
+(Definition~\ref{def:bcsemantics}).
+\end{proof}
+
+\begin{lemma}\label{lem:pfcnetdeterm}
+Let $\csys \in \CSys{}$ be a clocked \bcandle\ system and
+$\Gr(\csys) = (\tglocs,\tgiloc,\tgclks,\tgedges,\tginv)$ its corresponding TA.
+Let $(\PP_1,\NN,\DD_1), (\PP_1',\NN',\DD_1'), (\PP_2,\NN,\DD_2)$ and 
+$(\PP_2',\NN'',\DD_2')$ be locations in 
+$\tglocs$. Let $\netw \in \NetLabels$ be a network action label.
+Then, if $\tgedges$ contains edges 
+\[(\PP_1,\NN,\DD_1) \goes{\clkcond_1,\netw,\resets_1} (\PP_1',\NN',\DD_1') \text{ and } (\PP_2,\NN,\DD_2) \goes{\clkcond_2,\netw,\resets_2} (\PP_2',\NN'',\DD_2')\]
+we have
+\begin{enumerate}
+\item the new network state is uniquely determined, i.e. $\NN' = \NN''$, 
+\item the process and data components are unchanged, i.e. $\PP_1 = \PP_1'$
+  and $\DD_1 = \DD_1'$, and
+\item the clock guards and reset sets are identical, i.e. 
+  $\clkcond_1 \syneq \clkcond_2$ and $\resets_1 = \resets_2$. 
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Similar to Lemma~\ref{lem:pfnetdeterm}, using Definition~\ref{def:tgconstruct}.
+\end{proof}
+
+The next three lemmas are concerned with the effect of clock resets
+on the satisfaction of location invariants.
+
+If a clock valuation satisfies a location invariant, then any clock valuation
+derived from it by resetting some clocks also satisfies the location 
+invariant. 
+\begin{lemma}\label{lem:pfreset}
+Let $\clocks$ be a set of clock variables, $\someclks \subseteq
+\clocks$ and $\clkvl \in \clkvls$ a $\clocks$-valuation. Let
+$\csys \in \CSys{}$ be a clocked \bcandle\ system, where $\clk(\csys)
+\subseteq \clocks$. If $\clkvl \models \tginv(\csys)$, then 
+$\clkvl[\someclks:=0] \models \tginv(\csys)$.
+\end{lemma}
+\begin{proof}
+Induction on the number of steps in the expansion of $\tginv(\csys)$, 
+using Definition~\ref{def:tginvariant}.
+\end{proof}
+
+If a clock valuation satisfies the invariant of a process term in
+\emph{some} data environment, then any clock valuation derived from it
+by resetting some clocks satisfies the invariant in \emph{any} compatible data
+environment, provided the urgent clock $\uclock$ is reset.
+\begin{lemma}\label{lem:pfinvpreservedinnewenv}
+Let $\clocks$ be a set of clock variables and $\clkvl \in \clkvls$ a
+$\clocks$-valuation. Let $\PP \in \CProc{}$ be a clocked process term,
+where $\clk(\PP) \subseteq \clocks$. Let $\someclks \subseteq \clocks$
+with $\uclock \in \someclks$. Then, if there is some data environment
+$\DD \in \DataEnv{}$ such that $\clkvl \models
+\tginv(\PP,\DD)$, it is the case that for all $\DD' \in \DataEnv{}$, such
+that $\DD'$ and $\DD$ are compatible, we have $\clkvl[\someclks:=0]
+\models \tginv(\PP,\DD')$.
+\end{lemma}
+\begin{proof}
+By induction on the number of steps in the expansion of $\tginv(\PP,\DD)$, 
+using Definition~\ref{def:tginvariant}.
+\end{proof}
+
+If the initial clocks of a process term, together with the urgent
+clock $\uclock$, are all reset in some clock valuation, then the
+resulting clock valuation satisfies the process term invariant.
+\begin{lemma}\label{lem:pfprocinv}
+Let $\clocks$ be a set of clock variables,
+$\clkvl \in \clkvls$ a $\clocks$-valuation and $\PP \in
+\CProc{}$ a clocked term, where $\clk(\PP) \subseteq \clocks$. 
+Let $\someclks \subseteq \clocks$. Then, if $\iclk(\PP) \cup \{\uclock\} 
+\subseteq \someclks$, it is the case that 
+$\clkvl[\someclks:=0] \models \tginv(\PP,\DD)$, in any data environment $\DD$.
+\end{lemma}
+\begin{proof}
+By induction on the number of steps in the expansion of $\tginv(\PP,\DD)$, 
+using Definitions~\ref{def:tgiclk} and~\ref{def:tginvariant}.
+\end{proof}
+
+The remaining lemmas are concerned with properties of the $\age$
+function.
+
+Only the values of network clocks can affect the result of aging a 
+network, and only the values of initial clocks can affect the 
+result of aging a process term. 
+\begin{lemma}\label{lem:pfage}
+Let $\clocks$ be a set of clock variables and $\clkvl,\clkvl' \in \clkvls$
+be $\clocks$-valuations.
+\begin{enumerate}
+\item Let $\NN \in \NNetwork{}$ be a clocked network. Then,
+\[
+(\age(\NN,\clkvl) = \N \land 
+\forall \clock \in \clk(\NN) \such \clkvl'(\clock) = \clkvl(\clock)) 
+\implies \age(\NN,\clkvl') = \N
+\]
+\item Let $\PP \in \CProc{}$ be a clocked process term. Then,
+\[
+(\age(\PP,\clkvl) = \P \land
+\forall \clock \in \iclk(\PP) \such \clkvl'(\clock) = \clkvl(\clock)) 
+\implies \age(\PP,\clkvl') = \P
+\]
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Immediate from Definition~\ref{def:pfage} for $\NN$ and by 
+induction on the number of steps in the expansion of $\age(\PP,\clkvl)$
+for $\PP$.
+\end{proof}
+
+If the initial clocks of a process term are all reset in some clock
+valuation, then the aging of the term by that clock valuation produces
+a term which is equivalent to the corresponding unclocked term. 
+\begin{lemma}\label{lem:pfprocage}
+Let $\clocks$ be a set of clock variables,
+$\clkvl \in \clkvls$ a $\clocks$-valuation and $\PP \in
+\CProc{}$ a clocked term, where $\clk(\PP) \subseteq \clocks$. 
+Let $\someclks \subseteq \clocks$. If $\iclk(\PP) \subseteq \someclks$, then
+$\age(\PP,\clkvl[\someclks:=0]) \bisim \unclk(\PP)$.
+\end{lemma}
+\begin{proof}
+By induction on the number of steps in the expansion of
+$\age(\PP,\clkvl[\someclks:=0])$ using
+Definitions~\ref{def:tgiclk}, \ref{def:tgunclk} and \ref{def:pfage}.
+Intuitively, we can see that for all terms, except those containing
+terms of the form $\rec X.\PP$, $\age$ and $\unclk$ give
+results which are syntactically identical. In the case of $\rec
+X.\PP$, $\unclk$ simply removes the clock variables, whereas $\age$ 
+unwinds the recursion until there is no leading $\rec$, and then
+removes the clock variables. In either case, it is clear that the results 
+are equivalent.
+\end{proof}
+
+If a clock valuation can be increased by time $\ti$, while satisfying 
+the invariant of a clocked network, then the corresponding aged network
+allows the passage of time $\ti$.
+\begin{lemma}\label{lem:pfnetprogress}
+Let $\clocks$ be a set of clock variables. 
+Let $\K$ be a finite set of channel identifiers and $\NN \in \NNetwork{\K}$
+a network over $\K$, where $\clk(\NN) \subseteq \clocks$. 
+Let $\clkvl \in \clkvls$ be a $\clocks$-valuation and 
+$\ti \in \Time$. Then,
+\[
+\clkvl + \ti \models \tginv(\NN) \implies \ti \leq \tcp(\age(\NN,\clkvl))
+\]
+\end{lemma}
+\begin{proof}
+We assume that $\clkvl + \ti \models \tginv(\NN)$ and show that
+$\forall \kk \in \K \such \ti \leq \tcp(\age(\NN_\kk,\clkvl))$.
+The result follows directly from Definition~\ref{def:bctcp} and
+\textbf{N.5}. The proof proceeds by case analysis on 
+channel status. We illustrate for the case 
+$\NN_\kk = (\preact{\ti_1,\ti_2}{\mm},\mq)^\clock$.
+\begin{enumerate}
+\item \case $\NN_\kk = (\preact{\ti_1,\ti_2}{\mm},\mq)^\clock$. \\
+By Definition~\ref{def:pfage}, $\age(\NN_\kk,\clkvl) = (\preact{\ti_1\nmin\clkvl(\clock),\ti_2\nmin\clkvl(\clock)}{\mm},\mq)$. 
+By Definition~\ref{def:bctcp}, \\
+$\tcp(\preact{\ti_1\nmin\clkvl(\clock),\ti_2\nmin\clkvl(\clock)}{\mm},\mq) =
+\ti_2\nmin\clkvl(\clock)$. But, if $\clkvl + \ti \models \tginv(\NN_\kk)$, then
+$\clkvl + \ti \models \ite{\ti_2 \in \nat}{\clock \leq \ti_2}{\cctrue}$, and
+\begin{eqnarray*}
+\ti_2 \in \nat & \implies & \clkvl + \ti \models \clock \leq \ti_2 \\
+               & \implies & \clkvl(\clock) + \ti \leq \ti_2, \quad \text{by Definition of } \models \\
+               & \implies & \ti \leq \ti_2 - \clkvl(\clock) \\
+               & \implies & \ti \leq \tcp(\age(\NN_\kk, \clkvl)) \\ 
+\ti_2 = \infty & \implies & \ti_2 \nmin \clkvl(\clock) = \infty \\
+               & \implies & \ti \leq \tcp(\age(\NN_\kk, \clkvl))               
+\end{eqnarray*}
+\end{enumerate} 
+The other cases are similar.
+\end{proof}
+
+\subsection*{Main Proof}
+It is now possible to state the proof of Proposition~\ref{prop:pftgcorrect}.
+
+Let $\TSys{\GrPlus(\csys)} = (\States_1,\Init_1,\Labels_1,\TRel_1)$ and
+$\TSys{\sys} = (\States_2,\Init_2,\Labels_2,\TRel_2)$.
+We show that the relation $\birel$ is a $\ndequiv$-bisimulation up to
+$\bisim$, where
+\[\birel \defs \{((\csys,\clkvl),\age(\csys,\clkvl)) | (\csys,\clkvl) \in 
+  \States_{\CSys{},\clocks}\}\]
+and $\Init_1 \bisim\birel\bisim \Init_2$. The proof of the proposition follows
+from Remark~\ref{rem:tgsreacheq} and the transitivity of $\bisim$.
+  
+To show that $\birel$ is a $\ndequiv$-bisimulation up to $\bisim$, we
+reason as follows.  Let $\sstate \birel \state$.
+\begin{enumerate}
+\item It is clear from 
+  Definitions~\ref{def:pfage}, \ref{def:pfcontextequiv} and the definition of
+  $\birel$, that $\sstate \ndequiv \state$. 
+\item 
+  It is enough to show 
+  that for all $\any \in \Labels$, 
+  if $\state = (\P,\N,\D) \goes{\any} (\P',\N',\D')$, then 
+  $\sstate = ((\PP,\NN,\DD),\clkvl) \goes{\any} ((\PP',\NN',\DD'),\clkvl')$,
+  and there exist $\PP'' \bisim \PP'$ and $\P'' \bisim \P'$ such that  
+  $((\PP'',\NN',\DD'),\clkvl') \birel (\P'',\N',\D')$.
+  The proof is by induction on the number of steps in the
+  calculation of $\age(\sstate)$. 
+  We proceed by case analysis on the structure of $\sstate$.
+\begin{enumerate}
+\item \case $\sstate \syneq  ((\kk!\ii.\xx,\NN,\DD),\clkvl)$. \\
+ So $\state \syneq (\kk!\ii.\xx,\N,\D)$, where $\age(\NN,\clkvl) = \N$
+ and $\DD = \D$.
+
+There are three sub-cases to consider:
+\begin{enumerate}
+\item \textbf{Snd.1}: 
+$\any = \kk!\ii.\vv$, $\state' \syneq (\tick,\N',\D)$, where 
+$\N_\kk = (\ss,\mq)$, $\vv = \D.\xx$, and $\N' = \assign{\N}{\kk}{(\ss,\mq\iq\ii.\vv)}$.
+
+In this case, since $\age(\NN,\clkvl) = \N$, then $\NN_\kk =
+(\hat{\ss},\hat{\mq})^\clock$, where
+$\age(\hat{\ss},\hat{\mq})^\clock,\clkvl) = (\ss,\mq)$ which implies,
+by Definition~\ref{def:pfage}, that $\mq = \hat{\mq}$. And, since $\DD =
+\D$, then $\DD.\xx = \vv$. So by
+\textbf{E\_Snd.1}, there is an edge $(\kk!\ii.\xx, \NN, \DD)
+\goes{\cctrue,\kk!\ii.\vv,\{\uclock\}} (\tick,\NN',\DD)$, where 
+$\NN' = \assign{\NN}{\kk}{(\hat{\ss},\mq\iq\ii.\vv)^\clock}$. Clearly, 
+$\clkvl \models \cctrue$ and, since 
+$\clkvl \models \tginv(\NN)$, then, by Definition~\ref{def:tginvariant},
+$\clkvl[\uclock:=0] \models
+\tginv(\NN')$, so by \textbf{TA.1}, there is a transition
+$((\kk!\ii.\xx,\NN,\DD),\clkvl) \goes{\kk!\ii.\vv}
+((\tick,\NN',\DD),\clkvl[\uclock:=0])$. 
+It is easy to see that $\age(\NN',\clkvl[\uclock:=0]) = \N'$, and, therefore,
+$((\tick,\NN',\DD),\clkvl[\uclock:=0]) \birel (\tick,\N',\D)$.
+\item \textbf{Snd.2}: 
+$\any \in \NetLabels$, $\state' \syneq (\kk!\ii.\xx,\N',\D)$. 
+
+There are four sub-cases to consider: one for each of the ways in 
+which the network transition can be derived.
+\begin{enumerate}
+\item \textbf{N.1}: similar to the following case.
+\item \textbf{N.2}:
+$\any = \kk\offers{\mm}$, $\N_\kk = (\preact{0,\ti}{\mm},\mq)$,
+$\N' = \assign{\N}{\kk}{(\offers{\mm},\mq)}$
+
+In this case, since $\age(\NN,\clkvl) = \N$, then, by
+Definition~\ref{def:pfage}, $\NN_\kk =
+(\preact{\ti_1,\ti_2}{\mm},\mq)^\clock$ and $\clkvl(\clock) \geq
+\ti_1$. So by \textbf{E\_Snd.2} and \textbf{E\_N.2}, there is an edge
+$(\kk!\ii.\xx,\NN,\DD) \goes{\clock \geq \ti_1,
+\kk\offers{\mm},\{\uclock\}} (\kk!\ii.\xx,\NN',\DD)$, where $\NN' =
+\assign{\NN}{\kk}{(\offers{\mm},\mq)^\clock}$. Clearly, 
+$\clkvl \models \clock \geq \ti_1$, and $\clkvl[\uclock:=0] \models
+\tginv(\kk!\ii.\xx,\NN',\DD)$, so by \textbf{TA.1}, there is a
+transition $((\kk!\ii.\xx,\NN,\DD),\clkvl) \goes{\kk\offers{\mm}} ((\kk!\ii.\xx,\NN',\DD),\clkvl[\uclock:=0])$. Obviously, $((\kk!\ii.\xx,\NN',\DD),\clkvl[\uclock:=0]) \birel (\kk!\ii.\xx,\N',\D)$.
+\item \textbf{N.3}: similar to the previous case. 
+\item \textbf{N.4}: similar to the previous case. 
+\end{enumerate}
+\item \textbf{Snd.3}:
+$\any = 0$, $\state' \syneq (\kk!\ii.\xx,\N,\D)$.
+
+Since $\clkvl \models \tginv(\kk!\ii.\xx,\NN,\DD)$, then by
+\textbf{TA.2}, $((\kk!\ii.\xx,\NN,\DD),\clkvl) \goes{0}$ \break
+$((\kk!\ii.\xx,\NN,\DD),\clkvl)$.  We already have that
+$((\kk!\ii.\xx,\NN,\DD),\clkvl) \birel (\kk!\ii.\xx,\N,\D)$.
+\end{enumerate}
+\item \case $\sstate \syneq ((\kk?\ii.\xx,\NN,\DD),\clkvl)$: similar to the 
+  previous case.
+\item \case $\sstate \syneq (([\op:\ti_1,\ti_2]^\clock,\NN,\DD),\clkvl)$: 
+  similar to the previous case.
+\item \case $\sstate \syneq ((\g\guard\P,\NN,\DD),\clkvl)$: similar to the 
+  following case.
+\item \case $\sstate \syneq ((\PP\sq\QQ,\NN,\DD),\clkvl)$ \\
+So, since $\sstate\birel\state$, we have $\state \syneq (\P\sq\Q,\N,\D)$, where
+$\P = \age(\PP,\clkvl)$, $\Q = \unclk(\QQ)$, $\N = \age(\NN,\clkvl)$,
+and $\D = \DD$.
+
+There are two sub-cases to consider:
+\begin{enumerate}
+\item \textbf{Seq.1}:
+$\any \in \ProgLabels \cup \NetLabels \cup \Time$, $\state' \syneq (\P'\sq\Q,\N',\D')$, $\P'\nsyneq\tick$
+
+By \textbf{Seq.1}, $(\P,\N,\D) \goes{\any} (\P',\N',\D')$, where $\P'
+\nsyneq \tick$, and so, by i.h., 
+$((\PP,\NN,\DD),\clkvl) \goes{\any} ((\PP',\NN',\DD'),\clkvl')$, 
+and there exist $\PP'' \bisim \PP'$ and $\P'' \bisim \P'$ such that 
+$((\PP'',\NN',\DD'),\clkvl')\birel(\P'',\N',\D')$. 
+There are now two sub-cases to consider:
+\begin{enumerate}
+\item $\any \in \ProgLabels \cup \NetLabels$:
+So $((\PP,\NN,\DD),\clkvl) \goes{\any} ((\PP',\NN',\DD'),\clkvl')$ must be 
+derived by \textbf{TA.1} from an edge $(\PP,\NN,\DD) 
+\goes{\clkcond,\any,\resets} (\PP',\NN',\DD')$, 
+where $\clkvl \models \clkcond$ and 
+$\clkvl' = \clkvl[\resets:=0] \models \tginv(\PP',\NN',\DD')$. 
+Now, by \textbf{E\_Seq.1}, there must be an
+edge $(\PP\sq\QQ,\NN,\DD) \goes{\clkcond,\any,\resets} (\PP'\sq\QQ,\NN',\DD')$.
+We already have $\clkvl \models \clkcond$ and, since $\clkvl[\resets:=0]
+\models (\PP',\NN',\DD')$, we also have $\clkvl[\resets:=0] \models 
+\tginv(\PP'\sq\QQ,\NN',\DD')$, by Definition~\ref{def:tginvariant}. 
+So, by TA.1, there is a transition $((\PP\sq\QQ,\NN,\DD),\clkvl)
+\goes{\any} ((\PP'\sq\QQ,\NN'\DD'),\clkvl')$. 
+Since $((\PP'',\NN',\DD'),\clkvl') \birel$  
+$(\P'',\N',\D')$, and $\unclk(\QQ) = \Q$, then  
+$((\PP''\sq\QQ,\NN',\DD'),\clkvl') \birel$ $(\P''\sq\Q,\N',\D')$. Moreover, 
+$\PP''\sq\QQ \bisim \PP'\sq\QQ$ and $\P''\sq\Q  \bisim \P'\sq\Q$, as required.
+\item $\any = \ti \in \Time$: \\
+So $((\PP,\NN,\DD),\clkvl) \goes{\ti} ((\PP',\NN',\DD'),\clkvl')$ must
+be derived by \textbf{TA.2} with 
+$(\PP',\NN',\DD') \syneq (\PP,\NN,\DD)$, $\clkvl' = \clkvl+\ti$,
+and $\forall \ti' \in \Time | \ti' \leq \ti
+\such \clkvl+\ti' \models \tginv(\PP,\NN,\DD)$. By 
+Definition~\ref{def:tginvariant}, we have 
+$\forall \ti' \in \Time | \ti' \leq \ti \such \clkvl+\ti' \models 
+\tginv(\PP\sq\QQ,\NN,\DD)$, and so by \textbf{TA.2},
+there is a transition $((\PP\sq\QQ,\NN,\DD),\clkvl) \goes{\ti} ((\PP'\sq\QQ,\NN,\DD),\clkvl')$. From i.h., we have  
+$\PP'' \bisim \PP'$ and $\P'' \bisim \P'$ such that 
+$((\PP'',\NN,\DD),\clkvl') \birel$ $(\P'',\N',\D')$, and so, since
+$\unclk(\QQ) = \Q$, we have $((\PP''\sq\QQ,\NN,\DD),\clkvl') \birel
+(\P''\sq\Q,\N',\D')$,
+where $\PP''\sq\QQ \bisim \PP'\sq\QQ$  and $\P''\sq\Q \bisim \P'\sq\Q$.
+ \end{enumerate}
+\item \textbf{Seq.2}:
+$\any = \prog \in \ProgLabels$, $\state' \syneq (\Q,\N',\D')$
+
+By \textbf{Seq.2}, $(\P,\N,\D) \goes{\prog} (\tick,\N',\D')$, and so, 
+by i.h.,  
+$((\PP,\NN,\DD),\clkvl)$ $\goes{\prog}((\PP',\NN',\DD'),\clkvl')$, where 
+there exist $\PP'' \bisim \PP'$  and $\P'' \bisim \tick$, such that 
+$((\PP'',\NN',\DD'),\clkvl')\birel(\P'',\N',\D')$. But, by definition of
+$\age$ and Proposition~\ref{prop:pftickdistinguished}, we must 
+therefore have $\PP'' \syneq \PP' \syneq \P'' \syneq \tick$.
+
+The transition $((\PP,\NN,\DD),\clkvl) \goes{\prog} 
+((\tick,\NN',\DD'),\clkvl')$
+must be derived by \textbf{TA.1} from an edge $(\PP,\NN,\DD)
+\goes{\clkcond,\prog,\resets} (\tick,\NN',\DD')$, where $\clkvl
+\models \clkcond$ and $\clkvl' = \clkvl[\resets:=0]
+\models \tginv(\tick,\NN',\DD')$. So, by \textbf{E\_Seq.2}, there is an
+edge $(\PP\sq\QQ,\NN,\DD)
+\goes{\clkcond,\prog,\resets\cup\iclk(\QQ)} (\QQ,\NN',\DD')$.  We
+already have $\clkvl \models \clkcond$ and, by Lemmas~\ref{lem:pfreset}
+and~\ref{lem:pfprocinv}, we have $\clkvl[\resets\cup\iclk(\QQ):=0]
+\models (\QQ,\NN',\DD')$. 
+So, by TA.1, there is a transition  $((\PP\sq\QQ,\NN,\DD),\clkvl)
+\goes{\prog} ((\QQ,\NN',\DD'),\clkvl'')$, where $\clkvl'' = 
+\clkvl[\resets\cup\iclk(\QQ):=0]$. 
+Since $((\tick,\NN',\DD'),\clkvl')\birel(\tick,\N',\D')$, then,
+$\D' = \DD'$, and, by Lemma~\ref{lem:pfage}, $\N' = \age(\NN',\clkvl'')$. 
+Let $\Qq = \age(\QQ,\clkvl'')$.
+Clearly, $((\QQ,\NN',\DD'),\clkvl'')\birel(\Qq,\N',\D')$.
+But, $\Q = \unclk(\QQ)$, and
+by Lemma~\ref{lem:pfprocage}, $\unclk(\QQ) \bisim \Qq$, 
+so $\Q \bisim \Qq$, as required. 
+\end{enumerate}
+
+\item \case $\sstate \syneq ((\PP\choice\QQ,\NN,\DD),\clkvl)$: similar to the 
+  following case.
+\item \case $\sstate \syneq ((\PP\interrupt\QQ,\NN,\DD),\clkvl)$. \\
+So, since $\sstate\birel\state$, we have 
+$\state \syneq (\P\interrupt\Q,\N,\D)$, where 
+$\age(\PP,\clkvl) = \P$, $\age(\QQ,\clkvl) = \Q$, 
+$\age(\NN,\clkvl) = \N$ and $\DD = \D$.
+
+There are four sub-cases to consider:
+\begin{enumerate}
+\item \textbf{Int.1}: $\any = \prog \in \ProgLabels$,
+$\state' \syneq (\P'\interrupt\Q,\N',\D')$, $\P' \nsyneq \tick$.
+
+By \textbf{Int.1}, $(\P,\N,\D) \goes{\prog} (\P',\N',\D')$ and
+so, by i.h., $((\PP,\NN,\DD),\clkvl)$ $\goes{\prog}
+((\PP',\NN',\DD'),\clkvl')$, and there exist $\PP'' \bisim \PP'$ and 
+$\P'' \bisim \P'$ such that
+$((\PP'',\NN',\DD'),\clkvl')\birel(\P'',\N',\D')$. But this transition
+must be derived by \textbf{TA.1} from an edge $(\PP,\NN,\DD)
+\goes{\clkcond,\prog,\resets} (\PP',\NN',\DD')$, where $\PP' \nsyneq
+\tick$, $\clkvl \models \clkcond$ and $\clkvl' = \clkvl[\resets:=0]
+\models \tginv(\PP',\NN',\DD')$. So, by \textbf{E\_Int.1}, there is
+an edge $(\PP\interrupt\QQ,\NN,\DD) \goes{\clkcond,\prog,\resets}(\PP'\interrupt\QQ,\NN',\DD')$. We already have $\clkvl[\resets:=0] 
+\models \tginv(\PP',\NN',\DD')$ and $\clkvl \models \tginv(\QQ,\NN,\DD)$.
+Since the urgent clock $\uclock$ is reset by every edge, then, by 
+Lemmas~\ref{lem:pfreset} and~\ref{lem:pfinvpreservedinnewenv}, we have
+$\clkvl[\resets:=0] \models \tginv(\QQ,\DD')$. So, by
+Definition~\ref{def:tginvariant}, we have
+$\clkvl[\resets:=0] \models
+\tginv(\PP'\interrupt\QQ,\NN',\DD')$. Moreover, $\clkvl \models \clkcond$, 
+so by \textbf{TA.1}, there is a transition
+$((\PP\interrupt\QQ,\NN,\DD),\clkvl) \goes{\prog}
+((\PP'\interrupt\QQ,\NN',\DD'),\clkvl[\resets:=0])$.
+
+Since $\PP'' \bisim \PP'$ and $\P'' \bisim \P'$, then 
+$\PP''\interrupt\QQ \bisim \PP'\interrupt\QQ$ and
+$\P''\interrupt\Q \bisim \P'\interrupt\Q$.
+To see that
+$((\PP''\interrupt\QQ,\NN',\DD'),\clkvl[\resets:=0])\birel
+(\P''\interrupt\Q,\N',\D')$, we reason as follows. By construction of 
+$\birel$, $\P'' = \age(\PP'',\clkvl[\resets:=0])$. Furthermore, by safety of 
+clock variable allocation, $\resets \cap \iclk(\QQ) = \emptyset$, so, by
+Lemma~\ref{lem:pfage}, $\Q = \age(\QQ,\clkvl[\resets:=0])$ and $\N' =
+\age(\NN',\clkvl[\resets:=0])$. The result follows by construction of
+$\birel$. 
+\item \textbf{Int.2}: similar to previous case.
+\item \textbf{Int.3}: similar to previous case.
+\item \textbf{Int.4}: $\any = \nort \in \NetLabels \cup \Time$,
+$\state' \syneq (\P'\interrupt\Q',\N',\D')$ \\
+There are two sub-cases to consider:
+\begin{enumerate}
+\item $\any = \netw \in \NetLabels$: \\ 
+In this case, by Lemma~\ref{lem:pfnetdeterm}, we have 
+$\P'\interrupt\Q' \syneq \P\interrupt\Q$ and $\D' = \D$.
+So, by \textbf{Int.4}, 
+$(\P,\N,\D) \goes{\netw} (\P,\N',\D)$ and 
+$(\Q,\N,\D) \goes{\netw} (\Q,\N',\D)$.
+Moreover, by i.h. and Lemma~\ref{lem:pfcnetdeterm}, 
+$((\PP,\NN,\DD),\clkvl) \goes{\netw} ((\PP,\NN',\DD),\clkvl')$ and
+$(\QQ,\NN,\DD),\clkvl) \goes{\netw}$ \break $((\QQ,\NN',\DD),\clkvl')$, and
+there exist $\PP'' \bisim \PP$, $\QQ'' \bisim \QQ$, $\P''\bisim\P$ and 
+$\Q''\bisim\Q$ such that
+$((\PP'',\NN',\DD),\clkvl')\birel(\P'',\N',\D)$ and 
+$((\QQ'',\NN',\DD),\clkvl')\birel(\Q'',\N',\D)$.
+
+But
+$((\PP,\NN,\DD),\clkvl) \goes{\netw} ((\PP,\NN',\DD),\clkvl')$, must be 
+derived by \textbf{TA.1} from an edge
+$(\PP,\NN,\DD) \goes{\clkcond,\netw,\resets} (\PP,\NN',\DD)$, where 
+$\clkvl \models \clkcond$ and $\clkvl' = \clkvl[\resets:=0] \models
+\tginv(\PP,\NN',\DD)$. Similarly for $((\QQ,\NN,\DD),\clkvl)$ $\goes{\netw} 
+((\QQ,\NN',\DD),\clkvl')$ --- Lemma~\ref{lem:pfcnetdeterm}
+ensures that this edge will have the same clock guard and reset set as the edge
+for $(\PP,\NN,\DD)$. So by \textbf{E\_Int.4}, there is an edge
+$(\PP\interrupt\QQ,\NN,\DD) \goes{\clkcond,\netw,\resets}$
+$(\PP\interrupt\QQ,\NN',\DD)$, and, since $\clkvl \models \clkcond$ and
+$\clkvl' \models \tginv(\PP\interrupt\QQ,\NN',\DD)$, there is
+a transition $((\PP\interrupt\QQ,\NN,\DD),\clkvl) \goes{\netw}
+((\PP\interrupt\QQ,\NN',\DD),\clkvl')$. Clearly, by 
+i.h. and Definition~\ref{def:pfage}, 
+$((\PP''\interrupt\QQ'',\NN',\DD),\clkvl')
+\birel(\P''\interrupt\Q'',\N',\D)$, where
+$\PP'' \interrupt \QQ'' \bisim \PP \interrupt \QQ$ and
+$\P''\interrupt\Q'' \bisim \P \interrupt \Q$.
+
+\item $\any = \ti \in \Time$: \\
+In this case, by Lemma~\ref{lem:pfnetdeterm}, we have $\D' = \D$. 
+So, by \textbf{Int.4}, 
+$(\P,\N,\D) \goes{\ti} (\P',\N',\D)$ and 
+$(\Q,\N,\D) \goes{\ti} (\Q',\N',\D)$. 
+Moreover, by i.h., 
+$((\PP,\NN,\DD),\clkvl) \goes{\ti} ((\PP',\NN',\DD'),\clkvl')$ and 
+$(\QQ,\NN,\DD),\clkvl)$ $\goes{\ti} ((\QQ',\NN'',\DD''),\clkvl'')$, and
+there exist $\PP'' \bisim \PP$, $\QQ'' \bisim \QQ$, $\P''\bisim\P$ and 
+$\Q''\bisim\Q$ such that
+$((\PP'',\NN',\DD'),\clkvl')\birel(\P'',\N',\D)$ and 
+$((\QQ'',\NN'',\DD''),\clkvl'')\birel(\Q'',\N',\D)$. 
+But, $((\PP,\NN,\DD),\clkvl) \goes{\ti}$
+$((\PP,\NN,\DD),\clkvl')$, must be derived by \textbf{TA.2},
+where $(\PP',\NN',\DD') \syneq (\PP,\NN,\DD)$, $\clkvl' = \clkvl +\ti$ and 
+$\forall \ti' \in \Time | \ti' \leq \ti \such \clkvl+\ti' \models
+\tginv(\PP,\NN,\DD)$. Similarly for $\QQ$. 
+So, from Definition~\ref{def:tginvariant},
+it is clear that $\forall \ti' \in \Time | \ti' \leq \ti \such
+\clkvl+\ti' \models \tginv(\PP\interrupt\QQ,\NN,\DD)$, and, therefore,
+by \textbf{TA.2}, $((\PP\interrupt\QQ,\NN,\DD),\clkvl) \goes{\ti}
+((\PP\interrupt\QQ,\NN,\DD),\clkvl+\ti)$. By i.h and construction
+of $\birel$, $(\PP''\interrupt\QQ'',\NN,\DD),\clkvl+\ti)\birel(\P''\interrupt\Q'',\N',\D)$, where $\PP''\interrupt\QQ'' \bisim \PP\interrupt\QQ$ and
+$\P''\interrupt\Q'' \bisim \P'\interrupt\Q'$.
+\end{enumerate}
+\end{enumerate}
+
+\item \case $\sstate \syneq ((\PP\parallel\QQ,\NN,\DD),\clkvl)$: similar to 
+  the previous case. 
+
+\item \case $\sstate \syneq ((\rec X.\PP_1,\NN,\DD),\clkvl)$ \\
+So, since $\sstate\birel\state$, we have
+$\state \syneq (\P,\N,\D)$, where $\P = \age(\rec X.\PP_1,\clkvl)$,
+$\N = \age(\NN,\clkvl)$, and $\D = \DD$. But $\age(\rec X.\PP_1,\clkvl) =$ 
+\break $\age(\PP_1[\rec X.\PP_1/X],\clkvl)$, which is derived by a shorter
+calculation, and so, if $(\P,\N,\D) \goes{\any} (\P',\N',\D')$, 
+then, by i.h., \break 
+$((\PP_1[\rec X.\PP_1/X],\NN,\DD),\clkvl) \goes{\any}
+((\PP',\NN',\DD'),\clkvl')$ and there exist $\PP'' \bisim \PP'$ and 
+$\P'' \bisim \P'$ such that
+$((\PP'',\NN',\DD'),\clkvl')\birel(\P'',\N',\D')$.
+There are two sub-cases to consider:
+\begin{enumerate}
+\item $\any \in \ProgLabels \cup \NetLabels$: \\
+So
+$((\PP_1[\rec X.\PP_1/X],\NN,\DD),\clkvl) \goes{\any}
+((\PP',\NN',\DD'),\clkvl')$ must be derived by \textbf{TA.1} from an
+edge $(\PP_1[\rec X.\PP_1/X],\NN,\DD) \goes{\clkcond,\any,\resets}
+(\PP',\NN',\DD')$, where $\clkvl \models \clkcond$ and $\clkvl' = 
+\clkvl[\resets:= 0] \models \tginv(\PP',\NN',\DD')$. But then,
+by \textbf{E\_Rec}, there is an edge 
+$(\rec X.\PP_1,\NN,\DD) \goes{\clkcond,\any,\resets}
+(\PP',\NN',\DD')$, and so, by \textbf{TA.1}, there is a transition 
+$((\rec X.\PP_1,\NN,\DD),\clkvl) \goes{\any}$ $((\PP',\NN',\DD'),\clkvl')$. 
+By i.h., we have $((\PP'',\NN',\DD'),\clkvl')\birel(\P'',\N',\D')$, where
+$\PP'' \bisim \PP'$ and $\P''\bisim\P'$. 
+\item $\any = \ti \in \Time$: \\
+So
+$((\PP_1[\rec X.\PP_1/X],\NN,\DD),\clkvl) \goes{\ti} 
+((\PP',\NN',\DD'),\clkvl')$ must be derived by \textbf{TA.2}, 
+where $(\PP',\NN',\DD') \syneq (\PP_1[\rec X.\PP_1/X],\NN,\DD)$,
+$\clkvl' = \clkvl+\ti$ and $\forall \ti' \in \Time | \ti' \leq \ti 
+\such \clkvl + \ti' \models \tginv(\PP',\NN',\DD')$. 
+But then, by
+Definition~\ref{def:tginvariant}, $\forall \ti' \in \Time | \ti' \leq \ti \such
+\clkvl + \ti' \models \tginv(\rec X.\PP_1,\NN',\DD')$, and so, by
+\textbf{TA.2}, there is a transition $((\rec X.\PP_1,\NN,\DD),\clkvl)
+\goes{\ti}$ $((\rec X.\PP_1,\NN',\DD'),\clkvl')$. 
+By i.h., we have $((\PP'',\NN',\DD'),\clkvl')\birel$ \break 
+$(\P'',\N',\D')$, where 
+$\PP'' \bisim \PP' \syneq \PP_1[\rec X.\PP_1/X] \bisim \rec X.\PP_1$, 
+and $\P'' \bisim \P'$, as required. 
+\end{enumerate} 
+\end{enumerate}
+\item 
+  It is enough to show 
+  that for all $\any \in \Labels$, 
+  if $\sstate = ((\PP,\NN,\DD),\clkvl) \goes{\any}$ \break
+  $((\PP',\NN',\DD'),\clkvl')$,
+  then $\state = (\P,\N,\D) \goes{\any} (\P',\N',\D')$, 
+  and there exist $\PP'' \bisim \PP'$ and $\P'' \bisim \P'$ such that  
+  $((\PP'',\NN',\DD'),\clkvl') \birel (\P'',\N',\D')$.
+  Again, the proof is by induction on the number of steps in the
+  calculation of $\age(\sstate)$. 
+  The proof is symmetrical to the previous case. We provide some illustrative 
+  variations.
+\begin{enumerate}
+\item \case $\sstate \syneq (([\op:\ti_1,\ti_2]^\clock,\NN,\DD),\clkvl)$ \\
+  Since $\sstate\birel\state$, then $\state \syneq
+  (\P,\N,\D)$, where $\P = \age(\PP,\clkvl)$, $\N = \age(\NN,\clkvl)$ and
+  $\D = \DD$. There are three sub-cases to consider:
+  \begin{enumerate}
+    \item $\any = \op \in \ProgLabels$ \\
+      A transition $(([\op:\ti_1,\ti_2]^\clock,\NN,\DD),\clkvl) \goes{\op} 
+      ((\PP',\NN',\DD'),\clkvl')$ must be derived by \textbf{TA.1} from an edge
+      $([\op:\ti_1,\ti_2]^\clock,\NN,\DD) \goes{\clkcond,\op,\resets}
+      (\PP',\NN',\DD')$, where $\clkvl \models \clkcond$ and $\clkvl' = 
+      \clkvl[\resets:=0] \models \tginv(\PP',\NN',\DD')$. 
+      Such an edge can be constructed only by
+      \textbf{E\_Comp.1}, so $\ti_1 \in \nat$, $\clkcond \syneq \clock \geq 
+      \ti_1$, $\resets = \{\uclock\}$, $\PP' = \tick$, $\NN' = \NN$ and
+      $\DD \goesdata{\op} \DD'$. Since $\clkvl \models \clock \geq \ti_1$
+      and $\clkvl \models \clock \leq \ti_2$, 
+      then $\ti_2 \geq \clkvl(\clock) \geq \ti_1$ and so 
+      $\P = \age([\op:\ti_1,\ti_2]^\clock,\clkvl) = 
+      [\op:0,\ti_2\nmin\clkvl(\clock)]$.
+      Also, $\D = \DD \goesdata{\op} \DD'$. So by \textbf{Comp.1},
+      $(\P,\N,\D) \goes{\op} (\tick,\N,\D')$ where $\D' = \DD'$. Clearly,
+      $((\tick,\NN,\DD'),\clkvl')\birel(\tick,\N,\D')$.
+    \item $\any = \netw \in \NetLabels$ \\
+      A transition $(([\op:\ti_1,\ti_2]^\clock,\NN,\DD),\clkvl) \goes{\netw} 
+      ((\PP',\NN',\DD'),\clkvl')$ must be derived by \textbf{TA.1} from an edge
+      $([\op:\ti_1,\ti_2]^\clock,\NN,\DD) \goes{\clkcond,\netw,\resets}
+      (\PP',\NN',\DD')$, where $\clkvl \models \clkcond$ and $\clkvl' = 
+      \clkvl[\resets:=0] \models \tginv(\PP',\NN',\DD')$. Such an edge can be
+      constructed only by \textbf{E\_Comp.2}, so $\PP' = 
+      \PP$, $\DD' = \DD$ and $\NN \goesn{\netw} \NN'$.
+      There are four sub-cases to consider: one for each of the ways in which 
+      $\NN \goesn{\netw} \NN'$ can be derived. We show the case 
+      \textbf{E\_N.4}. Cases \textbf{E\_N.1} -- \textbf{E\_N.3} can be proved 
+      similarly.
+      \begin{enumerate}
+        \item \textbf{E\_N.4}. \\
+          If $\NN \goesn{\netw} \NN'$ is derived by \textbf{E\_N.4},
+          then, for some channel identifier $\kk \in \K$,
+          $\NN_\kk = (\postact{\tlb,\tub}{\mm},\mq)^{\clock_\kk}$, 
+          $\NN' = \assign{\NN}{\kk}{(\free,\mq)^{\clock_\kk}}$, 
+          $\clkcond \syneq \clock_\kk \geq \tlb$, $\netw = \kk\free$
+          and $\resets = \{\uclock\}$. We have $\clkvl \models
+          \clock_\kk \leq \tub$ and $\clkvl \models \clock_\kk \geq \tlb$,
+          so $\tlb \leq \clkvl(\clock_\kk) \leq \tub$, and therefore
+          $\N_\kk = \age(\NN_\kk, \clkvl) = (\postact{0,\tub\nmin
+          \clkvl(\clock_\kk)}{\mm},\mq)$. It follows, by \textbf{N.4},
+          that $\N \goesn{\kk\free} \N'$, where $\N' = \assign{\N}{\kk} 
+          {(\free,\mq)}$. So, by \textbf{Comp.2}, we have
+          $(\P,\N,\D) \goes{\kk\free} (\P,\N',\D)$. To show that
+          $((\PP,\NN',\DD),\clkvl')\birel(\P,\N',\D)$, we reason as follows.
+          Since $\resets = \{\uclock\}$, then $\clkvl' = 
+          \clkvl[\uclock:=0]$. Now, for the process term, we have 
+          $\P = \age([\op:\ti_1,\ti_2]^\clock,\clkvl)
+          = \age([\op:\ti_1,\ti_2]^\clock,\clkvl')$, since, by safety 
+          of clock variable allocation, $\clock \neq \uclock$. 
+          For the network, we
+          have $\NN' = \assign{\NN}{\kk}{(\free, \mq)^{\clock_\kk}}$. 
+          But $\age(\NN,\clkvl) = \N$ and 
+          $\age((\free,\mq)^{\clock_\kk},\clkvl') =
+          (\free,\mq)$, so, by safety of clock variable allocation,
+          $\age(\NN',\clkvl') = \N'$. Finally, $\D=\DD$.
+          The result follows.
+      \end{enumerate}
+    \item $\any = \ti \in \Time$ \\
+      A transition $(([\op:\ti_1,\ti_2]^\clock,\NN,\DD),\clkvl) \goes{\ti} 
+      ((\PP',\NN',\DD'),\clkvl')$ must be derived by \textbf{TA.2}, so
+      $(\PP',\NN'\DD') = ([\op:\ti_1,\ti_2]^\clock,\NN,\DD)$, $\clkvl' = 
+      \clkvl + \ti$, and $\forall \ti' \in \Time | \ti' \leq \ti \such \clkvl
+      + \ti' \models \tginv([\op:\ti_1,\ti_2]^\clock,\NN,\DD)$. By 
+      Definition~\ref{def:tginvariant}, $\clkvl + \ti \models 
+      \clock \leq \ti_2 \land \tginv(\NN)$. Now, we have $\P = 
+      \age([\op:\ti_1,\ti_2]^\clock,\clkvl) = [\op: \ti_1\nmin\clkvl(\clock),
+      \ti_2\nmin\clkvl(\clock)]$, and, since $\clkvl(\clock) + \ti \leq \ti_2$,
+      then $\ti \leq \ti_2 - \clkvl(\clock)$. Also, we have $\N = 
+      \age(\NN,\clkvl)$, and, by Lemma~\ref{lem:pfnetprogress}, 
+      $\ti \leq \tcp(\N)$, so, by
+      \textbf{N.4}, we have $\N \goesn{\ti} \N'$, where $\N' = \N + \ti$.
+      Therefore, by \textbf{Comp.3}, we derive 
+      $(\P,\N,\D) \goes{\ti} (\P',\N',\D')$, where $\P' = 
+     [\op: \ti_1\nmin\clkvl(\clock)\nmin\ti,\ti_2\nmin\clkvl(\clock)\nmin\ti]$,
+      and $\D' = \D$. It is a simple application of the definitions
+      to show that $((\PP',\NN',\DD'),\clkvl')\birel(\P',\N',\D')$.
+  \end{enumerate}
+\item \case $\sstate \syneq ((\PP\interrupt\QQ,\NN,\DD),\clkvl)$. \\
+  Since $\sstate\birel\state$, then $\state \syneq (\P\interrupt\Q,\N,\D)$, where
+  $\P = \age(\PP,\clkvl)$, $\Q = \age(\QQ,\clkvl)$, $\N = \age(\NN,\clkvl)$
+  and $\D = \DD$. There are five sub-cases to consider: four
+  for each of the ways in which an edge can be constructed which justifies
+  a discrete transition by \textbf{TA.1}, and one for the justification of a 
+  time transition by \textbf{TA.2}.
+  \begin{enumerate}
+    \item \textbf{E\_Int.1} \\
+      In this case, the edge is of the form $(\PP\interrupt\QQ,\NN,\DD)
+      \goes{\clkcond,\prog,\resets}
+      (\PP'\interrupt\QQ,\NN',\DD')$, with $\any = \prog \in \Actions$, 
+      $\PP' \nsyneq \tick$, $\clkvl \models \clkcond$, and
+      $\clkvl[\resets:=0] \models 
+      \tginv(\PP'\interrupt\QQ,\NN',\DD')$. But this edge must be derived
+      from an edge $(\PP,\NN,\DD) \goes{\clkcond,\prog,\resets}$ 
+      $(\PP',\NN',\DD')$. Now, by \textbf{TA.1}, this edge justifies a 
+      transition $((\PP,\NN,\DD),\clkvl) \goes{\prog}$ $((\PP',\NN',\DD'),
+      \clkvl[\resets:=0])$. So, by i.h., there is a transition
+      $(\P,\N,\D) \goes{\prog}$ $(\P',\N',\D')$, where there exist
+      $\PP'' \bisim \PP'$ and $\P'' \bisim \P'$ such that
+      $((\PP'',\NN',\DD'),\clkvl[\resets:=0])\birel(\P'',\N',\D')$. 
+      Since $\PP'\nsyneq\tick$ then, by Definition~\ref{def:pfage} and
+      Proposition~\ref{prop:pftickdistinguished}, we have $\P' \nsyneq \tick$,
+      and so
+      it follows by \textbf{Int.1} that there is a transition
+      $(\P\interrupt\Q,\N,\D) \goes{\prog} (\P'\interrupt\Q,\N',\D')$. 
+      Since $\PP'' \bisim \PP'$ and $\P'' \bisim \P'$, then 
+      $\PP''\interrupt\QQ \bisim \PP'\interrupt\QQ$ and
+      $\P''\interrupt\Q \bisim \P'\interrupt\Q$.
+      To see that
+      $((\PP''\interrupt\QQ,\NN',\DD'),\clkvl[\resets:=0])\birel
+      (\P''\interrupt\Q,\N',\D')$, we reason as follows. By construction of 
+      $\birel$, $\P'' = \age(\PP'',\clkvl[\resets:=0])$. 
+      Furthermore, by safety of 
+      clock variable allocation, $\resets \cap \iclk(\QQ) = \emptyset$, so, by
+      Lemma~\ref{lem:pfage}, $\Q = \age(\QQ,\clkvl[\resets:=0])$ and 
+      $\N' = \age(\NN',\clkvl[\resets:=0])$. 
+      The result follows by construction of $\birel$. 
+    \item \textbf{E\_Int.2} Similar to previous case.       
+    \item \textbf{E\_Int.3} Similar to previous case.
+    \item \textbf{E\_Int.4} \\
+      In this case the edge is of the form $(\PP\interrupt\QQ,\NN,\DD)
+      \goes{\clkcond,\netw,\resets} (\PP\interrupt\QQ,\NN',\DD)$, where
+      $\any = \netw \in \NetLabels$, $\clkvl \models \clkcond$, and
+      $\clkvl' = \clkvl[\resets:=0] \models \tginv(\PP\interrupt\QQ,\NN',\DD)$.
+      But the existence of this edge depends upon edges $(\PP,\NN,\DD)
+      \goes{\clkcond,\netw,\resets} (\PP,\NN',\DD)$ and $(\QQ,\NN,\DD)
+      \goes{\clkcond,\netw,\resets} (\QQ,\NN',\DD)$. Now, by \textbf{TA.1},
+      these edges justify transitions  $((\PP,\NN,\DD),\clkvl) \goes{\netw}$ 
+      $((\PP,\NN',\DD),\clkvl')$ and $((\PP,\NN,\DD),
+      \clkvl) \goes{\netw} ((\PP,\NN',\DD),\clkvl')$. So, by
+      i.h. and Lemma~\ref{lem:pfnetdeterm}, there are transitions 
+      $(\P,\N,\D) \goes{\netw} (\P,\N',\D)$ and 
+      $(\Q,\N,\D)$ $\goes{\netw} (\Q,\N',\D)$, where
+      there exist $\PP''\bisim\PP$, $\P''\bisim\P$, $\QQ''\bisim\QQ$, and
+      $\Q''\bisim\Q$ such that
+      $((\PP'',\NN',\DD),\clkvl')\birel(\P'',\N',\D)$ and 
+      $((\QQ'',\NN',\DD),\clkvl')\birel(\Q'',\N',\D)$.
+      Therefore, by \textbf{Int.4},  
+      $(\P\interrupt\Q,\N,\D) \goes{\netw} (\P\interrupt\Q,\N',\D)$.
+      Clearly, by i.h. and Definition~\ref{def:pfage}, 
+      $((\PP''\interrupt\QQ'',\NN',\DD),\clkvl')
+      \birel(\P''\interrupt\Q'',\N',\D)$, where
+      $\PP'' \interrupt \QQ'' \bisim \PP \interrupt \QQ$ and
+      $\P''\interrupt\Q'' \bisim \P \interrupt \Q$.
+    \item $\any = \ti \in \Time$ \\
+      This transition is derived by \textbf{TA.2}, where 
+      $((\PP\interrupt\QQ,\NN,\DD),\clkvl) \goes{\ti}$
+      $((\PP,\NN,\DD),\clkvl')$, where $\clkvl' = \clkvl+\ti$. 
+      The transition is possible only if
+      $\forall \ti' \in \Time | \ti' \leq \ti \such \clkvl + \ti' \models 
+      \tginv(\PP\interrupt\QQ,\NN,\DD)$. So, by 
+      Definition~\ref{def:tginvariant}, $\clkvl + \ti \models 
+      \tginv(\PP,\DD) \land \tginv(\QQ,\DD) \land \tginv(\NN)$, and, therefore,
+      by \textbf{TA.2}, $((\PP,\NN,\DD),\clkvl) \goes{\ti} 
+      ((\PP,\NN,\DD),\clkvl')$, and  $((\QQ,\NN,\DD),\clkvl) \goes{\ti}$ 
+      $((\QQ,\NN,\DD),\clkvl')$. By i.h. and Lemma~\ref{lem:pfnetdeterm},  
+      $(\P,\N,\D) \goes{\ti} (\P',\N',\D)$ and $(\Q,\N,\D) \goes{\ti} 
+      (\Q',\N',\D)$
+      and there exist $\PP''\bisim\PP$, $\P''\bisim\P'$, $\QQ''\bisim\QQ$
+      and $\Q''\bisim\Q'$ such that
+      $((\PP'',\NN,\DD),\clkvl')\birel(\P',\N',\D)$ and
+      $((\QQ'',\NN,\DD),\clkvl')\birel(\Q',\N',\D)$. Therefore,
+      by \textbf{Int.4}, $(\P\interrupt\Q,\N,\D) \goes{\ti}
+      (\P'\interrupt\Q',\N',\D)$, and, by construction of $\birel$,
+      $((\PP''\interrupt\QQ'',\NN,\DD),\clkvl')\birel
+       (\P''\interrupt\Q'',\N',\D)$, where $\PP''\interrupt\QQ''\bisim
+       \PP\interrupt\QQ$ and $\P''\interrupt\Q'' \bisim \P'\interrupt\Q'$.
+  \end{enumerate}  
+\item \case $\sstate \syneq ((\rec X.\PP_1,\NN,\DD),\clkvl)$ \\
+So, since $\sstate\birel\state$, we have
+$\state \syneq (\P,\N,\D)$, where $\P = \age(\rec X.\PP_1,\clkvl)$,
+$\N = \age(\NN,\clkvl)$, and $\D = \DD$. 
+There are two sub-cases to consider:
+\begin{enumerate}
+\item $\any \in \ProgLabels \cup \NetLabels$: \\
+Then, the transition $((\rec X.\PP_1,\NN,\DD),\clkvl) \goes{\any}
+((\PP',\NN',\DD'),\clkvl')$ must be derived by \textbf{TA.1} from
+an edge $(\rec X.\PP_1,\NN,\DD) \goes{\clkcond,\any,\resets}
+(\PP',\NN',\DD')$, where $\clkvl \models \clkcond$ and
+$\clkvl' = \clkvl[\resets:=0] \models \tginv(\PP',\NN',\DD')$. This edge
+must be justified by \textbf{E\_Rec} from an edge
+$(\PP_1[\rec X.\PP_1/X],\NN,\DD)$ $\goes{\clkcond,\any,\resets}
+(\PP',\NN',\DD')$. So, by \textbf{TA.1}, there is a transition \break
+$((\PP_1[\rec X.\PP_1/X],\NN,\DD),\clkvl) \goes{\any}
+((\PP',\NN',\DD'),\clkvl')$. But $\age(\rec X.\PP_1,\clkvl)$ 
+$= \age(\PP_1[\rec X.\PP_1/X],\clkvl)$, which 
+is derived by a shorter calculation, and so, by i.h., we
+have $(\P,\N,\D) \goes{\any} (\P',\N',\D')$ and there exist 
+$\PP'' \bisim \PP'$ and 
+$\P'' \bisim \P'$ such that
+$((\PP'',\NN',\DD'),\clkvl')\birel(\P'',\N',\D')$.
+
+\item $\any = \ti \in \Time$: \\
+Then, the transition $((\rec X.\PP_1,\NN,\DD),\clkvl) \goes{\ti}
+((\PP',\NN',\DD'),\clkvl')$ must be derived by \textbf{TA.2},
+where $(\PP',\NN',\DD') \syneq (\rec X.\PP_1,\NN,\DD)$,
+$\clkvl' = \clkvl + \ti$ and $\forall \ti' \in \Time | \ti' \leq \ti \such 
+\clkvl + \ti' \models \tginv(\rec X.\PP_1,\NN,\DD)$. But then, by 
+Definition~\ref{def:tginvariant}, we have $\forall \ti' \in \Time | 
+\ti' \leq \ti \such  \clkvl + \ti'
+\models \tginv(\PP_1[\rec X.\PP_1/X],\NN,\DD)$, and so, by \textbf{TA.2},
+there is a transition $((\PP_1[\rec X.\PP_1/X],\NN,\DD),\clkvl) \goes{\ti}
+((\PP_1[\rec X.\PP_1/X],\NN,\DD),\clkvl')$. By i.h., we have
+$(\P,\N,\D) \goes{\ti} (\P',\N',\D')$ and there exist 
+$\PP'' \bisim \PP_1[\rec X.\PP_1/X]$ and 
+$\P'' \bisim \P'$ such that
+$((\PP_1[\rec X.\PP_1/X],\NN,\DD),\clkvl')$ $\birel(\P'',\N',\D')$.
+But $\PP'' \bisim \PP_1[\rec X.\PP_1/X] \bisim \rec X.\PP_1$, as required.
+\end{enumerate}
+\end{enumerate}
+\end{enumerate}
+\qed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

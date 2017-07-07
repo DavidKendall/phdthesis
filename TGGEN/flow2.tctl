@@ -1,0 +1,3 @@
+init IMPL (AB(enable(OP_AdjustValve) IMPL (AD{<=100}
+  ((AB{<9885} NOT enable(OP_AdjustValve)) AND 
+   (AD{<=10165} enable(OP_AdjustValve))))))

@@ -1,0 +1,344 @@
+#states                     48
+#trans                     146
+#clocks                      5
+H1 H2 H3 H4 H5
+
+
+
+state: 0
+invar: H3 <= 90 AND H5 <= 10250
+trans: 
+H3 >= 85 => OP_ReadSensor; RESET{ H1 }; goto 1
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 0
+
+state: 1
+invar: H1 <= 0 AND H5 <= 10250
+trans: 
+true => SND_0_0_0; RESET{ H1 }; goto 2
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 0
+
+state: 2
+invar: H1 <= 0 AND H5 <= 10250
+trans: 
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 3
+true => FP_0_0_0; RESET{ H1 H2 }; goto 4
+
+state: 3
+invar: H1 <= 0 AND H3 <= 90 AND H5 <= 10250
+trans: 
+H3 >= 85 => OP_ReadSensor; RESET{ H1 }; goto 5
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 3
+true => FP_0_0_0; RESET{ H1 H2 }; goto 6
+
+state: 4
+invar: H2 <= 53 AND H5 <= 10250
+trans: 
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 6
+H2 >= 43 => PA_0_0_0; RESET{ H1 }; goto 7
+
+state: 5
+invar: H1 <= 0 AND H1 <= 0 AND H5 <= 10250
+trans: 
+true => SND_0_0_0; RESET{ H1 }; goto 2
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 3
+true => FP_0_0_0; RESET{ H1 H2 }; goto 8
+
+state: 6
+invar: H2 <= 53 AND H3 <= 90 AND H5 <= 10250
+trans: 
+H3 >= 85 => OP_ReadSensor; RESET{ H1 }; goto 8
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 6
+H2 >= 43 => PA_0_0_0; RESET{ H1 }; goto 9
+
+state: 7
+invar: H1 <= 0 AND H5 <= 10250
+trans: 
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 9
+true => RCV_0_0_0; RESET{ H1 H4 }; goto 10
+
+state: 8
+invar: H2 <= 53 AND H1 <= 0 AND H5 <= 10250
+trans: 
+true => SND_0_0_0; RESET{ H1 }; goto 11
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 6
+H2 >= 43 => PA_0_0_0; RESET{ H1 }; goto 12
+
+state: 9
+invar: H1 <= 0 AND H3 <= 90 AND H5 <= 10250
+trans: 
+H3 >= 85 => OP_ReadSensor; RESET{ H1 }; goto 12
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 9
+true => RCV_0_0_0; RESET{ H1 H4 }; goto 13
+
+state: 10
+invar: H1 <= 0 AND H5 <= 10250 AND H4 <= 300
+trans: 
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 13
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 7
+true => AP_0; RESET{ H1 H2 }; goto 14
+
+state: 11
+invar: H2 <= 53 AND H5 <= 10250
+trans: 
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 15
+H2 >= 43 => PA_0_0_0; RESET{ H1 }; goto 16
+
+state: 12
+invar: H1 <= 0 AND H1 <= 0 AND H5 <= 10250
+trans: 
+true => SND_0_0_0; RESET{ H1 }; goto 16
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 9
+true => RCV_0_0_0; RESET{ H1 H4 }; goto 17
+
+state: 13
+invar: H1 <= 0 AND H3 <= 90 AND H5 <= 10250 AND H4 <= 300
+trans: 
+H3 >= 85 => OP_ReadSensor; RESET{ H1 }; goto 17
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 13
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 9
+true => AP_0; RESET{ H1 H2 }; goto 18
+
+state: 14
+invar: H2 <= 12 AND H5 <= 10250 AND H4 <= 300
+trans: 
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 18
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 19
+H2 >= 10 => PF_0; RESET{ H1 }; goto 20
+
+state: 15
+invar: H2 <= 53 AND H3 <= 90 AND H5 <= 10250
+trans: 
+H3 >= 85 => OP_ReadSensor; RESET{ H1 }; goto 21
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 15
+H2 >= 43 => PA_0_0_0; RESET{ H1 }; goto 22
+
+state: 16
+invar: H1 <= 0 AND H5 <= 10250
+trans: 
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 22
+true => RCV_0_0_0; RESET{ H1 H4 }; goto 23
+
+state: 17
+invar: H1 <= 0 AND H1 <= 0 AND H5 <= 10250 AND H4 <= 300
+trans: 
+true => SND_0_0_0; RESET{ H1 }; goto 23
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 13
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 12
+true => AP_0; RESET{ H1 H2 }; goto 24
+
+state: 18
+invar: H2 <= 12 AND H3 <= 90 AND H5 <= 10250 AND H4 <= 300
+trans: 
+H3 >= 85 => OP_ReadSensor; RESET{ H1 }; goto 24
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 18
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 25
+H2 >= 10 => PF_0; RESET{ H1 }; goto 26
+
+state: 19
+invar: H2 <= 12 AND H5 <= 10250
+trans: 
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 25
+H2 >= 10 => PF_0; RESET{ H1 }; goto 27
+
+state: 20
+invar: H5 <= 10250 AND H4 <= 300
+trans: 
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 26
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 27
+
+state: 21
+invar: H2 <= 53 AND H1 <= 0 AND H5 <= 10250
+trans: 
+true => SND_0_0_0; RESET{ H1 }; goto 11
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 15
+H2 >= 43 => PA_0_0_0; RESET{ H1 }; goto 28
+
+state: 22
+invar: H1 <= 0 AND H3 <= 90 AND H5 <= 10250
+trans: 
+H3 >= 85 => OP_ReadSensor; RESET{ H1 }; goto 28
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 22
+true => RCV_0_0_0; RESET{ H1 H4 }; goto 29
+
+state: 23
+invar: H1 <= 0 AND H5 <= 10250 AND H4 <= 300
+trans: 
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 29
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 16
+true => AP_0; RESET{ H1 H2 }; goto 30
+
+state: 24
+invar: H2 <= 12 AND H1 <= 0 AND H5 <= 10250 AND H4 <= 300
+trans: 
+true => SND_0_0_0; RESET{ H1 }; goto 30
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 18
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 31
+H2 >= 10 => PF_0; RESET{ H1 }; goto 32
+
+state: 25
+invar: H2 <= 12 AND H3 <= 90 AND H5 <= 10250
+trans: 
+H3 >= 85 => OP_ReadSensor; RESET{ H1 }; goto 31
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 25
+H2 >= 10 => PF_0; RESET{ H1 }; goto 0
+
+state: 26
+invar: H3 <= 90 AND H5 <= 10250 AND H4 <= 300
+trans: 
+H3 >= 85 => OP_ReadSensor; RESET{ H1 }; goto 32
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 26
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 0
+
+state: 27
+invar: H5 <= 10250
+trans: 
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 0
+
+state: 28
+invar: H1 <= 0 AND H1 <= 0 AND H5 <= 10250
+trans: 
+true => SND_0_0_0; RESET{ H1 }; goto 16
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 22
+true => RCV_0_0_0; RESET{ H1 H4 }; goto 33
+
+state: 29
+invar: H1 <= 0 AND H3 <= 90 AND H5 <= 10250 AND H4 <= 300
+trans: 
+H3 >= 85 => OP_ReadSensor; RESET{ H1 }; goto 33
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 29
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 22
+true => AP_0; RESET{ H1 H2 }; goto 34
+
+state: 30
+invar: H2 <= 12 AND H5 <= 10250 AND H4 <= 300
+trans: 
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 34
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 35
+H2 >= 10 => PF_0; RESET{ H1 }; goto 36
+
+state: 31
+invar: H2 <= 12 AND H1 <= 0 AND H5 <= 10250
+trans: 
+true => SND_0_0_0; RESET{ H1 }; goto 35
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 25
+H2 >= 10 => PF_0; RESET{ H1 }; goto 1
+
+state: 32
+invar: H1 <= 0 AND H5 <= 10250 AND H4 <= 300
+trans: 
+true => SND_0_0_0; RESET{ H1 }; goto 36
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 26
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 1
+
+state: 33
+invar: H1 <= 0 AND H1 <= 0 AND H5 <= 10250 AND H4 <= 300
+trans: 
+true => SND_0_0_0; RESET{ H1 }; goto 23
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 29
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 28
+true => AP_0; RESET{ H1 H2 }; goto 37
+
+state: 34
+invar: H2 <= 12 AND H3 <= 90 AND H5 <= 10250 AND H4 <= 300
+trans: 
+H3 >= 85 => OP_ReadSensor; RESET{ H1 }; goto 37
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 34
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 38
+H2 >= 10 => PF_0; RESET{ H1 }; goto 39
+
+state: 35
+invar: H2 <= 12 AND H5 <= 10250
+trans: 
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 38
+H2 >= 10 => PF_0; RESET{ H1 }; goto 2
+
+state: 36
+invar: H1 <= 0 AND H5 <= 10250 AND H4 <= 300
+trans: 
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 39
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 2
+true => FP_0_0_0; RESET{ H1 H2 }; goto 40
+
+state: 37
+invar: H2 <= 12 AND H1 <= 0 AND H5 <= 10250 AND H4 <= 300
+trans: 
+true => SND_0_0_0; RESET{ H1 }; goto 30
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 34
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 41
+H2 >= 10 => PF_0; RESET{ H1 }; goto 42
+
+state: 38
+invar: H2 <= 12 AND H3 <= 90 AND H5 <= 10250
+trans: 
+H3 >= 85 => OP_ReadSensor; RESET{ H1 }; goto 41
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 38
+H2 >= 10 => PF_0; RESET{ H1 }; goto 3
+
+state: 39
+invar: H1 <= 0 AND H3 <= 90 AND H5 <= 10250 AND H4 <= 300
+trans: 
+H3 >= 85 => OP_ReadSensor; RESET{ H1 }; goto 42
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 39
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 3
+true => FP_0_0_0; RESET{ H1 H2 }; goto 43
+
+state: 40
+invar: H2 <= 53 AND H5 <= 10250 AND H4 <= 300
+trans: 
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 43
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 4
+H2 >= 43 => PA_0_0_0; RESET{ H1 }; goto 10
+
+state: 41
+invar: H2 <= 12 AND H1 <= 0 AND H5 <= 10250
+trans: 
+true => SND_0_0_0; RESET{ H1 }; goto 35
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 38
+H2 >= 10 => PF_0; RESET{ H1 }; goto 5
+
+state: 42
+invar: H1 <= 0 AND H1 <= 0 AND H5 <= 10250 AND H4 <= 300
+trans: 
+true => SND_0_0_0; RESET{ H1 }; goto 36
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 39
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 5
+true => FP_0_0_0; RESET{ H1 H2 }; goto 44
+
+state: 43
+invar: H2 <= 53 AND H3 <= 90 AND H5 <= 10250 AND H4 <= 300
+trans: 
+H3 >= 85 => OP_ReadSensor; RESET{ H1 }; goto 44
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 43
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 6
+H2 >= 43 => PA_0_0_0; RESET{ H1 }; goto 13
+
+state: 44
+invar: H2 <= 53 AND H1 <= 0 AND H5 <= 10250 AND H4 <= 300
+trans: 
+true => SND_0_0_0; RESET{ H1 }; goto 45
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 43
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 8
+H2 >= 43 => PA_0_0_0; RESET{ H1 }; goto 17
+
+state: 45
+invar: H2 <= 53 AND H5 <= 10250 AND H4 <= 300
+trans: 
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 46
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 11
+H2 >= 43 => PA_0_0_0; RESET{ H1 }; goto 23
+
+state: 46
+invar: H2 <= 53 AND H3 <= 90 AND H5 <= 10250 AND H4 <= 300
+trans: 
+H3 >= 85 => OP_ReadSensor; RESET{ H1 }; goto 47
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 46
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 15
+H2 >= 43 => PA_0_0_0; RESET{ H1 }; goto 29
+
+state: 47
+invar: H2 <= 53 AND H1 <= 0 AND H5 <= 10250 AND H4 <= 300
+trans: 
+true => SND_0_0_0; RESET{ H1 }; goto 45
+H5 >= 10000 => OP_PERIOD; RESET{ H1 H3 H5 }; goto 46
+H4 >= 200 => OP_AdjustValve; RESET{ H1 }; goto 21
+H2 >= 43 => PA_0_0_0; RESET{ H1 }; goto 33

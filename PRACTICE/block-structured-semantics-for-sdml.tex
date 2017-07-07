@@ -1,0 +1,61 @@
+Recall that in \bcandle\ the primary semantic object in the treatment
+of data is a \emph{valuation}, which is simply a mapping from data
+variables to values: $\valuation \defs \Var \fun \V$. This simple idea
+needs to be extended in two ways in giving the semantics of \sdml:
+\begin{enumerate}
+\item a standard technique for managing block structure is employed,
+  in which a valuation $\val \in \valuation$ is presented as the composition
+  of a pair of maps $\store \bcomp \env$, where $\store \in \Store$ is
+  a mapping from storage locations to values, $\Store \defs \Location
+  \fun \V$, and $\env \in \Env$ is a mapping from data variables to
+  storage locations, $\Env \defs \Var \fun \Location$;
+\item an auxiliary environment $\Aenv$ is introduced in order to
+  keep track of the meaning of the other objects in an \sdml\ program:
+  types, constants, functions and procedures.
+\end{enumerate}
+
+Now, the semantic functions which are required later are:
+\begin{enumerate}
+\item a function $\evalCanExpr{e}$ which gives the meaning of 
+  an expression $e$: 
+  \[ \evalCanExprFN: \canExpr \fun \Aenv \fun \Env \fun \Store \fun \V \]
+\item a function $\evalCanSmnt{s}$ which gives the possble meanings of a
+  statement $s$:
+  \[ \evalCanSmntFN: \canSmnt \fun \Aenv \fun \Env \fun \Store 
+     \fun 2^\Store \]
+\end{enumerate} 
+ 
+Notice that because \sdml\ is a non-deterministic language,
+a statement maps a store to a \emph{set} of result stores. 
+Nevertheless, the semantic definition is quite straightforward; the interested
+reader is referred to standard texts such as Schmidt~\cite{sch:86}
+or Winskel~\cite{win:93} for further details.
+
+In practice, it is convenient to continue to work with simple valuations
+when considering the use of \sdml\ with \candle, so we prefer to write
+$\evalCanExpr{e}\val$ and $\evalCanSmnt{s}\val$, rather than the more
+long-winded $\evalCanExpr{e} \aenv\ \env\ \store$ and 
+$\evalCanSmnt{s} \aenv\ \env\ \store$. Firstly, observe  
+\begin{itemize}
+\item the auxiliary environment $\aenv$ remains constant throughout, so it
+ should not cause confusion simply to assume its presence without 
+  actually mentioning it;
+\item for any valuation $\val \in \valuation$, there exists a store
+  $\store \in \Store$ and environment $\env \in \Env$ such that
+  $\val = \store \bcomp \env$; similarly, a store and environment define
+  a valuation.
+\end{itemize}
+Now, the following interpretations of $\evalCanExprFN$ and $\evalCanSmntFN$ 
+should be clear:
+  \[ \evalCanExpr{e}\val = \vv, \]
+  where $\vv \in \V$ satisfies 
+  \[ \exists \store \in \Store; \env \in \Env \such
+  \val = \store \bcomp \env \land \vv = \evalCanExpr{e} \aenv\ \env\ \store\]
+and
+\begin{zed}
+\evalCanSmnt{s}\val = \{ \val' \in \valuation |
+      \exists \store,\store' \in \Store; \env \in \Env \such
+      \val = \store \bcomp \env \land \\ 
+\t3   \store' \in \evalCanSmnt{s} \aenv\
+      \env\ \store \land \val' = \store' \bcomp \env \}
+\end{zed}

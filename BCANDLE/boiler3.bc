@@ -1,0 +1,39 @@
+#define skip [ID:0,0]
+
+Temperature | Control
+
+where
+
+Temperature =
+    [ReadTemperature:2,4]; k!temperature.v1; idle
+    [>
+    [Period:19,20]; Temperature
+
+Control = 
+   [Configure:0,2];
+   (GetValueAndTest
+   + 
+   [Timeout:9,10]; k!sensor_failure._); 
+   Control
+
+GetValueAndTest = 
+  k?temperature.v2; (TempOk -> skip + TempHigh -> k!temp_high._
+                                    + TempLow -> k!temp_low._)
+
+network 
+/*                  Pri   dlb  dub  dlB duB   */
+k = (temperature    : 1,    4,   5,   1,  2;
+     sensor_failure : 2,    4,   5,   1,  2;
+     temp_high      : 3,    4,   5,   1,  2;
+     temp_low       : 4,    4,   5,   1,  2)
+
+data
+v1 = 0
+v2 = 0
+
+
+
+
+
+
+

@@ -1,0 +1,510 @@
+\chapter{The \candle\ Grammar} \label{chap:canparse}
+
+%token            CAN_AND
+%token            CAN_ASSIGN
+%token            CAN_ASTERISK
+%token            CAN_BEHAVIOUR
+%token <bool>     CAN_BOOL 
+%token            CAN_CHANNEL
+%token            CAN_CLOSEPAREN
+%token            CAN_CLOSESQB
+%token            CAN_COLON
+%token            CAN_COLONCOLON
+%token            CAN_COMMA
+%token            CAN_CONSTANT
+%token            CAN_DO
+%token            CAN_DOT
+%token            CAN_ELAPSE
+%token            CAN_ELSE
+%token            CAN_ELSIF
+%token            CAN_END
+%token            CAN_EOF
+%token            CAN_EQ
+%token            CAN_EXCEPTION
+%token            CAN_EXIT
+%token            CAN_EVERY
+%token            CAN_FORWARDSLASH
+%token            CAN_FUNCTION
+%token            CAN_GEQ
+%token            CAN_GTR
+%token            CAN_IDLE
+%token            CAN_IF
+%token            CAN_IN
+%token            CAN_INOUT
+%token <int>      CAN_INTEGER
+%token            CAN_IS
+%token            CAN_LE
+%token            CAN_LEQ
+%token            CAN_LOOP
+%token            CAN_MINUS
+%token            CAN_MOD
+%token            CAN_MODULE
+%token            CAN_NEQ
+%token            CAN_NOT
+%token            CAN_NULL
+%token            CAN_OPENPAREN
+%token            CAN_OPENSQB
+%token            CAN_OR
+%token            CAN_OUT
+%token            CAN_PAR
+%token            CAN_PLUS
+%token            CAN_PROCEDURE
+%token            CAN_QUESTION
+%token            CAN_RCV
+%token            CAN_RETURN
+%token            CAN_RIGHTARROW
+%token            CAN_SELECT
+%token            CAN_SEMICOLON
+%token            CAN_SND
+%token <Symbol.t> CAN_SYMBOL
+%token            CAN_THEN
+%token            CAN_TRAP
+%token            CAN_TYPE
+%token            CAN_UMINUS
+%token            CAN_UNITVALUE
+%token            CAN_VAR
+
+%left CAN_OR
+%left CAN_AND
+%nonassoc CAN_NOT
+%left CAN_EQ CAN_NEQ CAN_LE CAN_LEQ CAN_GEQ CAN_GTR
+%left CAN_PLUS CAN_MINUS
+%left CAN_ASTERISK CAN_FORWARDSLASH CAN_MOD
+%nonassoc CAN_UMINUS
+%start program
+%type <Canasta.program> program
+%%
+%/* parse.mly Rules */
+
+\section{Syntax Notation}
+The grammar of \candle\ is described in an extended Backus-Naur-Form (BNF).
+\begin{itemize}
+\item Italicized words are used to denote syntactic categories 
+  (non-terminal symbols), for example:
+  \bgrm
+  \quad module
+  \alt  formalParameter
+  \alt  statement
+  \egrm
+\item {\tt Typewriter} font is used for lexical elements of the
+  language (terminal symbols) such as keywords and special symbols,
+  for example:
+  \bgrm
+  \quad \trm{function}
+  \alt  \trm{>=}
+  \alt  \trm{every}
+  \egrm
+\item A list of alternative items is written with each alternative
+  occurring on a new line, for example:
+  \bgrm
+     parameterMode \Derive
+       \trm{in}
+     \alt \trm{out}
+     \alt \trm{inout}                
+  \egrm
+  Indentation is used to show that a new line is intended as a continuation of 
+  the previous item, rather than the beginning of a new alternative.
+\item \opt{$\cdot$} denotes an optional item, for example:
+\bgrm                                    
+loopStatement \Derive
+  \trm{loop} \opt{\identifier{loop}} \trm{do} seqStatement \trm{end} \trm{loop}
+\egrm
+is a rule for a \trm{loop} statement, in which a loop{\it Identifier} may be
+present but is not required.
+\item \zom{$\cdot$} denotes zero or more occurrences of an item, and
+  \oom{$\cdot$} denotes one or more occurrences of an item, for example
+\bgrm
+module \Derive
+  \trm{module} \identifier{module} \trm{is} 
+  \zom{declSection} \opt{behaviour} \trm{end} \trm{module} 
+\egrm 
+is a rule which shows that zero or more occurrences of a \emph{declSection}
+item may occur in a \emph{module} declaration.
+\end{itemize}
+
+\section{Lexical Conventions}
+The lexical conventions of \candle\ are standard:
+\begin{itemize}
+\item Whitespace characters are space, tab and newline. Any string
+  starting with two dashes ``{\tt --}'' and ending with a newline is
+  a \emph{comment}. Multiple-line comments start with the string ``{\tt (*}''
+  and end with the string ``{\tt *)}''.
+\item A \emph{number} is any sequence of digits. 
+\item An \emph{identifier} is any sequence of characters in the
+  set $\{A-Z,a-z,0-9,\_\}$ which starts with a letter, excluding
+  the reserved words shown below. All characters
+  in an identifier are significant, and case is significant.
+\item The \emph{reserved words} are: \\
+\begin{tabular}{lllllll}
+\trm{and} &
+\trm{behaviour} &
+\trm{channel}  &
+\trm{const} &
+\trm{do}  &
+\trm{elapse} \\
+\trm{else} &
+\trm{elsif} &
+\trm{end} &
+\trm{exception} &
+\trm{exit} &
+\trm{every} &
+\trm{function} \\
+\trm{if} &
+\trm{idle} &
+\trm{in} &
+\trm{inout} &
+\trm{is} &
+\trm{loop} &
+\trm{mod} \\
+\trm{module} &
+\trm{not} &
+\trm{null} &
+\trm{or} & 
+\trm{out} &
+\trm{procedure} &
+\trm{rcv} \\
+\trm{return} &
+\trm{select} &
+\trm{snd} &
+\trm{then} &
+\trm{trap} &
+\trm{type} &
+\trm{var} 
+\end{tabular}
+\end{itemize}
+
+\section{Modules}
+\bgrm
+program \Derive \zom{module}                 
+\egrm
+
+\bgrm
+module \Derive
+  \trm{module} \identifier{module} \trm{is} 
+  \zom{declSection} \opt{behaviour} \trm{end} \trm{module}
+\egrm
+
+\section{Declarations}
+\bgrm
+declSection \Derive
+     typeDeclSection              
+\alt constantDeclSection       
+\alt variableDeclSection           
+\alt functionDeclSection           
+\alt procedureDeclSection          
+\alt channelDeclSection            
+\alt exceptionDeclSection          
+\egrm
+
+\subsection{Type Declarations}
+\bgrm
+typeDeclSection \Derive
+  \trm{type} typeDecl \zom{\trm{;} typeDecl}     
+\egrm
+
+\bgrm
+typeDecl \Derive
+  \identifier{type}            
+\egrm
+
+\subsection{Constant Declarations}
+\bgrm
+constantDeclSection \Derive
+  \trm{const} constantDecl \zom{\trm{;} constantDecl} 
+\egrm
+
+\bgrm
+constantDecl \Derive
+  \identifier{constant} \trm{:} \identifier{type}
+\egrm
+
+\subsection{Variable Declarations}
+\bgrm
+variableDeclSection \Derive
+  \trm{var} variableDecl \zom{\trm{;} variableDecl}
+\egrm
+
+\bgrm
+variableDecl \Derive
+  \identifier{variable} \trm{:} \identifier{type}
+\egrm
+
+\subsection{Function and Procedure Declarations}
+\bgrm
+functionDeclSection \Derive
+  \trm{function} functionDecl \zom{\trm{;} functionDecl} 
+\egrm
+
+\bgrm
+functionDecl \Derive
+  \identifier{function} \trm{(} \opt{formalParameter \zom{\trm{;} formalParameter}} \trm{)} 
+    \trm{:} \identifier{type}
+\egrm
+
+\bgrm
+procedureDeclSection \Derive
+  \trm{procedure} procedureDecl \zom{\trm{;} procedureDecl} 
+\egrm
+
+\bgrm
+procedureDecl \Derive
+  \identifier{procedure} \trm{(} \opt{formalParameter \zom{\trm{;} formalParameter}} \trm{)} 
+\egrm
+
+\bgrm
+formalParameter \Derive
+  \opt{parameterMode} \identifier{type}
+\egrm
+
+\bgrm
+parameterMode \Derive
+     \trm{in}
+\alt \trm{out}
+\alt \trm{inout}                
+\egrm
+
+\subsection{Channel Declarations}
+\bgrm
+channelDeclSection \Derive
+  \trm{channel} channelDecl \zom{\trm{;} channelDecl} 
+\egrm
+
+\bgrm
+channelDecl \Derive
+  \identifier{channel} \opt{channelSpec}
+\egrm
+
+\bgrm
+channelSpec \Derive
+  \trm{:} \trm{(} messageSpec \zom{\trm{,} messageSpec} \trm{)}
+\egrm
+
+\bgrm
+messageSpec \Derive
+  \identifier{message} \opt{\trm{.} \identifier{type}}
+\egrm
+
+\subsection{Exception Declarations}
+\bgrm
+exceptionDeclSection \Derive
+  \trm{exception} exceptionDecl \zom{\trm{;} exceptionDecl}
+\egrm
+
+\bgrm
+exceptionDecl \Derive
+  \identifier{exception} \trm{:} \identifier{type}
+\egrm
+
+\section{Expressions}
+
+\bgrm
+expression \Derive
+     constantLiteral               
+\alt identifier                    
+\alt \trm{?} \identifier{exception}                               
+\alt functionCall               
+\alt \trm{-} expression                                 
+\alt expression \trm{*} expression                                
+\alt expression \trm{/} expression                               
+\alt expression \trm{+} expression         
+\alt expression \trm{-} expression                                
+\alt expression \trm{mod} expression      
+\alt expression \trm{=} expression                          
+\alt expression \trm{/=} expression                               
+\alt expression \trm{<} expression                                
+\alt expression \trm{<=} expression                                
+\alt expression \trm{>} expression                              
+\alt expression \trm{>=} expression                               
+\alt \trm{not} expression               
+\alt expression \trm{and} expression      
+\alt expression \trm{or} expression       
+\alt \trm{(} expression \trm{)}
+\egrm
+
+The precedence of operators is given below. Operators of equal
+precedence are shown on the same line. Operators of lower precedence
+are shown first. All operators are left-associative, except unary minus
+and logical negation which are non-associative.
+
+\bgrm
+\quad\trm{or}
+\alt \trm{and}
+\alt \trm{not}
+\alt \trm{=} \quad \trm{/=} \quad \trm{<} \quad \trm{<=} \quad \trm{>=} \quad \trm{>}
+\alt \trm{+} \quad \trm{-}
+\alt \trm{*} \quad \trm{/} \quad \trm{mod}
+\egrm
+
+\bgrm
+constantLiteral \Derive
+     \trm{\unitval}
+\alt \trm{false}
+\alt \trm{true}                 
+\alt \numb                   
+\egrm
+
+\bgrm
+functionCall \Derive
+  \identifier{function} \trm{(} \opt{expression \zom{\trm{,} expression}} \trm{)}
+\egrm
+
+
+
+\section{Behaviour}
+\bgrm
+behaviour \Derive
+  \trm{behaviour} statement      
+\egrm
+
+\bgrm
+statement \Derive
+  seqStatement \trm{|} statement
+\alt seqStatement                 
+\egrm
+
+\bgrm
+seqStatement \Derive
+  atomicStatement \trm{;} seqStatement
+\alt atomicStatement               
+\egrm
+
+\bgrm
+atomicStatement \Derive
+     \trm{null}               
+\alt \trm{idle}
+\alt sndStatement               
+\alt rcvStatement                  
+\alt elapseStatement               
+\alt assignmentStatement          
+\alt procedureCall                                
+\alt ifStatement                   
+\alt loopStatement                 
+\alt everyStatement                
+\alt selectStatement              
+\alt trapStatement                 
+\alt exitStatement                 
+\alt moduleInstantiation          
+\egrm
+
+\subsection{Send statement}
+\bgrm
+sndStatement \Derive
+   \trm{snd} \trm{(} \identifier{channel} \trm{,} \identifier{message}
+     \opt{\trm{.} expression} \trm{)}
+\egrm
+
+\subsection{Receive statement}
+\bgrm
+rcvStatement \Derive
+  \trm{rcv} \trm{(} \identifier{channel} \trm{,} \identifier{message}
+    \opt{\trm{.} \identifier{variable}} \trm{)}                                            
+\egrm
+
+\subsection{Elapse statement}
+\bgrm
+elapseStatement \Derive
+  \trm{elapse} expression        
+\egrm
+
+\subsection{Assignment statement and Procedure Call}
+\bgrm
+assignmentStatement \Derive
+  \identifier{variable} \trm{:=} expression
+\egrm
+
+\bgrm
+procedureCall \Derive
+  \identifier{procedure} \trm{(} \opt{expression \zom{\trm{,} expression}} \trm{)}
+\egrm
+
+\subsection{If statement}
+\bgrm
+ifStatement \Derive
+  \trm{if} thenPart \zom{elsifPart} \opt{elsePart} \trm{end} \trm{if}
+\egrm
+
+\bgrm
+thenPart \Derive
+  expression \trm{then} seqStatement   
+\egrm
+
+\bgrm
+elsifPart \Derive
+  \trm{elsif} expression \trm{then} seqStatement
+\egrm
+
+\bgrm
+elsePart \Derive
+  \trm{else} seqStatement       
+\egrm
+
+\subsection{Repetition statements}
+\bgrm                                    
+loopStatement \Derive
+  \trm{loop} \opt{\identifier{loop}} \trm{do} seqStatement \trm{end} \trm{loop}
+\egrm
+
+\bgrm
+everyStatement \Derive
+  \trm{every} expression \trm{do} seqStatement \trm{end} \trm{every}
+\egrm
+
+\subsection{Select statement}
+\bgrm
+selectStatement \Derive
+  \trm{select} \oom{selectAlternative} \opt{\trm{in} seqStatement} \trm{end} \trm{select}
+\egrm
+
+\bgrm
+selectAlternative \Derive
+  \trm{::} rcvElapseOrModuleInstantiation \opt{\trm{;} seqStatement}  
+\egrm
+
+\bgrm
+rcvElapseOrModuleInstantiation \Derive
+     rcvStatement                 
+\alt elapseStatement              
+\alt moduleInstantiation          
+\egrm
+
+\subsection{Trap statement}
+\bgrm
+trapStatement \Derive
+  \trm{trap} \oom{trapAlternative} \trm{in} seqStatement \trm{end} \trm{trap}
+\egrm
+
+\bgrm
+trapAlternative \Derive
+  \trm{::} \identifier{exception} \trm{=>} seqStatement
+\egrm
+
+\bgrm
+exitStatement \Derive
+  \trm{exit} \identifier{exception} \opt{\trm{(} expression \trm{)}}
+\egrm
+
+\subsection{Module Instantiation}
+\bgrm 
+moduleInstantiation \Derive
+  \identifier{module} \opt{\trm{[} renaming \zom{\trm{,} renaming} \trm{]}} 
+\egrm
+
+\bgrm
+renaming \Derive
+  expression \trm{/} identifier
+\egrm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

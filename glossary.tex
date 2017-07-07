@@ -1,0 +1,279 @@
+\twocolumn
+{\raggedbottom \small
+\chapter{Glossary}\label{chap:glossary}
+Below are the notations used in this dissertation together with the
+section in which each notation is defined or first appears.
+
+\raggedright
+\section*{Sets of Numbers} 
+\begin{tabular}{l>{\raggedright}p{.5\linewidth}<{}l}
+$\nat$ & Natural numbers & \ref{sec:msctime} \\
+$\Ninf$ & $\nat \cup \{\infinity\}$ & \ref{ss:tgexpclocksnet} \\
+$\num$ & Integer numbers & \ref{sec:msctime} \\
+$\Zinf$ & $\num \cup \{\infinity\}$ & \ref{ss:mscdbm} \\
+$\rat$ & Rational numbers & \ref{sec:msctime} \\
+$\real$ & Non-negative real\hfil\break numbers & \ref{sec:msctime} \\ 
+$\TimeInf$ & $\Time \cup \{\infinity\}$ & \ref{sec:msctime} \\
+\end{tabular}
+
+\section*{Actions} 
+\begin{tabular}{l>{\raggedright}p{.5\linewidth}<{}l}
+$\Time$ & Set of delay actions & \ref{ss:msctts} \\
+$\ti$ & Delay action of duration $\ti$ in $\Time$ & \ref{ss:msctts} \\
+$\tau$ & Time-abstracted delay action & \ref{ss:mscregiongraph} \\
+$\NetLabels$ & Set of network actions & \ref{ss:bcnetbehaviour} \\
+$\netw$ & Network action in $\NetLabels$ & \ref{ss:bcopsem} \\
+$\nort$ & Network or delay action in $\NetLabels \cup \Time$ & \ref{ss:bcopsem} \\
+$\ProgLabels$ & Set of process actions & \ref{ss:bcopsem} \\
+$\prog$ & Process action in $\ProgLabels$ & \ref{ss:bcopsem} \\
+$\Actions$ & Set of discrete actions & \ref{ss:msctts} \\
+$a$ & Discrete action in $\Actions$ & \ref{ss:msctts} \\
+$\Actions_\tau$ & $\Actions \cup \{\tau\}$ & \ref{ss:mscregiongraph} \\
+$\Labels$ & Set of all actions & \ref{sec:msclts} \\
+$\any$ & Any action in $\Labels$ & \ref{sec:msclts} \\
+\end{tabular}
+
+\section*{Labelled Transition Systems (LTS)} 
+\begin{tabular}{l>{\raggedright}p{.5\linewidth}<{}l}
+$\SS$ & Labelled transition system (LTS) & \ref{sec:msclts} \\
+$\States$ & Set of states of a LTS & \ref{sec:msclts} \\
+$\Init$ & Initial state of a LTS & \ref{sec:msclts} \\
+$\state$ & State of LTS in $\States$ & \ref{sec:msclts} \\ 
+$\path$ & Path $\state_0\any_0\state_1\any_1\cdots$ in LTS & \ref{sec:msclts} \\
+$\lbl{\path}(i)$ & Label of $i$\emph{-th} action in the path $\path$ & \ref{sec:msclts} \\ 
+$\Exec_{\SS}(\state)$ & Set of executions (infinite paths) from state $\state$ in LTS $\SS$ & \ref{ss:msctts} \\
+$\exec$ & Execution in $\Exec_{\SS}$ & \ref{ss:msctts} \\
+$\delay{\exec}(i)$ & Duration of $i$\emph{-th} action in the execution $\exec$ & \ref{ss:msctts} \\
+$\Delay{\exec}(n)$ & Time elapsed in $\exec$ from $\state_0$ to $\state_n$ & \ref{ss:msctts} \\
+$\Execdiv_\SS(\state)$ & Set of time divergent executions from $\state$ & \ref{ss:msctts} \\
+$\SS_1 \parallel \SS_2$ & Parallel composition of LTS's & \ref{ss:mscltscomposition} \\
+\end{tabular}
+
+\section*{Transition Relations}
+\begin{tabular}{l>{\raggedright}p{.5\linewidth}<{}l}
+${}\goes{}{}$ & Transition relation & \ref{sec:msclts} \\
+${}\ngoes{n}{}$ & $n$-ary composition of ${}\goes{}{}$ & \ref{sec:msclts} \\
+${}\ngoes{\star}{}$ & $n$-ary composition of ${}\goes{}{}$ for some $n \in \nat$ & \ref{sec:msclts} \\
+${}\goesn{}{}$ & Network transition relation & \ref{ss:bcnetbehaviour} \\
+${}\goesRG{}{}$ & Region graph transition relation & \ref{ss:mscregiongraph} \\
+${}\goesSG{}{}$ & Simulation graph transition relation & \ref{sec:mscsimgraph} \\
+
+\end{tabular}
+
+\section*{Equivalence Relations}
+\begin{tabular}{l>{\raggedright}p{.5\linewidth}<{}l}
+$\P \syneq \Q$ & Syntactic identity & \ref{sec:bcdata} \\
+$\P \bisim \Q$ & Strong bisimulation & \ref{ss:bcstrongequivalence} \\
+$\P = \Q$ & Equality (modulo equational theory) & \ref{ss:bcequality} \\
+\end{tabular}
+
+\section*{Clocks}
+\begin{tabular}{l>{\raggedright}p{.5\linewidth}<{}l}
+$\clocks$ & Set of clock variables & \ref{ss:mscclocks} \\
+$\clock$ & Clock \mbox{(meta-)}variable ranging over $\clocks$ & \ref{ss:mscclocks} \\  
+$\clkvls$ & Set of clock valuations & \ref{ss:mscclocks} \\
+$\clkvl$ & Clock valuation in $\clkvls$ & \ref{ss:mscclocks} \\
+$\zclkvl$ & Clock valuation with all clock variables equal to 0 & \ref{ss:mscclocks} \\
+$\clkvl[\someclks:=0]$ & Reset of all clocks $\clock \in \someclks$ & \ref{ss:mscclocks} \\
+$\clkvl + \ti$ & $\clkvl$ after delay of duration $\ti$ & \ref{ss:mscclocks} \\
+$\ClockConstraints$ & Set of clock constraints & \ref{ss:mscclocks} \\
+$\atomcond$ & Atomic clock constraint & \ref{ss:mscclocks} \\
+$\ClockZones$ & Set of conjunctions of atomic clock constraints, convex clock constraints & \ref{ss:mscclocks} \\
+$\vexcond$ & Convex clock constraint, $\vexcond \in \ClockZones$ & \ref{ss:mscclocks} \\
+$\clkcond$ & Clock constraint, $\clkcond \in \ClockConstraints$ & \ref{ss:mscclocks} \\
+$\clkvl \models \clkcond$ & Clock valuation $\clkvl$ satisfies clock constraint $\clkcond$ & \ref{ss:mscclocks} \\
+$\chset{\clkcond}$ & Characteristic set of $\clkcond$ & \ref{ss:mscclocks} \\
+$\cctrue, \ccfalse$ & True and False clock constraints & \ref{ss:mscclocks} \\
+\end{tabular}
+\vfil
+
+\section*{Timed Automata (TA)}
+\begin{tabular}{l>{\raggedright}p{.4\linewidth}<{}l}
+$\AA$ & Timed Automaton & \ref{sec:mscta} \\
+$\tglocs$ & Set of locations & \ref{ss:msctgraphs} \\
+$\tgiloc$ & Initial location & \ref{ss:msctgraphs} \\
+$\tgloc$ & Location in $\tglocs$ & \ref{ss:msctgraphs} \\
+$\tgedges$ & Set of edges & \ref{ss:msctgraphs} \\
+$\tgedge$ & Edge in $\tgedges$ & \ref{ss:msctgraphs} \\
+$\eguard(\tgedge)$ & Guard of edge $\tgedge$ & \ref{ss:msctgraphs} \\
+$\elabel(\tgedge)$ & Action label of edge $\tgedge$ & \ref{ss:msctgraphs} \\
+$\ereset(\tgedge)$ & Reset clocks of edge $\tgedge$ & \ref{ss:msctgraphs} \\
+$\tginv$ & Invariant function & \ref{ss:msctgraphs} \\
+$\cmax(\AA)$ & Largest constant value in guard or invariant of $\AA$ & \ref{ss:msctgraphs} \\
+$\AA_1 \parallel \AA_2$ & Parallel composition of TA & \ref{ss:msctacomposition} \\
+$\TSys{\AA}$ & LTS derived from TA $\AA$ & \ref{ss:msctasemantics} \\
+$(\tgloc,\clkvl)$ & State in the LTS of a TA & \ref{ss:msctasemantics} \\
+$(\tgloc,\clkvl) + \ti$ &  Alternative to $(\tgloc,\clkvl+\ti)$ & \ref{ss:msctasemantics} \\
+$(\tgloc,\clkvl)[\someclks:=0]$ & Alternative to \hfil\break $(\tgloc,\clkvl[\someclks:=0])$ & \ref{ss:msctasemantics} \\ 
+$\RG(\AA)$ & Region graph of the TA $\AA$ & \ref{ss:mscregiongraph} \\
+$\SG(\AA)$ & Simulation graph of the TA $\AA$ & \ref{sec:mscsimgraph} \\
+$\AG(\AA)$ & Activity graph of the TA $\AA$ & \ref{ss:sgact} \\
+\end{tabular}
+\vfil
+
+\section*{Polyhedra}
+\begin{tabular}{l>{\raggedright}p{.4\linewidth}<{}l}
+$\clkcond$ & $\clocks$-polyhedron, $\clkcond \in \ClockConstraints$ & \ref{ss:mscconstraint} \\
+$\vexcond$ & Convex $\clocks$-polyhedron, $\vexcond \in \ClockZones$ & \ref{ss:mscconstraint} \\ 
+$\suc{\tgedge}{}(\clkcond)$ & Polyhedron denoting successors of
+$\clkcond$ via TA edge $\tgedge$ & \ref{ss:mscconstraint} \\
+$\suc{\tau}{\tgloc}(\clkcond)$ & Polyhedron denoting successors of
+$\clkcond$ as time passes at TA location $\tgloc$ & \ref{ss:mscconstraint} \\
+$\clkcond_1 \cap \clkcond_2$ & Intersection of polyhedra & \ref{ss:mscconstraint} \\
+$\clkcond_1 \cup \clkcond_2$ & Union of polyhedra & \ref{ss:mscconstraint} \\
+$\clkcond_1 \setminus \clkcond_2$ & Difference of polyhedra & \ref{ss:mscconstraint} \\
+$\clkcond_1 \subseteq \clkcond_2$ & Inclusion of polyhedra & \ref{ss:mscconstraint} \\
+$\clkcond_1 \hull \clkcond_2$ & Convex hull of polyhedra & \ref{ss:mscconstraint} \\
+$\overline{\clkcond}$ & Complement of polyhedron & \ref{ss:mscconstraint} \\
+$\forwardproj{\clkcond}$ & Forward projection  & \ref{ss:mscconstraint} \\
+$\clkcond[\someclks := 0]$ & Reset projection  & \ref{ss:mscconstraint} \\
+$\close{c}{\vexcond}$ & $c$-closure  & \ref{ss:mscconstraint} \\
+
+\end{tabular}
+\vfil
+
+\section*{Difference Bound Matrices (DBM)}
+\begin{tabular}{l>{\raggedright}p{.5\linewidth}<{}l}
+$(c,\brel)$ & Bound in $\Zinf \cross \text{\mbox{$\{<, \leq\}$}}$ & \ref{ss:mscdbm} \\
+$\M$ & Difference Bound Matrix & \ref{ss:mscdbm} \\
+$\M_{i,j}$ & Bound at row $i$, column $j$ in DBM $\M$ & \ref{ss:mscdbm} \\
+$\chset{\M}$ & Set of clock valuations denoted by DBM $\M$ & \ref{ss:mscdbm} \\
+$\M^\emptyset$ & Empty DBM, i.e. $\chset{\M^\emptyset} = \emptyset$ & \ref{ss:mscdbm} \\
+$\UU$ & Universal DBM, i.e. $\chset{\UU} = \clkvls$ & \ref{ss:mscdbm} \\
+$\canon{\M}$ & Canonical form of DBM $\M$ & \ref{ss:mscdbm} \\
+\end{tabular}
+\vfil
+
+\section*{Data Environment}
+\begin{tabular}{l>{\raggedright}p{.4\linewidth}<{}l}
+$\Var$ & Set of data variables & \ref{ss:bcformaldata} \\
+$\xx$ & Data variable in $\Var$ & \ref{ss:bcformaldata} \\
+$\V$ & Set of data values & \ref{ss:bcformaldata} \\
+$\vv$ & Data value in $\V$ & \ref{ss:bcformaldata} \\
+$\type(\xx)$ & Type of data variable $\xx$ & \ref{ss:bcformaldata} \\
+$\valuation$ & Set of data valuations, $\Var \fun \V$ & \ref{ss:bcformaldata} \\
+$\val(\xx)$ & Value of data variable $\xx$ & \ref{ss:bcformaldata} \\
+$\Op$ & Set of data operation names & \ref{ss:bcformaldata} \\
+$\op$ & Data operation name in $\Op$ & \ref{ss:bcformaldata} \\
+$\interpop(\op)$ & Operation which interprets the operation name $\op$ & \ref{ss:bcformaldata} \\
+$\G$ & Set of data predicate names & \ref{ss:bcformaldata} \\
+$\g$ & Data predicate name in $\G$ & \ref{ss:bcformaldata} \\
+$\interppred(\g)$ & Predicate which interprets the predicate name $\g$ & \ref{ss:bcformaldata} \\
+$\DataEnv{\Var,\Op,\G}$ & Set of data environments over $\Var$, $\Op$ and $\G$ & \ref{ss:bcformaldata} \\
+$\D$ & Data environment in $\DataEnv{}$ & \ref{ss:bcformaldata} \\
+$\D.\xx$ & Value of data variable $\xx$ given by $\D$ & \ref{ss:bcformaldata} \\
+$\assign{\D}{\xx}{\vv}$ & Update value of $\xx$ to become $\vv$ & \ref{ss:bcformaldata} \\
+$\D \goesdata{\op} \D'$ & Data environment transformation by operation $\op$ & \ref{ss:bcformaldata} \\
+$\ID$ & Identity data operation & \ref{ss:bcformaldata} \\
+$\True,\False$ & True and False data predicates & \ref{ss:bcformaldata} \\
+\end{tabular}
+\vfil
+
+
+\section*{Channels}
+\begin{tabular}{l>{\raggedright}p{.4\linewidth}<{}l}
+$\I$ & Set of message identifiers & \ref{ss:bcnetstructure} \\
+$\M$ & Set of messages, $\M \subseteq \I \cross \V$ & \ref{ss:bcnetstructure} \\
+$\ii.\vv$ & Message with identifier $\ii$ and data value $\vv$ & \ref{ss:bcnetstructure} \\
+$\mm \pless \mm'$ & Message $\mm$ has higher priority than $\mm'$ & \ref{ss:bcnetstructure} \\
+$\latency$ & Transmission latency function, derived functions are $\dlb,\dub,\dlB$, and $\duB$ & \ref{ss:bcnetstructure} \\
+$\Status{\M,\latency}$ & Set of transmission statuses & \ref{ss:bcnetstructure} \\
+$\ss$ & Transmission status in $\Status{}$  & \ref{ss:bcnetstructure} \\
+$\free$ & Free status & \ref{ss:bcnetstructure} \\
+${}\preact{\ti_1,\ti_2}{\mm}$ & Pre-acceptance phase of message transmission & \ref{ss:bcnetstructure} \\ 
+${}\offers{\mm}$ & Acceptance point in message transmission & \ref{ss:bcnetstructure} \\
+${}\postact{\ti_1,\ti_2}{\mm}$ & Post-acceptance phase of message transmission  & \ref{ss:bcnetstructure} \\ 
+$\Queue{\M,\pless}$ & Set of message queues  & \ref{ss:bcnetstructure} \\
+$\mq$ & Message queue in $\Queue{}$ & \ref{ss:bcnetstructure} \\
+$\emq$ & Empty message queue & \ref{ss:bcnetstructure} \\
+$\mm \cq \mq$ & Message queue with highest priority message $\mm$ & \ref{ss:bcnetstructure} \\ 
+$\mq \iq \mm$ & Prioritised insertion of $\mm$ into $\mq$ & \ref{ss:bcnetstructure} \\
+$\Channel{\I}$ & Set of channels over $\I$ & \ref{ss:bcnetstructure} \\
+$\channel$ & Channel in $\Channel{}$ & \ref{ss:bcnetstructure} \\
+\end{tabular}
+\vfil
+
+\section*{Networks}
+\begin{tabular}{l>{\raggedright}p{.5\linewidth}<{}l}
+$\K$ & Set of channel identifiers &  \ref{ss:bcnetstructure} \\
+$\kk$ & Channel identifier in $\K$ & \ref{ss:bcnetstructure} \\
+$\Network{\K,\I}$ & Set of networks, $\K \fun \Channel{\I}$ & \ref{ss:bcnetstructure} \\
+$\NNetwork{\K,\I}$ & Set of clocked networks, $\K \fun \Channel{\I}\cross \clocks$ & \ref{ss:tgexpclocksnet} \\
+$\N_\kk$ & Channel $\kk$ in network $\N$ & \ref{ss:bcnetstructure} \\
+$\NN_\kk$ & Channel $\kk$ in clocked network $\NN$ & \ref{ss:tgexpclocksnet} \\
+$\assign{\N}{\kk}{\channel}$ & Update of channel $\kk$ in network $\N$ & \ref{ss:bcnetbehaviour} \\
+$\tcp(\N)$ & Maximum time progress for network $\N$ & \ref{ss:bcnetbehaviour} \\
+$\N + \ti$ & State of network $\N$ after delay of duration $\ti$ & \ref{ss:bcnetbehaviour} \\
+\end{tabular}
+\vfil
+
+\section*{Process Constructions}
+\begin{tabular}{l>{\raggedright}p{.5\linewidth}<{}l}
+$\kk!\ii.\xx$ & Send broadcast message & \ref{sec:bcprocesses} \\
+$\kk?\ii.\xx$ & Receive broadcast message & \ref{sec:bcprocesses} \\  
+$[\op : t_1, t_2]$ & Time bounded computation & \ref{sec:bcprocesses} \\ 
+$\g \guard P$ & Data guard & \ref{sec:bcprocesses} \\ 
+$\P \seqcomp \P$ & Sequential composition & \ref{sec:bcprocesses} \\ 
+$\P \choice \P$ & Non-deterministic choice & \ref{sec:bcprocesses} \\ 
+$\P \interrupt \P$ & Interrupt & \ref{sec:bcprocesses} \\ 
+$\P \parallel \P$ & Parallel composition & \ref{sec:bcprocesses} \\ 
+$\rec X.\P$ & Recursion & \ref{sec:bcprocesses} \\ 
+$\idle$ & $[\ID : \infinity]$ & \ref{sec:bcprocesses} \\ 
+$\donothing$ & $[\ID : 0]$ & \ref{sec:bcprocesses} \\ 
+$\ProcO{}$ & Set of process terms & \ref{sec:bcprocesses} \\ 
+$\Proc{}$ & Set of closed, guarded process terms & \ref{sec:bcprocesses} \\ 
+$\P,\Q$ & Process terms in $\ProcO{}$ or $\Proc{}$ & \ref{sec:bcprocesses} \\
+$\basic$ & Basic term in $\ProcO{}$ or $\Proc{}$ & \ref{sec:bcprocesses} \\ 
+$\CProc{}$ & Set of clocked, closed, guarded process terms & \ref{ss:tgexpclocksproc} \\ 
+$\PP,\QQ$ & Clocked process terms in $\CProc{}$ & \ref{ss:tgexpclocksproc} \\
+$\cbasic$ & Clocked basic term in $\CProc{}$ & \ref{ss:tgexpclocksproc} \\ 
+\end{tabular}
+\vfil
+
+\section*{Nets}
+\begin{tabular}{l>{\raggedright}p{.5\linewidth}<{}l}
+$\RR$ & A net $(\W,\T,\WI)$ & \ref{ss:tgnets} \\
+$\W$ & Set of places & \ref{ss:tgnets} \\
+$\ww$ & Place in $\W$ & \ref{ss:tgnets} \\
+$\T$ & Set of transitions & \ref{ss:tgnets} \\
+$\tr$ & Transition in $\T$ & \ref{ss:tgnets} \\
+$\WI$ & Set of initial places & \ref{ss:tgnets} \\ 
+$\preset{\tr}$ & Trigger place of $\tr$ & \ref{ss:tgnets} \\
+$\vset{\tr}$ & Vulnerable places to $\tr$ & \ref{ss:tgnets} \\
+$\postset{\tr}$ & Target places of $\tr$ & \ref{ss:tgnets} \\
+$\attr{\tr}$ & Attribute of $\tr$ & \ref{ss:tgnets} \\
+$\tr_\ww$ & Transition triggered by place $\ww$ & \ref{ss:tgnets} \\
+\end{tabular}
+\vfil
+
+\section*{Minimised Automata (MA)}
+\begin{tabular}{l>{\raggedright}p{.5\linewidth}<{}l}
+$\MA$ & Minimised deterministic finite state automaton & \ref{ss:sgma} \\
+$\MAstates$ & Set of states of a MA & \ref{ss:sgma} \\
+$\MAstates_i$ & Set of states at layer $i$ in a MA & \ref{ss:sgma} \\
+$\MAstates^-$ & $\MAstates \setminus \MAstates_k$, for a $k$-layer MA & \ref{ss:sgma} \\
+$\MAalphabet$ & Alphabet of a MA & \ref{ss:sgma} \\
+$\MAtr$ & Transition relation of a MA & \ref{ss:sgma} \\
+$\MAT,\MAF$ & Accepting and rejecting final states in a MA & \ref{ss:sgma} \\
+$\MAstring$ & A string \hfil\break $\MAsymb_0,\MAsymb_1,\ldots,\MAsymb_{n-1}$ & \ref{ss:sgma} \\
+$\Lang_\MA(\MAstate)$ & Language of $\MA$ from state $\MAstate$ & \ref{ss:sgma} \\
+$\Lang(\MA)$ & $\Lang_\MA(\MAstate_0)$ & \ref{ss:sgma} \\
+\end{tabular}
+\vfil
+}
+\onecolumn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

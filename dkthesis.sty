@@ -1,0 +1,67 @@
+\usepackage{theorem}
+
+\advance\oddsidemargin .5cm
+
+% Theorem-like definitions
+\newcommand{\qed}{{\strut\nobreak\hfil\ensuremath{\Box}\break}}
+
+{
+\theoremstyle{plain}
+\theorembodyfont{\upshape}
+\newtheorem{definition}{Definition}[chapter]
+}
+{
+\theoremstyle{plain}
+\theorembodyfont{\itshape}
+\newtheorem{theorem}{Theorem}[chapter]
+}
+{
+\theoremstyle{plain}
+\theorembodyfont{\itshape}
+\newtheorem{proposition}{Proposition}[chapter]
+}
+{
+\theoremstyle{plain}
+\theorembodyfont{\itshape}
+\newtheorem{lemma}{Lemma}[chapter]
+}
+{
+\theoremstyle{break}
+\theorembodyfont{\upshape}
+\newtheorem{algorithm}{Algorithm}[chapter]
+}
+{
+\theoremstyle{plain}
+\theorembodyfont{\upshape}
+\newtheorem{exercise}{Exercise}
+}
+{
+\theoremstyle{plain}
+\theorembodyfont{\upshape}
+\newtheorem{remark}{Remark}[chapter]
+}
+{
+\theoremstyle{plain}
+\theorembodyfont{\upshape}
+\newtheorem{exampleb}{Example}[chapter]
+}
+% Environments
+%\newenvironment{para}[1]{
+%  {\it #1\/}\quad
+%}{}
+\newenvironment{proof}{{\it Proof\/}\quad}{\qed}
+
+\newenvironment{notation}{
+  \begin{trivlist}
+    \item[\;\textbf{Notation.}]
+}  
+{\end{trivlist}}
+
+\newcommand{\case}{\textbf{Case: }}
+
+\newenvironment{code}{
+  \begin{description}
+    \item[\strut] \mbox{\strut} \\
+}
+{\end{description}}
+

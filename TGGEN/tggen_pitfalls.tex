@@ -1,0 +1,28 @@
+The following example illustrates why it is useful to reset the
+urgent clock on all edges, even when it may not be tested by the target
+location.
+\begin{exampleb}
+Let $\PP$ be the process term $\PP_1 \interrupt \PP_2$, where
+\begin{eqnarray*}
+\PP_1 & \defs & [a:1]^\clock \sq [b:1]^\clock \sq \idle \\
+\PP_2 & \defs & aDone \guard \idle \\
+\end{eqnarray*}
+Let $\clocks$ be the set $\{\clock,\uclock\}$ of clock variables. Assume that,
+initially, the value of all clocks is $0$, and that the data guard
+$aDone$ is not satisfied in the initial data environment but is satisfied
+after execution of an $a$-action. Now, at time 1, $\PP_1$ has an
+$a$-transition to $[b:1]^\clock \sq \idle$, where, clearly, clock $\clock$
+should be reset so that it can be used to measure the progress of $[b:1]$.
+However, when we consider the term $\PP$, we see that it has an
+$a$-transition to $\PP'$, where 
+\[ \PP' \defs [b:1]^\clock \sq \idle \interrupt aDone \guard \idle.\]
+In this case, we see that it is not enough to reset only clock $\clock$,
+but that it is necessary also to reset the urgent clock $\uclock$.
+This is required in order to ensure that the 
+invariant $\uclock \leq 0$, which enforces the urgency of the data guard,
+is not violated on entry to $\PP'$. However, the need to reset $\uclock$ is not
+apparent by considering the behaviour of $\PP_1$ alone. By resetting $\uclock$
+on all edges, it is still possible to obtain a compositional translation.
+\qed
+\end{exampleb}
+

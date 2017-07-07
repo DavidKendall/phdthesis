@@ -1,0 +1,209 @@
+digraph "tg2dot" {
+	graph [
+		fontsize = "14"
+		fontname = "Times-Roman"
+		fontcolor = "black"
+		rankdir = "TB"
+		color = "black"
+	]
+	node [
+		fontsize = "14"
+		fontname = "Times-Roman"
+		fontcolor = "black"
+		height = "1"
+		fixedsize = "true"
+		shape = "circle"
+		color = "black"
+		width = "1"
+	]
+	edge [
+		fontsize = "14"
+		fontname = "Times-Roman"
+		fontcolor = "black"
+		color = "black"
+	]
+	"0" [
+		color = "black"
+		label = "0"
+		width = "1"
+		fontsize = "14"
+		fontname = "Times-Roman"
+		fontcolor = "black"
+		fixedsize = "true"
+		height = "1"
+		shape = "circle"
+	]
+	"1" [
+		color = "black"
+		label = "1\n\nx<=5"
+		width = "1"
+		fontsize = "14"
+		fontname = "Times-Roman"
+		fontcolor = "black"
+		fixedsize = "true"
+		height = "1"
+		shape = "circle"
+	]
+	"2" [
+		color = "black"
+		label = "2\n\nx<=5"
+		width = "1"
+		fontsize = "14"
+		fontname = "Times-Roman"
+		fontcolor = "black"
+		fixedsize = "true"
+		height = "1"
+		shape = "circle"
+	]
+	"3" [
+		color = "black"
+		label = "3\n\nx<=5"
+		width = "1"
+		fontsize = "14"
+		fontname = "Times-Roman"
+		fontcolor = "black"
+		fixedsize = "true"
+		height = "1"
+		shape = "circle"
+	]
+	{
+		graph [
+			fontsize = "14"
+			fontname = "Times-Roman"
+			fontcolor = "black"
+			rankdir = "LR"
+			rank = "same"
+			color = "black"
+		]
+		node [
+			fontsize = "14"
+			fontname = "Times-Roman"
+			fontcolor = "black"
+			height = "1"
+			fixedsize = "true"
+			shape = "circle"
+			color = "black"
+			width = "1"
+		]
+		edge [
+			fontsize = "14"
+			fontname = "Times-Roman"
+			fontcolor = "black"
+			color = "black"
+		]
+		"0"
+		"3"
+	}
+	{
+		graph [
+			fontsize = "14"
+			fontname = "Times-Roman"
+			fontcolor = "black"
+			rankdir = "LR"
+			rank = "same"
+			color = "black"
+		]
+		node [
+			fontsize = "14"
+			fontname = "Times-Roman"
+			fontcolor = "black"
+			height = "1"
+			fixedsize = "true"
+			shape = "circle"
+			color = "black"
+			width = "1"
+		]
+		edge [
+			fontsize = "14"
+			fontname = "Times-Roman"
+			fontcolor = "black"
+			color = "black"
+		]
+		"1"
+		"2"
+	}
+	{
+		graph [
+			fontsize = "14"
+			fontname = "Times-Roman"
+			fontcolor = "black"
+			rankdir = "TB"
+			rank = "same"
+			color = "black"
+		]
+		node [
+			fontsize = "14"
+			fontname = "Times-Roman"
+			fontcolor = "black"
+			height = "1"
+			fixedsize = "true"
+			shape = "circle"
+			color = "black"
+			width = "1"
+		]
+		edge [
+			fontsize = "14"
+			fontname = "Times-Roman"
+			fontcolor = "black"
+			color = "black"
+		]
+		"0"
+		"1"
+	}
+	{
+		graph [
+			fontsize = "14"
+			fontname = "Times-Roman"
+			fontcolor = "black"
+			rankdir = "TB"
+			rank = "same"
+			color = "black"
+		]
+		node [
+			fontsize = "14"
+			fontname = "Times-Roman"
+			fontcolor = "black"
+			height = "1"
+			fixedsize = "true"
+			shape = "circle"
+			color = "black"
+			width = "1"
+		]
+		edge [
+			fontsize = "14"
+			fontname = "Times-Roman"
+			fontcolor = "black"
+			color = "black"
+		]
+		"2"
+		"3"
+	}
+	"0" -> "1" [
+		fontsize = "14"
+		fontname = "Times-Roman"
+		fontcolor = "black"
+		label = "{x}, approach"
+		color = "black"
+	]
+	"1" -> "2" [
+		fontsize = "14"
+		fontname = "Times-Roman"
+		fontcolor = "black"
+		label = "x>2,\l in"
+		color = "black"
+	]
+	"2" -> "3" [
+		fontsize = "14"
+		fontname = "Times-Roman"
+		fontcolor = "black"
+		label = "out"
+		color = "black"
+	]
+	"3" -> "0" [
+		fontsize = "14"
+		fontname = "Times-Roman"
+		fontcolor = "black"
+		label = "exit"
+		color = "black"
+	]
+}

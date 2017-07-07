@@ -1,0 +1,26 @@
+The following lemma states that $\Gr(\csys)$ satisfies a standard TA
+property.
+\begin{lemma}\label{lem:pftadeterm}
+Let $\csys \in \CSys{}$ be a clocked \bcandle\ system and
+$\AA = \Gr(\csys)$ its corresponding TA, with sets $\tglocs$ of locations
+and $\tgclks$ of clocks. Let
+$\TSys{\AA} = (\tglocs \cross \clkvls,\Init,\Labels,\TRel)$ be the 
+transition system of $\AA$. For any
+transition $(\tgloc,\clkvl) \goes{\any} (\tgloc',\clkvl')$,
+it is the case that
+\begin{enumerate}
+\item if it is a discrete transition, with
+  $\any \in \ProgLabels \cup \NetLabels$, then the new clock valuation
+  is the same as the current valuation, except some clocks may be reset, i.e.
+  $\clkvl' = \clkvl[\resets:=0]$, for some clock set 
+  $\resets \subseteq \tgclks$, 
+\item if it is a delay transition, with $\any = \ti \in \Time$, then 
+  the new location is identical to the current location and the new clock 
+  valuation shows all clocks advance by time $\ti$, i.e.
+  $\tgloc' = \tgloc$ and $\clkvl' = \clkvl + \ti$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+A standard transition induction.
+\end{proof}
+  

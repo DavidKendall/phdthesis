@@ -1,0 +1,47 @@
+#define skip [ID:0,0]
+
+Init | WaterLevel | Pump | Control 
+
+where
+
+Init = [Configure:1000,1100]; k!start._; idle
+
+WaterLevel = k?start._; [WaterLevelPostRcv:5,6]; 
+             (WaterLevel0 [> k?shutdown._ ; idle)
+WaterLevel0 =
+    ([ReadWaterLevel:24,30]; k!level.v1 + 
+     [SensorFailed:30,30]); 
+    idle
+    [>
+    [Period:195,205]; WaterLevel0
+
+Pump = k?start._; [PumpPostRcv:5,6];
+       (Pump0 [> k?shutdown._; [PumpOff:20,30] ; idle)
+Pump0 = (k?pumpon._; [PumpOn:20,30] + 
+         k?pumpoff._ ; [PumpOff:20,30]); 
+        Pump0
+
+Control = k?start._; [ControlPostRcv:5,6]; Control0
+Control0 = k?level.v2; SetPump; Control0 + SensorFailure 
+SetPump =
+   [TestLevel:9,10] ; 
+   (LevelHigh -> k!pumpoff._ + 
+    LevelLow -> k!pumpon._ + 
+    LevelOk -> skip);
+    [EndSetPump:2,10]
+SensorFailure = [Timeout:220,225]; k!shutdown._ ; idle
+   
+network 
+/*                  Pri   dlb  dub  dlB duB   */
+k = (start          : 5,   43,  53,  10, 12;
+     level          : 4,   53,  63,  10, 12;
+     pumpon         : 3,   43,  53,  10, 12;
+     pumpoff        : 2,   43,  53,  10, 12;
+     shutdown       : 1,   43,  53,  10, 12
+     )
+
+data
+v1 = 0
+v2 = 0
+
+

@@ -1,0 +1,10 @@
+#states                      1
+#trans                       1
+#clocks                      1 
+H1
+
+state: 0
+invar: H1 <= 10
+trans: 
+H1 >= 8 => ReadSensor; RESET{ H1 }; goto 0
+

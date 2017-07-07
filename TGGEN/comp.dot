@@ -1,0 +1,12 @@
+digraph Net {
+rankdir=LR
+node [shape = circle]
+"2"; "1"; 
+node [shape = box]
+T0 [label = "tick"];
+T2 [label = "[Compute:10,15]^C2"]
+"2" -> T2 [style = solid];
+"1" -> T0 [style = solid];
+edge [style = solid];
+T2 -> "1"
+}

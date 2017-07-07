@@ -1,0 +1,18 @@
+Pressure
+
+where
+
+Pressure = [ReadSensor:85,90] ; k!pressure.x ; Pressure 
+
+network
+
+k = (pressure:1,2,3,4,5)
+
+data
+
+
+
+
+
+
+

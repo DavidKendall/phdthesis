@@ -1,0 +1,26 @@
+digraph tg2dot {
+rankdir=LR
+node [height=1,width=1,shape=circle,fixedsize=true,color=black,fontsize=14]
+
+t0 [label="0"];
+t1 [label="1\n\nH1<=5"];
+t2 [label="2\n\nH1<=5"];
+t3 [label="3\n\nH1<=5"];
+
+t0 -> t1 [label = "approach,{H1}"];
+t1 -> t2 [label = "H1>2, in"];
+t2 -> t3 [label = "out"];
+t3 -> t0 [label = "exit"];
+
+}
+
+
+
+
+
+
+
+
+
+
+

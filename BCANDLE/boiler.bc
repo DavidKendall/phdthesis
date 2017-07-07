@@ -1,0 +1,31 @@
+#define skip [ID:0,0]
+#define SENSOR_FAILURE [SensorFailure:0,~]
+#define RECOVER_CONTROL [RecoverControl:0,~]
+
+Temperature | Control
+
+where
+
+Temperature =
+    [ReadTemperature:24,32]; k!temperature.v1; idle
+    [>
+    [Period:195,205]; Temperature
+
+Control = 
+   [Configure:9,11];
+   (GetValueAndTest
+   + 
+   [Timeout:95,105]; SENSOR_FAILURE); 
+   Control
+
+GetValueAndTest = 
+  k?temperature.v2; (TempOk -> skip + TempNok -> RECOVER_CONTROL)
+
+network 
+/*                  Pri   dlb  dub  dlB duB   */
+k = (temperature    : 1,   43,  53,  10, 12)
+
+data
+v1 = 0
+v2 = 0
+

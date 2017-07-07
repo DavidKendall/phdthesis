@@ -1,0 +1,407 @@
+@PREAMBLE{ "\newcommand{\ps}[1]{\html{\htmladdnormallink{Postscript}%
+{http://magpie.unn.ac.uk/\~{}davek/archive/#1}}} \newcommand{\pdf}[1]{\html{\htmladdnormallink{PDF}%
+{http://magpie.unn.ac.uk/\~{}davek/archive/#1}}}"}
+
+@STRING{ acmsurv = "ACM Computing Surveys" }
+@STRING{ cav92 = "Proceedings of the 4th International Conference on Computer Aided Verification (CAV'92)" }
+@STRING{ cav93 = "Proceedings of the 5th International Conference on Computer Aided Verification (CAV'93)" }
+@STRING{ cav94 = "Proc. 6th Int. Conf. on Computer Aided Verification" }
+@STRING{ cav95 = "Proceedings of the 7th International Conference on Computer Aided Verification (CAV'95)" }
+@STRING{ cav95eds = "Wolper,P." }
+@STRING{ cav96 = "Proceedings of the 8th International Conference on Computer
+                  Aided Verification (CAV'96)" }
+@STRING{ cav96eds = "Alur,R. and Henzinger,T." }
+@STRING{ cav97 = "Proceedings of the 9th International Conference on Computer Aided Verification (CAV'97)" }
+@STRING{ cav98 = "Proceedings of the 10th International Conference on Computer Aided Verification (CAV'98)" }
+@STRING{ cav98eds = "??????" }
+@STRING{ cav99 = "Proceedings of the 11th International Conference on Computer Aided Verification (CAV'99)" }
+@STRING{ charme95 = "Proc. CHARME'95" }
+@STRING{ charme95eds = "Camurati,P. and Eveking,H." }
+@STRING{ compj = "The Computer Journal" }
+@STRING{ concur90 = "Proceedings of the 1st International Conference on Concurrency Theory (CONCUR'90)" }
+@STRING{ concur90eds = "Baeten,J. and Klop,J." }
+@STRING{ concur92 = "Proceedings of the 3rd International Conference of Concurrency Theory (CONCUR'92)" }
+@STRING{ concur93 = "Proceedings of the 4th International Conference of Concurrency Theory (CONCUR'93)" }
+@STRING{ concur93eds = "Best,E." }
+@STRING{ concur95 = "Proceedings of the 6th International Conference of Concurrency Theory (CONCUR'95)" }
+@STRING{ concur96 = "Proceedings of the 7th International Conference of Concurrency Theory (CONCUR'96)" }
+@STRING{ concur97 = "Proceedings of the 8th International Conference of Concurrency Theory (CONCUR'97)" }
+@STRING{ concur98 = "Proceedings of the 9th International Conference of Concurrency Theory (CONCUR'98)" }
+@STRING{ concur98eds = "{de Simone},R. and Sangiorgi,D." }
+@STRING{ cup = "Cambridge University Press" }
+@STRING{ cwi = "Centrum voor Wiskunde en Informatica (CWI)" }
+@STRING{ elsevier = "Elsevier Science" }
+@STRING{ entcs = "Electronic Notes in Theoretical Computer Science" }
+@STRING{ fac = "Formal Aspects of Computing" }
+@STRING{ fmcad96 = "Formal Methods in Computer Aided Design (FMCAD'96)" }
+@STRING{ fmsd = "Formal Methods in Systems Design" }
+@STRING{ focs77 = "Proceedings of 18th IEEE Symposium on Foundations of Computer Science" }
+@STRING{ focs89 = "Proc. 30th IEEE Symp. Found. of Comp. Sci." }
+@STRING{ forte94 = "Proc. Int. Conf. on Formal Description Techniques VII (FORTE'94)" }
+@STRING{ forte95 = "Proc. Int. Conf. on Formal Description Techniques VIII (FORTE'95)" }
+@STRING{ forte98 = "Proc. IFIP Joint Int. Conf. on Formal Description Techniques and Protocol Specification, Testing and Verification (FORTE-PSTV'98)" }
+@STRING{ ftrtft = "Formal Techniques in Real Time and Fault Tolerant Systems" }
+@STRING{ ftrtft98 = "Proc. Int. Conf. on Formal Techniques in Real Time and Fault Tolerant Systems (FTRTFT'98)" }
+@string{ fundp = {Institut d'Informatique, Facult\'es Universitaires Notre-Dame de l Paix, Namur, Belgium}}
+@STRING{ hart97 = "Proc. 1st Int. Workshop on Hybrid and Real-Time Systems (HART'97)" }
+@STRING{ htcs = "Handbook of Theoretical Computer Science" }
+@STRING{ hybrid3 = "Proc. DIMACS/SYCON Workshop on Verification and Control of Hybrid Systems (Hybrid Systems III)" }
+@STRING{ ieee = "IEEE Computer Society Press" }
+@STRING{ ieeecomp = "IEEE Transactions on Computers" }
+@STRING{ ieeeseng = "IEEE Transactions on Software Engineering" }
+@STRING{ imag = "Institut National Polytechnique de Grenoble, France" }
+@STRING{ infcomp = "Information and Computation" }
+@STRING{ ipl = "Information Processing Letters" }
+@STRING{ jacm = "Journal of the ACM" }
+@STRING{ jcss = "Journal of Computer and System Sciences" }
+@STRING{ jrts = "Journal of Real-Time Systems" }
+@STRING{ kluwer = "Kluwer Academic Press" }
+@STRING{ lics86 = "Proc. 1st IEEE Symp. on Logic in Computer Science" }
+@STRING{ lics90 = "Proc. 5th IEEE Symp. on Logic in Computer Science" }
+@STRING{ lncs = "Lecture Notes in Computer Science" }
+@STRING{ mit = "MIT Press" }
+@STRING{ oup = "Oxford University Press" }
+@STRING{ phi = "Prentice Hall International" }
+@STRING{ popl84 = "Proc. of ACM Symp. on Principles of Programming Languages
+                  (POPL'84)" }
+@STRING{ pstv95 = "Proceedings of the Fifteenth International Symposium on
+              Protocol Specification, Testing and Verification" }
+@STRING{ rex91 = "Proceedings of REX Workshop, Real-Time:Theory in Practice" }
+@STRING{ rex91eds = "{de Bakker},J. and Huizing,C. and {de Roever},W. and
+                  Rozenberg,G." }
+@STRING{ rex93 = "Proceedings of REX School, Decade of Concurrency -- Reflections and Perspectives" }
+@STRING{ rex93eds = "{de Bakker},J. and {de Roever},W.-P. and Rozenberg,G." }
+@STRING{ rtas98 = "Proceedings of 4th IEEE Real Time Technology and
+                  Applications Symposium (RTAS'98), Denver, Colorado" } 
+@STRING{ rtcsa98 = "Proceedings of 5th International Conference on Real-Time
+  Computing Systems and Applications (RTCSA'98)" } 
+@STRING{ rtss = "Real Time Systems Symposium" }
+@STRING{ rtss97 = "Proc. of 18th IEEE Real Time Systems Symposium" }
+@STRING{ rtss96 = "Proc. of 17th IEEE Real Time Systems Symposium" }
+@STRING{ rtss96wip = "Proc. of 17th IEEE Real Time Systems Symposium (Work In Progress)" }
+@STRING{ scp = "Science of Computer Programming" }
+@STRING{ siamcomp = "SIAM J. Comput." }
+@STRING{ springer = "Springer Verlag" }
+@STRING{ tacas95 = "Proceedings of 1st International Workshop on Tools and
+                  Algorithms for the Construction of Systems (TACAS'95)" }
+@STRING{ tacas95eds = "Engberg,U. and Larsen,K.G. and Skou,A." }
+@STRING{ tacas96 = "Proceedings of 2nd International Workshop on Tools and Algorithms for the Construction of Systems (TACAS'96)" }
+@STRING{ tacas97 = "Proceedings of 2nd International Workshop on Tools and Algorithms for the Construction of Systems (TACAS'97)" }
+@STRING{ tacas97eds = "Brinksma,E." }
+@STRING{ tacas98 = "Proceedings of 3nd International Workshop on Tools and Algorithms for the Construction of Systems (TACAS'98)" }
+@STRING{ tacas98eds = "Steffen,B." }
+@STRING{ tcs = "Theoretical Computer Science" }
+@STRING{ toplas = "ACM Transactions on Programming Languages and Systems" }
+@STRING{ wiley = "John Wiley \& Sons Ltd." }
+@STRING{ wodes98 = "Proceedings of 4th International Workshop on Discrete Event Systems (WODES'98), Cagliari, Italy" } 
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+@InProceedings{atb:94,
+  author = 	 {Aziz,A. and Tasiran,S. and Brayton,R.},
+  title = 	 {{BDD} Variable Ordering for Interacting Finite State Machines},
+  booktitle = 	 {Proc. of
+                    Design Automation Conference, San Diego, CA},
+  year =	 1994,
+  month =	 jun,
+  note =	 "\ps{atb:94.ps.gz}"
+}
+
+
+@InProceedings{blp:99,
+  author = 	 {Behrmann,G. and Larsen,K. and Pearson,J. and Weise,C. and Yi,W.},
+  title = 	 {Efficient Timed Reachability Analysis using Clock Difference Diagrams},
+  booktitle = 	 cav99,
+  year =	 1999,
+  series =	 lncs,
+  publisher =	 springer,
+  note =	 "\ps{blp:99.ps.gz}"
+}
+
+@Article{bls:99,
+  author = 	 {{Ben-Abdallah},H. and Lee,I. and Sokolsky,O.},
+  title = 	 {Specification and Analysis of Real-Time Systems with {PARAGON}},
+  journal = 	 {Annals of Software Engineering},
+  year = 	 1999,
+  note =	 "\ps{bls:99.ps.gz}"
+}
+
+@ARTICLE{cvw:92,
+  author =       {Courcoubetis,C. and Vardi,M. and Wolper,P. and Yannakakis,M.},
+  title =        {Memory Efficient Algorithms for the Verification of Temporal
+                  Properties},
+  journal = fmsd,
+  volume =       1,
+  year =         1992,
+  pages =        {275--288},
+  note =         "\ps{cvw:92.ps.gz}",
+  annote =       {Introduces on-the-fly techniques. Seminal.}
+}
+
+@Article{fkf:99,
+  author = 	 {Fraer,R. and Kamhi,G. and Fix,L. and Vardi,M.},
+  title = 	 {Evaluating Semi-Exhaustive Verification Techniques for Bug Hunting},
+  journal = 	 entcs,
+  year = 	 1999,
+  volume =	 23,
+  number =	 2,
+  note =	 "\ps{fkf:99.ps.gz}"
+}
+
+@InProceedings{ga:98,
+  author = 	 {Ganai,M. and Aziz,A.},
+  title = 	 {Efficient Coverage Directed State Space Search},
+  booktitle = 	 {Proc. of International Workshop on Logic
+                    Synthesis, Lake Tahoe, CA},
+  year =	 1998,
+  note =	 "\ps{ga:98.ps.gz}"
+}
+
+@InProceedings{gre:96,
+  author = 	 {Gr\'egoire,J.-Ch.},
+  title = 	 {State Space Compression in {SPIN} with {GE}-sets},
+  booktitle = 	 {Proc. 2nd {SPIN} Workshop, Rutgers University, New Jersey, USA},
+  year =	 1996,
+  month =	 aug,
+  note =         "\ps{gre:96.ps.gz}"
+}
+
+@InProceedings{hlp:00,
+  author = 	 {Thomas Hune, Kim G. Larsen and Paul Pettersson},
+  title = 	 {Guided Synthesis of Control Programs Using UPPAAL},
+  booktitle = 	 {International Workshop on Distributed Systems Verification and Validation. Taipei, Taiwan},
+  year =	 2000,
+  month =	 apr,
+  note =	 "\ps{hlp:00.ps.gz}"
+}
+
+@ARTICLE{hol:97,
+  author = {Holzmann,G.},
+  month = {May},
+  year = 1997,
+  title = {The Model Checker {SPIN}},
+  journal = {IEEE Transactions on Software Engineering},
+  volume = 23,
+  number = 5,
+  pages = {279--295},
+  note = "\ps{hol:97.ps.gz}"
+}
+
+@Article{hol:98,
+  author = 	 {Holzmann,G.},
+  title = 	 {An analysis of bitstate hashing},
+  journal = 	 fmsd,
+  year = 	 1998,
+  month =	 nov,
+  note =	 "\ps{hol:98.ps.gz}"
+}
+
+
+@InProceedings{hp:99,
+  author = 	 {Holzmann,G. and Puri,A.},
+  title = 	 {A Minimized Automaton Representation of Reachable States},
+  booktitle = 	 {Software Tools for Technology Transfer},
+  publisher =    springer,
+  year = 	 1999,
+  note =	 "\ps{hp:99.ps.gz}"
+}
+
+@InProceedings{hun:99,
+  author = 	 {Hune,T.},
+  title = 	 {Modelling a real-time language},
+  booktitle = 	 {Proceedings, 4th Workshop on Formal Methods for Industrial Critical Systems (FMICS'99), Trento,Italy},
+  year =	 1999,
+  month =	 jun,
+  note =	 "\ps{hun:99.ps.gz}"
+}
+
+@InProceedings{ikl:00,
+  author = 	 {Iversen,T. and  Kristoffersen,K. and  Larsen,K. and Laursen,M. and Madsen,R. and Mortensen,S. and Pettersson,P. and Thomasen,C.},
+  title = 	 {Model-Checking Real-Time Control Programs},
+  booktitle = 	 {????},
+  year =	 2000,
+  note =	 "\ps{ikl:00.ps.gz}"
+}
+
+@InProceedings{jen:94,
+  author = 	 {Jensen,K.},
+  title = 	 {An Introduction to the Theoretical Aspects of Coloured {Petri} Nets},
+  booktitle = 	 {A Decade of Concurrency},
+  pages =	 {230--272},
+  year =	 1994,
+  editor =	 {{de Bakker},J. and {de Roever},W.-P. and Rozenberg,G.},
+  volume =	 803,
+  series =	 lncs,
+  publisher =	 springer,
+  note =	 "\pdf{jen:94.pdf.gz}"
+}
+
+@InProceedings{jen:98,
+  author = 	 {Jensen,K.},
+  title = 	 {An Introduction to the Practical Use of Coloured {Petri} Nets},
+  booktitle = 	 {Lectures on Petri Nets II: Applications},
+  pages =	 {237--292},
+  year =	 1998,
+  editor =	 {Reisig,W. and Rozenberg,G.},
+  volume =	 1492,
+  series =	 lncs,
+  publisher =	 springer,
+  note =         "\pdf{jen:98.pdf.gz}"
+}
+
+@unpublished{klp:99,
+  author =       {K. Kristoffersen and K. Larsen and P. Pettersson and
+                  C. Weise},
+  title =        {Experimental Batch Plant - {VHS} Case Study 1 using
+                  Timed Automata and {UPPAAL}, {Deliverable of ESPRIT-LTR Project 26270 VHS (Verification of Hybrid Systems)}},
+  institution =         {BRICS, University of Aalborg, Denmark},
+  month =        {May},
+  url =
+                  {http://www-verimag.imag.fr/VHS/year1/cs11f.ps},
+  year =         1999,
+  note =         "\ps{klp:99.ps.gz}"
+}
+
+@InProceedings{koo:96,
+  author = 	 {Koopman,P.},
+  title = 	 {Embedded System Design Issues: The rest of the story},
+  booktitle = 	 {Proceedings of the International Conference on Computer Design (ICCD 96),Austin,Texas },
+  month =        oct,
+  year =	 1996,
+  note =         "\ps{koo:96.ps.gz}"
+}
+
+@InProceedings{liv:99,
+  author = 	 {Livani,M.},
+  title = 	 {{SHARE}: A Transparent Approach to Fault-Tolerant Broadcast in CAN},
+  booktitle = 	 {6th International CAN Conference (ICC6), Torino, Italy},
+  year =	 1999,
+  note =	 "\ps{liv:99.ps.gz}"
+}
+
+@InProceedings{lkj:98,
+  author = 	 {Livani,M. and Kaiser,J. and Jia,W.},
+  title = 	 {Scheduling Hard and Soft Real-Time Communication in a Controller Area Network},
+  booktitle = 	 {23rd IFAC/IFIP Workshop on Real Time Programming, Shantou, China},
+  year =	 1998,
+  month =	 jun,
+  note =         "\ps{lkj:98.ps.gz}"
+}
+
+@INPROCEEDINGS{llp:97,
+  author = {Larsen,K. and Larsson,F. and Pettersson,P. and {Wang Yi}},
+  title = {Efficient Verification of Real-Time Systems: Compact Data Structure
+          and State-Space Reduction},
+  booktitle = rtss97,
+  year = 1997,
+  month = dec,
+  note = "\ps{llp:97.ps.gz}",
+  annote = {Minimization of clock constraints}
+}
+
+@InProceedings{lsw:98,
+  author = 	 {Larsen,K. and Steffen,B. and Weise,C.},
+  booktitle = 	 {Software Tools for Technology Transfer},
+  title = 	 {Continuous Modelling of Real Time and Hybrid Systems:
+    From Concepts to Tools},
+  publisher = 	 springer,
+  year = 	 1998,
+  note =	 "\ps{lsw:98.ps.gz}",
+  annote =	 {Excellent tutorial introduction to timed automata
+    model checking and tools KRONOS UPPAAL and HYTECH}
+}
+
+@InProceedings{mla:99,
+  author = 	 {M\/ork,S. and Larsen,K. Andersen,H.R. and Sestoft,P.},
+  title = 	 {{PMC}: A Programming Language for Embedded Systems},
+  booktitle = 	 {4th Intl. Workshop on Formal Methods for Industrial Critical Systems},
+  year =	 1999,
+  note =	 "\ps{mla:99.ps.gz}"
+}
+
+@Book{nn:99,
+  author =	 {Nielson,H. and Nielson,F.},
+  title = 	 {Semantics with Applications: A Formal Introduction},
+  publisher = 	 {Electronic version},
+  year = 	 1999,
+  note =	 "Revised edition of a book of the same title which was
+    published by John Wiley \& Sons in 1992. Instructions on how to download
+    a copy of the book can be obtained 
+    \htmladdnormallink{here}{http://www.daimi.au.dk/\~{}hrn}. Local users
+    can obtain a \ps{nn:99.ps.gz} version."
+}
+@InProceedings{pvy:99,
+  author = 	 {Peled,D. and Vardi,M. and Yannakakis,M.},
+  title = 	 {Black Box Checking},
+  booktitle = 	 {FORTE/PSTV'99},
+  pages =	 {225--240},
+  year =	 1999,
+  editor =	 {Wu,J. and Chanson,S. and Gao,Q.},
+  publisher =	 kluwer,
+  note =	 "\ps{pvy:99.ps.gz}"
+}
+
+@InProceedings{rcm:95,
+  author = 	 {Rischel,H. and Cuellar,J. and M\/ork,S. and Ravn,A. and Widgruber,I.},
+  title = 	 {Development of Safety-Critical Real-Time Systems},
+  booktitle = 	 {Proceedings of SOFSEM'95, 22nd Seminar on Current Trends in Theory and Pracice of Informatics},
+  pages =	 {206--235},
+  year =	 1995,
+  volume =	 1012,
+  series =	 lncs,
+  publisher =	 springer,
+  note =	 "\ps{rcm:95.ps.gz}"
+}
+
+@InProceedings{sd:95,
+  author = 	 {Stern,U. and Dill,D.},
+  title = 	 {Improved Probabilistic Verification by Hash Compaction},
+  booktitle = 	 {Proc. of IFIP WG10.5 Advanced Research Working Group Conference on Correct Hardware Design and Verification Methods},
+  year =	 1995,
+  note =	 "\ps{sd:95.ps.gz}"
+}
+@InProceedings{sd:96,
+  author = 	 {Stern,U. and Dill,D.},
+  title = 	 {A New Scheme for Memory-Efficient Probabilistic Verification},
+  booktitle = 	 {Proc. Int. Conf. on Formal Description Techniques and Protocol Specification, Testing and Verification (FORTE/PSTV'96)},
+  year =	 1996,
+  note =	 "\ps{sd:96.ps.gz}"
+}
+@InProceedings{vis:96,
+  author = 	 {Visser,W.},
+  title = 	 {Memory Efficient State Storage in {SPIN}},
+  booktitle = 	 {Proc. 2nd {SPIN} Workshop, Rutgers University, New Jersey, USA},
+  year =	 1996,
+  month =	 aug,
+  note =         "\ps{vis:96.ps.gz}"
+}
+
+@InProceedings{ysa:00,
+  author = 	 {Yalagandula,P. and  Singhal,V. and Aziz,A.},
+  title = 	 {Automatic Lighthouse Generation for Directed State Space Search},
+  booktitle = 	 {Proc. of Design Automation and Test in Europe, Paris, France},
+  year =	 2000,
+  note =	 "\ps{ysa:00.ps.gz}"
+}
+
+@InProceedings{ysa:97,
+  author = 	 {Yuan,J. and Shen,J. and Abraham,J. and Aziz,A.},
+  title = 	 {On Combining Formal and Informal Verification},
+  booktitle = 	 cav97,
+  year =	 1997,
+  editor =	 cav97eds,
+  note =	 "\ps{ysa:97.ps.gz}"
+}
+
+
+
+
+
+

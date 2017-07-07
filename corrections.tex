@@ -1,0 +1,204 @@
+\documentclass{article}
+\usepackage{a4,amsmath,becs}
+\title{Commentary on thesis corrections}
+\author{David Kendall}
+\begin{document}
+\maketitle
+\section{Corrections proposed by ZL}
+\begin{trivlist}
+\item[\bf GQ 1--3] No action required.
+\item[\bf GQ 4] Added a couple of sentences to end of para.1 on p.147.
+\item[\bf GQ 5] The first question was addressed at the beginning of
+\Sec6.2, pp.145--146. I've added the word 'automatically' in a couple
+of places in para.1 of this section to emphasise this point. I've
+addressed the second point by adding a sentence to para.1 of
+\Sec6.2. I take the third point about code generation to be a question
+about how a model can be constructed from an implementation which
+includes such features as exceptions etc., while still accurately
+capturing timing characteristics. \Sec6.4 is intended to deal with
+these issues for a kind of 'generic' implementation platform. It
+provides enough detail to suggest how such features can be modelled
+automatically, I think. More detail would depend upon developing much
+more specific assumptions about the implementation platform, which I
+have said is outside the scope of the thesis.
+\item[\bf GQ 6] The approach has been tried only on the examples in the
+thesis, plus one or two others of comparable size and complexity. I
+had tried to acknowledge this in the final sentence of \Sec6.7.1 on p.186. I
+have now extended this sentence to make clearer the limitations and
+need for further work.
+\end{trivlist}
+
+\begin{trivlist}
+\item[\bf DQ 1] Line -15 on p.4: paragraph rephrased as suggested.
+\item[\bf DQ 2] Line -5 on p.7: fixed.
+\item[\bf DQ 3] Last para \Sec2.1. I didn't understand the problem
+here. I \emph{think} what is written already conforms with ZL's suggestions.
+\item[\bf DQ 4] Line 17 on p.12: I've checked the formula and think it's
+OK. The second conjunction is just the standard definition of a dense
+domain, see [Koy91], for example. The version presented here is as
+given in [Nic92] and is a little more pedantic in requiring that a
+dense domain is not a trivial one point domain. $\Time$ clearly
+satisfies this requirement also. I've added an explanation of the sets
+to the beginning of \Sec2.2.
+\item[\bf DQ 5] p.12: added example of cyclic circuits and reference
+to [AMP98].
+\item[\bf DQ 6] Line -20 on p.20: added paragraph immediately after
+syntax of clock constraints.
+\item[\bf DQ 7] Para.1 p.26: changed to 'encoded as state formulas'.
+Line 14: fixed typo.
+\item[\bf DQ 8] Line -2 on p.30: inserted forward reference to example
+property. Line 18: fixed typo.
+\item[\bf DQ 9] I've assumed that this request has been deleted? It's
+rather a large topic, and somewhat outside the scope of the thesis.
+\item[\bf DQ 10] Line 14 on p.42: Checked. Greatest is correct. The
+smallest polyhedron is just $\vexcond$.
+\item[\bf DQ 11] Page 51, 2nd bullet: expanded this paragraph to include
+more explanation.
+\item[\bf DQ 12] Para. 3 line 2 on p.59: added a sentence of further 
+explanation and proposed temporal logic for specification.
+\item[\bf DQ 13] Line 3 on p.60: added a brief explanation about the
+constraints on the schedulers that can be handled.
+\item[\bf DQ 14] Line 13 on p.60: added an indication (with
+references) of how a CAN-style channel can be implemented using shared
+memory techniques for communication between processes which share a
+processor.
+\item[\bf DQ 15] p.60 bullet 6: added clarification of what is meant
+by no interference between channels.
+\item[\bf DQ 16]Line 15 on p.62: added a short justification for the use of
+general relations.
+\item[\bf DQ 17--20] Adopting these suggestions would lead to some
+improvement in the presentation of channels and networks but would
+also have implications for the presentation throughout the rest of the
+thesis. Therefore, I have deferred the adoption of this approach to
+future work.
+\item[\bf DQ 21] p.76, termination: I've considered the inclusion of a
+successful termination operator in the syntax, and the algebraic laws
+which it might satisfy, long and hard. This still seems like a very
+difficult issue to treat properly and not one which I would like to
+tackle at this stage in the thesis. I've done some more reading since
+the viva and I've found a quite recent paper by Baeten and Reniers which
+I've now cited in the thesis. They have tried to deal with termination
+properly in a setting which is not too dissimilar from mine. They have
+found it necessary to introduce \emph{two} forms of unsuccessful termination
+and \emph{two} forms of successful termination and to adopt a non-standard
+approach to the definition of strong bisimilarity in order to cope with
+what they call the \emph{intricate interplay between termination, time
+determinism, and sequential composition}. If I adopt the semantics
+suggested by ZL for $\tick$ then it behaves more like unsuccessful than
+successful termination, e.g. $\tick \sq P \bisim \tick$ and it seems to be
+likely that bisimulation is no longer a congruence. For these reasons, I
+have just added a section on termination which mentions the problems and 
+refers to the literature (p.83 in the new version of the thesis) but I've
+otherwise left things unchanged.
+
+Precedence of operators: The unusual precedence
+ordering in which $\parallel$ is weaker than $\sq$ and $\choice$ is
+adopted because one almost always wants to write expressions with
+parallelism at the top-level in \bcandle. I've added $\rec$ to the
+precedence list. It's position, too, is chosen to reduce the need for
+parentheses in the most common forms of \bcandle\ expression. I've left
+the introduction of the abbreviations where they are, since this is a
+matter of syntax rather than semantics, but I've also added a couple
+of sentences to the description of 'Compute' in the informal semantics
+to discuss the null and idle processes.
+\item[\bf DQ 22] Definition 3.21 on p. 78: I've removed the equality (=) and
+replaced it by a rewrite relation ($\goesrw$) to emphasise that
+this is just syntactic rewriting. Example 3.4 has been modified accordingly.
+\item[\bf DQ 23] p.83: in fact the syntactic and semantic equalities
+are the same, but I've changed to $P \nsyneq \tick$ as suggested. This change
+needs to be propagated throughout the thesis. In fact, only the proof in 
+Appendix B is affected and the necessary changes have been made there also.
+\item[\bf DQ 24] p.84, semantics of interruption: I've tried to
+address this issue by including some further explanation and an example
+in the informal semantics on p.79. I've done this by adding further explanation
+about the choice operator and then relating the behaviour of interrupt to 
+choice. See \textbf{DQ 21} for issues relating to $\tick$.
+\item[\bf DQ 25] Definition 3.29 on p.85: semantic equality is intended. I've 
+added a definition of data environment equality to the end of \Sec3.3 and
+definitions of channel and network equality immediately after Definitions 3.8
+and 3.9, respectively.
+\item[\bf DQ 26] top of p.86: added a brief statement to the end of para.1 of
+\Sec3.6.4 to point out the lack of a complete axiomatisation and expansion
+theorem.
+\item[\bf DQ 27] p.127: this is the same algorithm as that considered in 
+DQ 11. I think the extra explanation there should be enough.
+\item[\bf DQ 28] Proposition 5.1 on p.130: expanded the final para of
+\Sec5.2 to discuss the scope and implications of the proposition.
+\end{trivlist}
+\section{Corrections proposed by AY}
+I don't have a list of Alex's suggestions. I did make some notes during
+the viva. Many of his suggestions have already been considered in the
+previous section, or are considered in the next section. The few remaining
+are discussed below.
+\begin{trivlist}
+\item[\bf AY 1] p.110: \textbf{S} - Instead of using $\WTick$ include
+$\tick$ in $\W$. \textbf{R} - At the viva, I agreed that this is a
+good idea. In fact, I'd already done this myself for the RT-TOOLS
+paper. However, I now realise that this change would involve changing
+all of the net definitions in \Sec4.4.3 (I didn't have this problem
+for the paper because this material was omitted). Since the existing
+presentation is consistent, I'd prefer to leave it as it is and adopt this
+idea in future publications.
+\item[\bf AY 2] p.116, Parallel Composition: \textbf{S} - Explain why the
+restriction of parallelism to top-level is useful to the
+implementation. \textbf{R} - I've added a paragraph to the end of this section.
+\item[\bf AY 3] p.123: \textbf{S} - Say something about the complexity of the 
+translation. \textbf{R} - I've added a sentence on this topic to the first para
+on this page.
+\end{trivlist}
+\section{Corrections proposed by DK}
+\begin{trivlist}
+\item[\bf DK 1] Added RT-TOOLS paper to list of published work.
+\item[\bf DK 2] p.68: Delete 'message' in row 5 col 3 of Fig. 3.2.
+\item[\bf DK 3] p.70: 'A network N over K and I ...' to 'A network N, over 
+  K and I, ...'.
+\item[\bf DK 4] p.92: add 'latent' and 'dense' to last sentence of para.2.
+\item[\bf DK 5] p.102, line 4: formatting.
+\item[\bf DK 6] p.102 ff: as currently defined the TA $\Gr(\csys)$ is
+not a TA since it has an infinite number of locations! This is just a
+temporary blip, since a finite number of locations is obtained by the
+restriction to locations which are structurally reachable from the
+initial location. The revision is intended to remove this anomaly. The concept
+of structurally reachable location is now introduced earlier and $\Gr(\csys)$
+is defined as $\sreach(\GrPlus(\csys))$, where $\GrPlus(\csys)$ is just the
+old definition of $\Gr(\csys)$. There are a few places later in the thesis,
+particularly in Appendix~B, where this change needs to be accommodated.
+\item[\bf DK 7] p.110, line 5: formatting.
+\item[\bf DK 8] p.110, line -12: '$\tr_\ww$' to '$\preset{\tr}$'.
+\item[\bf DK 9] p.120, Definition 4.27, line 2: fixed bracket mismatch.
+\item[\bf DK 10] p.122, lines -12 and -11: swapped $\dlB$ and $\dub$.
+\item[\bf DK 11] p.127 ff: changed font from $\RR$ to \textbf{R} for reference 
+to rules \textbf{R.1} and \textbf{R.2}.
+\item[\bf DK 12] p.132, Example 5.1, line 2: formatting.
+\item[\bf DK 13] p.135, line -7: added reference to [Tri98].
+\item[\bf DK 14] p.160, line 4: line break
+\item[\bf DK 15] p.160, line 13: added 'assuming that the index type of
+  \verb'a' is \verb-0..3-'.
+\item[\bf DK 16] p.180, Fig.6.6(b): added \verb'type pump_status' to 
+  \verb'module Pump'.
+\item[\bf DK 17] p.183, Fig. 6.9: fixed bounds in network section which don't
+comply with the scenario described in the text.
+\item[\bf DK 18] p.184, line 3 ff: changed to results as given by modified
+  network section (see DK 17).
+\item[\bf DK 19] p.195, Proposition B.2: 'If R is a strong bisimulation ...'
+  to 'If R is a strong $\approx$-bisimulation ...'.
+\item[\bf DK 20] p.198, Lemma B.4: qualified the scope of the lemma to
+  extend only to \emph{compatible} data environments since the original
+  scope was too wide (Compatibility is defined at the end of \Sec3.3.1
+  along with equality).
+\item[\bf DK 21] p.200, line -5ff: tightened presentation of proof a little.
+\item[\bf DK 22] p.203, line 11: changed $\NN$ to $\NN'$
+\item[\bf DK 23] p.206, line 25: changed $\NN$ to $\NN'$
+\end{trivlist}
+\end{document}
+
+
+
+
+
+
+
+
+
+
+

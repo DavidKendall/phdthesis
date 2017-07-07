@@ -1,0 +1,41 @@
+% $Id: abstract.tex,v 1.3 1997/10/19 23:22:56 davek Exp davek $
+\begin{abstract}
+Embedded systems are \emph{real-time, communicating} systems, and the
+effective modelling and analysis of these aspects of their behaviour
+is regarded as essential for acquiring confidence in their correct
+operation. In practice, it is important to minimise the burden of
+model construction and to automate the analysis, if possible. Among
+the most promising techniques for real-time systems are
+\emph{reachability analysis} and \emph{model-checking} of networks of
+\emph{timed automata}.  We identify two obstacles to the application
+of these techniques to a large class of distributed embedded systems:
+firstly, the language of timed automata is too low-level for
+straightforward model construction, and secondly, the synchronous,
+handshake communication mechanism of the timed automata model does not
+fit well with the asynchronous, broadcast mechanism employed in many
+distributed embedded systems. As a result, the task of model
+construction can be unduly onerous.
+
+This dissertation proposes an expressive language for the construction
+of models of real-time, broadcasting control systems, and demonstrates
+how efficient analysis techniques can be applied to them.
+
+The dissertation is concerned in particular with the Controller Area
+Network (CAN) protocol which is emerging as a \emph{de facto} standard
+in the automotive industry.  An abstract formal model of CAN is
+developed. This model is adopted as the communication primitive in a
+new language, \bcandle, which includes value passing, broadcast
+communication, message priorities and explicit time.  A high-level
+language, \candle, is introduced and its semantics defined by
+translation to \bcandle. We show how realistic CAN systems can be
+described in \candle\ and how a timed transition model of a system can
+be extracted for analysis. Finally, it is shown how efficient methods
+of analysis, such as `on-the-fly' and symbolic techniques, can be
+applied to these models. The dissertation contributes to the practical
+application of formal methods within the domain of broadcasting,
+embedded control systems.
+\end{abstract}
+
+
+
+

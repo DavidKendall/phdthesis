@@ -1,0 +1,9 @@
+#states 1
+#trans  1
+#clocks  1
+H1 
+
+state: 0	/* tg state: 0 */
+invar: H1<=10
+trans:
+8<=H1 and H1<=10 => READSENSOR ; RESET{ H1 } ; goto 0

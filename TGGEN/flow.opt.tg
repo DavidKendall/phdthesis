@@ -1,0 +1,343 @@
+#states 48
+#trans 146
+#clocks 4
+X_1 X_2 X_3 X_4 
+
+state: 0
+invar: X_1<=10250 and X_1<=90
+trans:
+X_1<=10250 and 85<=X_1 and X_1<=90 => OP_READSENSOR ; RESET{ X_1 X_3 X_4 }, X_2:=X_1 ;  goto 1
+10000<=X_1 and X_1<=10250 and X_1<=90 => OP_PERIOD ; RESET{  X_1 X_1 X_2 X_3 X_4 }, ;  goto 0
+
+state: 1
+invar: X_1=0 and X_2<=10250
+trans:
+X_1=0 and X_2<=10250 => SND_0_0_0 ; RESET{  X_1 X_3 X_4 }, ;  goto 2
+X_1=0 and 10000<=X_2 and X_2<=10250 => OP_PERIOD ; RESET{  X_1 X_1 X_2 X_3 X_4 }, ;  goto 0
+
+state: 2
+invar: X_1=0 and X_2<=10250
+trans:
+X_1=0 and 10000<=X_2 and X_2<=10250 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, ;  goto 3
+X_1=0 and X_2<=10250 => FP_0_0_0 ; RESET{  X_1 X_3 X_4 }, ;  goto 4
+
+state: 3
+invar: X_1=0 and X_2<=10250 and X_2<=90
+trans:
+X_1=0 and X_2<=10250 and 85<=X_2 and X_2<=90 => OP_READSENSOR ; RESET{ X_1 X_4 }, X_2:=X_1 X_3:=X_2 ;  goto 5
+X_1=0 and 10000<=X_2 and X_2<=10250 and X_2<=90 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, ;  goto 3
+X_1=0 and X_2<=10250 and X_2<=90 => FP_0_0_0 ; RESET{  X_1 X_3 X_4 }, ;  goto 6
+
+state: 4
+invar: X_1<=53 and X_2<=10250
+trans:
+X_1<=53 and 10000<=X_2 and X_2<=10250 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, ;  goto 6
+43<=X_1 and X_1<=53 and X_2<=10250 => PA_0_0_0 ; RESET{  X_1 X_3 X_4 }, ;  goto 7
+
+state: 5
+invar: X_1=0 and X_2=0 and X_3<=10250
+trans:
+X_1=0 and X_2=0 and X_3<=10250 => SND_0_0_0 ; RESET{  X_1 X_3 X_4 }, X_2:=X_3 ;  goto 2
+X_1=0 and X_2=0 and 10000<=X_3 and X_3<=10250 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, X_1:=X_2 ;  goto 3
+X_1=0 and X_2=0 and X_3<=10250 => FP_0_0_0 ; RESET{ X_1 X_2 X_4 }, ;  goto 8
+
+state: 6
+invar: X_1<=53 and X_2<=10250 and X_2<=90
+trans:
+X_1<=53 and X_2<=10250 and 85<=X_2 and X_2<=90 => OP_READSENSOR ; RESET{ X_1 X_4 }, X_2:=X_1 X_3:=X_2 ;  goto 8
+X_1<=53 and 10000<=X_2 and X_2<=10250 and X_2<=90 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, ;  goto 6
+43<=X_1 and X_1<=53 and X_2<=10250 and X_2<=90 => PA_0_0_0 ; RESET{  X_1 X_3 X_4 }, ;  goto 9
+
+state: 7
+invar: X_1=0 and X_2<=10250
+trans:
+X_1=0 and 10000<=X_2 and X_2<=10250 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, ;  goto 9
+X_1=0 and X_2<=10250 => RCV_0_0_0 ; RESET{  X_2 X_4 }, X_3:=X_2 ;  goto 10
+
+state: 8
+invar: X_1=0 and X_2<=53 and X_3<=10250
+trans:
+X_1=0 and X_2<=53 and X_3<=10250 => SND_0_0_0 ; RESET{  X_3 X_4 }, X_1:=X_2 X_2:=X_3 ;  goto 11
+X_1=0 and X_2<=53 and 10000<=X_3 and X_3<=10250 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, X_1:=X_2 ;  goto 6
+X_1=0 and 43<=X_2 and X_2<=53 and X_3<=10250 => PA_0_0_0 ; RESET{ X_1 X_2 X_4 }, ;  goto 12
+
+state: 9
+invar: X_1=0 and X_2<=10250 and X_2<=90
+trans:
+X_1=0 and X_2<=10250 and 85<=X_2 and X_2<=90 => OP_READSENSOR ; RESET{ X_1 X_4 }, X_2:=X_1 X_3:=X_2 ;  goto 12
+X_1=0 and 10000<=X_2 and X_2<=10250 and X_2<=90 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, ;  goto 9
+X_1=0 and X_2<=10250 and X_2<=90 => RCV_0_0_0 ; RESET{  X_2 X_4 }, X_3:=X_2 X_3:=X_2 ;  goto 13
+
+state: 10
+invar: X_1=0 and X_2<=300 and X_3<=10250
+trans:
+X_1=0 and X_2<=300 and 10000<=X_3 and X_3<=10250 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, ;  goto 13
+X_1=0 and 200<=X_2 and X_2<=300 and X_3<=10250 => OP_ADJUSTVALVE ; RESET{  X_3 X_4 }, X_2:=X_3 ;  goto 7
+X_1=0 and X_2<=300 and X_3<=10250 => AP_0 ; RESET{  X_1 X_4 }, ;  goto 14
+
+state: 11
+invar: X_1<=53 and X_2<=10250
+trans:
+X_1<=53 and 10000<=X_2 and X_2<=10250 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, ;  goto 15
+43<=X_1 and X_1<=53 and X_2<=10250 => PA_0_0_0 ; RESET{  X_1 X_3 X_4 }, ;  goto 16
+
+state: 12
+invar: X_1=0 and X_2=0 and X_3<=10250
+trans:
+X_1=0 and X_2=0 and X_3<=10250 => SND_0_0_0 ; RESET{  X_3 X_4 }, X_1:=X_2 X_2:=X_3 ;  goto 16
+X_1=0 and X_2=0 and 10000<=X_3 and X_3<=10250 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, X_1:=X_2 ;  goto 9
+X_1=0 and X_2=0 and X_3<=10250 => RCV_0_0_0 ; RESET{ X_1 X_3 }, X_4:=X_3 ;  goto 17
+
+state: 13
+invar: X_1=0 and X_2<=300 and X_3<=10250 and X_3<=90
+trans:
+X_1=0 and X_2<=300 and X_3<=10250 and 85<=X_3 and X_3<=90 => OP_READSENSOR ; RESET{ X_1 }, X_2:=X_1 X_3:=X_2 X_4:=X_3 ;  goto 17
+X_1=0 and X_2<=300 and 10000<=X_3 and X_3<=10250 and X_3<=90 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, ;  goto 13
+X_1=0 and 200<=X_2 and X_2<=300 and X_3<=10250 and X_3<=90 => OP_ADJUSTVALVE ; RESET{  X_3 X_4 }, X_2:=X_3 X_2:=X_3 ;  goto 9
+X_1=0 and X_2<=300 and X_3<=10250 and X_3<=90 => AP_0 ; RESET{  X_1 X_4 }, ;  goto 18
+
+state: 14
+invar: X_1<=12 and X_2<=300 and X_3<=10250
+trans:
+X_1<=12 and X_2<=300 and 10000<=X_3 and X_3<=10250 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, ;  goto 18
+X_1<=12 and 200<=X_2 and X_2<=300 and X_3<=10250 => OP_ADJUSTVALVE ; RESET{  X_3 X_4 }, X_2:=X_3 ;  goto 19
+10<=X_1 and X_1<=12 and X_2<=300 and X_3<=10250 => PF_0 ; RESET{   X_3 X_4 }, X_1:=X_2 X_2:=X_3 ;  goto 20
+
+state: 15
+invar: X_1<=53 and X_2<=10250 and X_2<=90
+trans:
+X_1<=53 and X_2<=10250 and 85<=X_2 and X_2<=90 => OP_READSENSOR ; RESET{ X_1 X_4 }, X_2:=X_1 X_3:=X_2 ;  goto 21
+X_1<=53 and 10000<=X_2 and X_2<=10250 and X_2<=90 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, ;  goto 15
+43<=X_1 and X_1<=53 and X_2<=10250 and X_2<=90 => PA_0_0_0 ; RESET{  X_1 X_3 X_4 }, ;  goto 22
+
+state: 16
+invar: X_1=0 and X_2<=10250
+trans:
+X_1=0 and 10000<=X_2 and X_2<=10250 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, ;  goto 22
+X_1=0 and X_2<=10250 => RCV_0_0_0 ; RESET{  X_2 X_4 }, X_3:=X_2 ;  goto 23
+
+state: 17
+invar: X_1=0 and X_2=0 and X_3<=300 and X_4<=10250
+trans:
+X_1=0 and X_2=0 and X_3<=300 and X_4<=10250 => SND_0_0_0 ; RESET{  X_4 }, X_1:=X_2 X_2:=X_3 X_3:=X_4 ;  goto 23
+X_1=0 and X_2=0 and X_3<=300 and 10000<=X_4 and X_4<=10250 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, X_1:=X_2 X_2:=X_3 ;  goto 13
+X_1=0 and X_2=0 and 200<=X_3 and X_3<=300 and X_4<=10250 => OP_ADJUSTVALVE ; RESET{ X_1 X_4 }, X_3:=X_4 ;  goto 12
+X_1=0 and X_2=0 and X_3<=300 and X_4<=10250 => AP_0 ; RESET{ X_1 X_2 }, ;  goto 24
+
+state: 18
+invar: X_1<=12 and X_2<=300 and X_3<=10250 and X_3<=90
+trans:
+X_1<=12 and X_2<=300 and X_3<=10250 and 85<=X_3 and X_3<=90 => OP_READSENSOR ; RESET{ X_1 }, X_2:=X_1 X_3:=X_2 X_4:=X_3 ;  goto 24
+X_1<=12 and X_2<=300 and 10000<=X_3 and X_3<=10250 and X_3<=90 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, ;  goto 18
+X_1<=12 and 200<=X_2 and X_2<=300 and X_3<=10250 and X_3<=90 => OP_ADJUSTVALVE ; RESET{  X_3 X_4 }, X_2:=X_3 X_2:=X_3 ;  goto 25
+10<=X_1 and X_1<=12 and X_2<=300 and X_3<=10250 and X_3<=90 => PF_0 ; RESET{   X_3 X_4 }, X_1:=X_2 X_2:=X_3 X_2:=X_3 ;  goto 26
+
+state: 19
+invar: X_1<=12 and X_2<=10250
+trans:
+X_1<=12 and 10000<=X_2 and X_2<=10250 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, ;  goto 25
+10<=X_1 and X_1<=12 and X_2<=10250 => PF_0 ; RESET{   X_2 X_3 X_4 }, X_1:=X_2 ;  goto 27
+
+state: 20
+invar: X_1<=300 and X_2<=10250
+trans:
+X_1<=300 and 10000<=X_2 and X_2<=10250 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, ;  goto 26
+200<=X_1 and X_1<=300 and X_2<=10250 => OP_ADJUSTVALVE ; RESET{  X_2 X_3 X_4 }, X_1:=X_2 ;  goto 27
+
+state: 21
+invar: X_1=0 and X_2<=53 and X_3<=10250
+trans:
+X_1=0 and X_2<=53 and X_3<=10250 => SND_0_0_0 ; RESET{  X_3 X_4 }, X_1:=X_2 X_2:=X_3 ;  goto 11
+X_1=0 and X_2<=53 and 10000<=X_3 and X_3<=10250 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, X_1:=X_2 ;  goto 15
+X_1=0 and 43<=X_2 and X_2<=53 and X_3<=10250 => PA_0_0_0 ; RESET{ X_1 X_2 X_4 }, ;  goto 28
+
+state: 22
+invar: X_1=0 and X_2<=10250 and X_2<=90
+trans:
+X_1=0 and X_2<=10250 and 85<=X_2 and X_2<=90 => OP_READSENSOR ; RESET{ X_1 X_4 }, X_2:=X_1 X_3:=X_2 ;  goto 28
+X_1=0 and 10000<=X_2 and X_2<=10250 and X_2<=90 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, ;  goto 22
+X_1=0 and X_2<=10250 and X_2<=90 => RCV_0_0_0 ; RESET{  X_2 X_4 }, X_3:=X_2 X_3:=X_2 ;  goto 29
+
+state: 23
+invar: X_1=0 and X_2<=300 and X_3<=10250
+trans:
+X_1=0 and X_2<=300 and 10000<=X_3 and X_3<=10250 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, ;  goto 29
+X_1=0 and 200<=X_2 and X_2<=300 and X_3<=10250 => OP_ADJUSTVALVE ; RESET{  X_3 X_4 }, X_2:=X_3 ;  goto 16
+X_1=0 and X_2<=300 and X_3<=10250 => AP_0 ; RESET{  X_1 X_4 }, ;  goto 30
+
+state: 24
+invar: X_1=0 and X_2<=12 and X_3<=300 and X_4<=10250
+trans:
+X_1=0 and X_2<=12 and X_3<=300 and X_4<=10250 => SND_0_0_0 ; RESET{  X_4 }, X_1:=X_2 X_2:=X_3 X_3:=X_4 ;  goto 30
+X_1=0 and X_2<=12 and X_3<=300 and 10000<=X_4 and X_4<=10250 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, X_1:=X_2 X_2:=X_3 ;  goto 18
+X_1=0 and X_2<=12 and 200<=X_3 and X_3<=300 and X_4<=10250 => OP_ADJUSTVALVE ; RESET{ X_1 X_4 }, X_3:=X_4 ;  goto 31
+X_1=0 and 10<=X_2 and X_2<=12 and X_3<=300 and X_4<=10250 => PF_0 ; RESET{ X_1  X_4 }, X_2:=X_3 X_3:=X_4 ;  goto 32
+
+state: 25
+invar: X_1<=12 and X_2<=10250 and X_2<=90
+trans:
+X_1<=12 and X_2<=10250 and 85<=X_2 and X_2<=90 => OP_READSENSOR ; RESET{ X_1 X_4 }, X_2:=X_1 X_3:=X_2 ;  goto 31
+X_1<=12 and 10000<=X_2 and X_2<=10250 and X_2<=90 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, ;  goto 25
+10<=X_1 and X_1<=12 and X_2<=10250 and X_2<=90 => PF_0 ; RESET{   X_2 X_3 X_4 }, X_1:=X_2 X_1:=X_2 ;  goto 0
+
+state: 26
+invar: X_1<=300 and X_2<=10250 and X_2<=90
+trans:
+X_1<=300 and X_2<=10250 and 85<=X_2 and X_2<=90 => OP_READSENSOR ; RESET{ X_1 X_4 }, X_2:=X_1 X_3:=X_2 ;  goto 32
+X_1<=300 and 10000<=X_2 and X_2<=10250 and X_2<=90 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, ;  goto 26
+200<=X_1 and X_1<=300 and X_2<=10250 and X_2<=90 => OP_ADJUSTVALVE ; RESET{  X_2 X_3 X_4 }, X_1:=X_2 X_1:=X_2 ;  goto 0
+
+state: 27
+invar: X_1<=10250
+trans:
+10000<=X_1 and X_1<=10250 => OP_PERIOD ; RESET{  X_1 X_1 X_2 X_3 X_4 }, ;  goto 0
+
+state: 28
+invar: X_1=0 and X_2=0 and X_3<=10250
+trans:
+X_1=0 and X_2=0 and X_3<=10250 => SND_0_0_0 ; RESET{  X_3 X_4 }, X_1:=X_2 X_2:=X_3 ;  goto 16
+X_1=0 and X_2=0 and 10000<=X_3 and X_3<=10250 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, X_1:=X_2 ;  goto 22
+X_1=0 and X_2=0 and X_3<=10250 => RCV_0_0_0 ; RESET{ X_1 X_3 }, X_4:=X_3 ;  goto 33
+
+state: 29
+invar: X_1=0 and X_2<=300 and X_3<=10250 and X_3<=90
+trans:
+X_1=0 and X_2<=300 and X_3<=10250 and 85<=X_3 and X_3<=90 => OP_READSENSOR ; RESET{ X_1 }, X_2:=X_1 X_3:=X_2 X_4:=X_3 ;  goto 33
+X_1=0 and X_2<=300 and 10000<=X_3 and X_3<=10250 and X_3<=90 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, ;  goto 29
+X_1=0 and 200<=X_2 and X_2<=300 and X_3<=10250 and X_3<=90 => OP_ADJUSTVALVE ; RESET{  X_3 X_4 }, X_2:=X_3 X_2:=X_3 ;  goto 22
+X_1=0 and X_2<=300 and X_3<=10250 and X_3<=90 => AP_0 ; RESET{  X_1 X_4 }, ;  goto 34
+
+state: 30
+invar: X_1<=12 and X_2<=300 and X_3<=10250
+trans:
+X_1<=12 and X_2<=300 and 10000<=X_3 and X_3<=10250 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, ;  goto 34
+X_1<=12 and 200<=X_2 and X_2<=300 and X_3<=10250 => OP_ADJUSTVALVE ; RESET{  X_3 X_4 }, X_2:=X_3 ;  goto 35
+10<=X_1 and X_1<=12 and X_2<=300 and X_3<=10250 => PF_0 ; RESET{  X_1 X_4 }, ;  goto 36
+
+state: 31
+invar: X_1=0 and X_2<=12 and X_3<=10250
+trans:
+X_1=0 and X_2<=12 and X_3<=10250 => SND_0_0_0 ; RESET{  X_3 X_4 }, X_1:=X_2 X_2:=X_3 ;  goto 35
+X_1=0 and X_2<=12 and 10000<=X_3 and X_3<=10250 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, X_1:=X_2 ;  goto 25
+X_1=0 and 10<=X_2 and X_2<=12 and X_3<=10250 => PF_0 ; RESET{ X_1  X_3 X_4 }, X_2:=X_3 ;  goto 1
+
+state: 32
+invar: X_1=0 and X_2<=300 and X_3<=10250
+trans:
+X_1=0 and X_2<=300 and X_3<=10250 => SND_0_0_0 ; RESET{  X_1 X_4 }, ;  goto 36
+X_1=0 and X_2<=300 and 10000<=X_3 and X_3<=10250 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, X_1:=X_2 ;  goto 26
+X_1=0 and 200<=X_2 and X_2<=300 and X_3<=10250 => OP_ADJUSTVALVE ; RESET{ X_1 X_3 X_4 }, X_2:=X_3 ;  goto 1
+
+state: 33
+invar: X_1=0 and X_2=0 and X_3<=300 and X_4<=10250
+trans:
+X_1=0 and X_2=0 and X_3<=300 and X_4<=10250 => SND_0_0_0 ; RESET{  X_4 }, X_1:=X_2 X_2:=X_3 X_3:=X_4 ;  goto 23
+X_1=0 and X_2=0 and X_3<=300 and 10000<=X_4 and X_4<=10250 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, X_1:=X_2 X_2:=X_3 ;  goto 29
+X_1=0 and X_2=0 and 200<=X_3 and X_3<=300 and X_4<=10250 => OP_ADJUSTVALVE ; RESET{ X_1 X_4 }, X_3:=X_4 ;  goto 28
+X_1=0 and X_2=0 and X_3<=300 and X_4<=10250 => AP_0 ; RESET{ X_1 X_2 }, ;  goto 37
+
+state: 34
+invar: X_1<=12 and X_2<=300 and X_3<=10250 and X_3<=90
+trans:
+X_1<=12 and X_2<=300 and X_3<=10250 and 85<=X_3 and X_3<=90 => OP_READSENSOR ; RESET{ X_1 }, X_2:=X_1 X_3:=X_2 X_4:=X_3 ;  goto 37
+X_1<=12 and X_2<=300 and 10000<=X_3 and X_3<=10250 and X_3<=90 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, ;  goto 34
+X_1<=12 and 200<=X_2 and X_2<=300 and X_3<=10250 and X_3<=90 => OP_ADJUSTVALVE ; RESET{  X_3 X_4 }, X_2:=X_3 X_2:=X_3 ;  goto 38
+10<=X_1 and X_1<=12 and X_2<=300 and X_3<=10250 and X_3<=90 => PF_0 ; RESET{  X_1 X_4 }, ;  goto 39
+
+state: 35
+invar: X_1<=12 and X_2<=10250
+trans:
+X_1<=12 and 10000<=X_2 and X_2<=10250 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, ;  goto 38
+10<=X_1 and X_1<=12 and X_2<=10250 => PF_0 ; RESET{  X_1 X_3 X_4 }, ;  goto 2
+
+state: 36
+invar: X_1=0 and X_2<=300 and X_3<=10250
+trans:
+X_1=0 and X_2<=300 and 10000<=X_3 and X_3<=10250 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, ;  goto 39
+X_1=0 and 200<=X_2 and X_2<=300 and X_3<=10250 => OP_ADJUSTVALVE ; RESET{  X_3 X_4 }, X_2:=X_3 ;  goto 2
+X_1=0 and X_2<=300 and X_3<=10250 => FP_0_0_0 ; RESET{  X_1 X_4 }, ;  goto 40
+
+state: 37
+invar: X_1=0 and X_2<=12 and X_3<=300 and X_4<=10250
+trans:
+X_1=0 and X_2<=12 and X_3<=300 and X_4<=10250 => SND_0_0_0 ; RESET{  X_4 }, X_1:=X_2 X_2:=X_3 X_3:=X_4 ;  goto 30
+X_1=0 and X_2<=12 and X_3<=300 and 10000<=X_4 and X_4<=10250 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, X_1:=X_2 X_2:=X_3 ;  goto 34
+X_1=0 and X_2<=12 and 200<=X_3 and X_3<=300 and X_4<=10250 => OP_ADJUSTVALVE ; RESET{ X_1 X_4 }, X_3:=X_4 ;  goto 41
+X_1=0 and 10<=X_2 and X_2<=12 and X_3<=300 and X_4<=10250 => PF_0 ; RESET{ X_1 X_2 }, ;  goto 42
+
+state: 38
+invar: X_1<=12 and X_2<=10250 and X_2<=90
+trans:
+X_1<=12 and X_2<=10250 and 85<=X_2 and X_2<=90 => OP_READSENSOR ; RESET{ X_1 X_4 }, X_2:=X_1 X_3:=X_2 ;  goto 41
+X_1<=12 and 10000<=X_2 and X_2<=10250 and X_2<=90 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, ;  goto 38
+10<=X_1 and X_1<=12 and X_2<=10250 and X_2<=90 => PF_0 ; RESET{  X_1 X_3 X_4 }, ;  goto 3
+
+state: 39
+invar: X_1=0 and X_2<=300 and X_3<=10250 and X_3<=90
+trans:
+X_1=0 and X_2<=300 and X_3<=10250 and 85<=X_3 and X_3<=90 => OP_READSENSOR ; RESET{ X_1 }, X_2:=X_1 X_3:=X_2 X_4:=X_3 ;  goto 42
+X_1=0 and X_2<=300 and 10000<=X_3 and X_3<=10250 and X_3<=90 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, ;  goto 39
+X_1=0 and 200<=X_2 and X_2<=300 and X_3<=10250 and X_3<=90 => OP_ADJUSTVALVE ; RESET{  X_3 X_4 }, X_2:=X_3 X_2:=X_3 ;  goto 3
+X_1=0 and X_2<=300 and X_3<=10250 and X_3<=90 => FP_0_0_0 ; RESET{  X_1 X_4 }, ;  goto 43
+
+state: 40
+invar: X_1<=53 and X_2<=300 and X_3<=10250
+trans:
+X_1<=53 and X_2<=300 and 10000<=X_3 and X_3<=10250 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, ;  goto 43
+X_1<=53 and 200<=X_2 and X_2<=300 and X_3<=10250 => OP_ADJUSTVALVE ; RESET{  X_3 X_4 }, X_2:=X_3 ;  goto 4
+43<=X_1 and X_1<=53 and X_2<=300 and X_3<=10250 => PA_0_0_0 ; RESET{  X_1 X_4 }, ;  goto 10
+
+state: 41
+invar: X_1=0 and X_2<=12 and X_3<=10250
+trans:
+X_1=0 and X_2<=12 and X_3<=10250 => SND_0_0_0 ; RESET{  X_3 X_4 }, X_1:=X_2 X_2:=X_3 ;  goto 35
+X_1=0 and X_2<=12 and 10000<=X_3 and X_3<=10250 => OP_PERIOD ; RESET{  X_2 X_2 X_3 X_4 }, X_1:=X_2 ;  goto 38
+X_1=0 and 10<=X_2 and X_2<=12 and X_3<=10250 => PF_0 ; RESET{ X_1 X_2 X_4 }, ;  goto 5
+
+state: 42
+invar: X_1=0 and X_2=0 and X_3<=300 and X_4<=10250
+trans:
+X_1=0 and X_2=0 and X_3<=300 and X_4<=10250 => SND_0_0_0 ; RESET{  X_1 X_4 }, X_2:=X_3 X_3:=X_4 ;  goto 36
+X_1=0 and X_2=0 and X_3<=300 and 10000<=X_4 and X_4<=10250 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, X_1:=X_2 X_2:=X_3 ;  goto 39
+X_1=0 and X_2=0 and 200<=X_3 and X_3<=300 and X_4<=10250 => OP_ADJUSTVALVE ; RESET{ X_1 X_4 }, X_3:=X_4 ;  goto 5
+X_1=0 and X_2=0 and X_3<=300 and X_4<=10250 => FP_0_0_0 ; RESET{ X_1 X_2 }, ;  goto 44
+
+state: 43
+invar: X_1<=53 and X_2<=300 and X_3<=10250 and X_3<=90
+trans:
+X_1<=53 and X_2<=300 and X_3<=10250 and 85<=X_3 and X_3<=90 => OP_READSENSOR ; RESET{ X_1 }, X_2:=X_1 X_3:=X_2 X_4:=X_3 ;  goto 44
+X_1<=53 and X_2<=300 and 10000<=X_3 and X_3<=10250 and X_3<=90 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, ;  goto 43
+X_1<=53 and 200<=X_2 and X_2<=300 and X_3<=10250 and X_3<=90 => OP_ADJUSTVALVE ; RESET{  X_3 X_4 }, X_2:=X_3 X_2:=X_3 ;  goto 6
+43<=X_1 and X_1<=53 and X_2<=300 and X_3<=10250 and X_3<=90 => PA_0_0_0 ; RESET{  X_1 X_4 }, ;  goto 13
+
+state: 44
+invar: X_1=0 and X_2<=53 and X_3<=300 and X_4<=10250
+trans:
+X_1=0 and X_2<=53 and X_3<=300 and X_4<=10250 => SND_0_0_0 ; RESET{  X_4 }, X_1:=X_2 X_2:=X_3 X_3:=X_4 ;  goto 45
+X_1=0 and X_2<=53 and X_3<=300 and 10000<=X_4 and X_4<=10250 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, X_1:=X_2 X_2:=X_3 ;  goto 43
+X_1=0 and X_2<=53 and 200<=X_3 and X_3<=300 and X_4<=10250 => OP_ADJUSTVALVE ; RESET{ X_1 X_4 }, X_3:=X_4 ;  goto 8
+X_1=0 and 43<=X_2 and X_2<=53 and X_3<=300 and X_4<=10250 => PA_0_0_0 ; RESET{ X_1 X_2 }, ;  goto 17
+
+state: 45
+invar: X_1<=53 and X_2<=300 and X_3<=10250
+trans:
+X_1<=53 and X_2<=300 and 10000<=X_3 and X_3<=10250 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, ;  goto 46
+X_1<=53 and 200<=X_2 and X_2<=300 and X_3<=10250 => OP_ADJUSTVALVE ; RESET{  X_3 X_4 }, X_2:=X_3 ;  goto 11
+43<=X_1 and X_1<=53 and X_2<=300 and X_3<=10250 => PA_0_0_0 ; RESET{  X_1 X_4 }, ;  goto 23
+
+state: 46
+invar: X_1<=53 and X_2<=300 and X_3<=10250 and X_3<=90
+trans:
+X_1<=53 and X_2<=300 and X_3<=10250 and 85<=X_3 and X_3<=90 => OP_READSENSOR ; RESET{ X_1 }, X_2:=X_1 X_3:=X_2 X_4:=X_3 ;  goto 47
+X_1<=53 and X_2<=300 and 10000<=X_3 and X_3<=10250 and X_3<=90 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, ;  goto 46
+X_1<=53 and 200<=X_2 and X_2<=300 and X_3<=10250 and X_3<=90 => OP_ADJUSTVALVE ; RESET{  X_3 X_4 }, X_2:=X_3 X_2:=X_3 ;  goto 15
+43<=X_1 and X_1<=53 and X_2<=300 and X_3<=10250 and X_3<=90 => PA_0_0_0 ; RESET{  X_1 X_4 }, ;  goto 29
+
+state: 47
+invar: X_1=0 and X_2<=53 and X_3<=300 and X_4<=10250
+trans:
+X_1=0 and X_2<=53 and X_3<=300 and X_4<=10250 => SND_0_0_0 ; RESET{  X_4 }, X_1:=X_2 X_2:=X_3 X_3:=X_4 ;  goto 45
+X_1=0 and X_2<=53 and X_3<=300 and 10000<=X_4 and X_4<=10250 => OP_PERIOD ; RESET{  X_3 X_3 X_4 }, X_1:=X_2 X_2:=X_3 ;  goto 46
+X_1=0 and X_2<=53 and 200<=X_3 and X_3<=300 and X_4<=10250 => OP_ADJUSTVALVE ; RESET{ X_1 X_4 }, X_3:=X_4 ;  goto 21
+X_1=0 and 43<=X_2 and X_2<=53 and X_3<=300 and X_4<=10250 => PA_0_0_0 ; RESET{ X_1 X_2 }, ;  goto 33
+

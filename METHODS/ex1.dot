@@ -1,0 +1,9 @@
+digraph tg2dot {
+rankdir=LR
+node [height=1,width=1,shape=circle,fixedsize=true,color=black,fontsize=14]
+0 [label="0\n\ntt"]
+1 [label="1\n\nH1 <= 2"]
+
+0 -> 1 [label = "a, { H1 }"]
+1 -> 0 [label = "H1 >= 1,b"]
+}
